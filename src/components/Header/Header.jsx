@@ -10,7 +10,7 @@ export const Header = () => {
 
     const menuHandler = (menuOpened) => {
         if (document.documentElement.clientWidth <= 768) {
-            return menuOpened ? { opacity: "100" } : {};
+            return menuOpened ? { opacity: "100", display: "block" } : {};
         }
     }
 

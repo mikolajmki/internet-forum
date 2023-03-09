@@ -29,6 +29,7 @@
         border-radius: 1rem;
         transition: 200ms ease-in-out;
         opacity: 0;
+        display: none;
     }
     
     .list {
