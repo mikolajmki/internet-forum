@@ -8,6 +8,7 @@ body {
   background: #323232;
   color: white;
   font-family: "eudoxus sans", sans-serif;
+  overflow-x: hidden;
 }
 
 code {

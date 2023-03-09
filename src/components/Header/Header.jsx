@@ -1,20 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import css from './Header.module.css';
+import { UilBars } from '@iconscout/react-unicons';
+import { categories } from "../../data/categories";
 
 export const Header = () => {
+
+    const [menuOpened, setMenuOpened] = useState(false);
+
+
+    const menuHandler = (menuOpened) => {
+        if (document.documentElement.clientWidth <= 768) {
+            return menuOpened ? { opacity: "100" } : {};
+        }
+    }
+
     return (
         <div className={css.container}>
 
             <div className={css.name}>
                 <span>Baw<span>aria.pl</span> </span>
             </div>
-            <ul className={css.list}>
-                <li>Mechanika</li>
-                <li>Kategoria 2</li>
-                <li>Kategoria 3</li>
-                <li>Kategoria 4</li>
-                <li>Kategoria 5</li>
-            </ul>
+            <div className={css.menuButton} onClick={() => setMenuOpened((prev) => !prev)}>
+                <UilBars/>
+            </div>
+            <div className={css.menu} style={ menuHandler(menuOpened) }>
+                <ul className={css.list}>
+                { categories.map((category, i) => {
+                    return (
+                        <li>{category.name}</li>
+                    )
+                }) }
+                </ul>
+            </div>
         </div>
     )
 }
