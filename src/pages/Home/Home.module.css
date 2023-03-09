@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    width: 100vw;
+}
+
+@media screen and (max-width: 450px) {
+    .container {
+        flex-direction: column;
+    }
+}

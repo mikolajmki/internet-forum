@@ -1,0 +1,26 @@
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    background: #292929;
+    box-shadow: 1px 2px 11px 2px rgb(31, 31, 31);
+}
+
+.list {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.name {
+    display: flex;
+    font-weight: bold;
+}
+
+.name > span > span {
+    color: rgb(55, 150, 209);
+}
