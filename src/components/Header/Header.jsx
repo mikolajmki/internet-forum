@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import css from './Header.module.css';
 import { UilBars } from '@iconscout/react-unicons';
 import { categories } from "../../data/categories";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
 
@@ -27,7 +28,7 @@ export const Header = () => {
                 <ul className={css.list}>
                 { categories.map((category, i) => {
                     return (
-                        <li>{category.name}</li>
+                        <li><a href={"#" + category.name}>{category.name}</a></li>
                     )
                 }) }
                 </ul>

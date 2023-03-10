@@ -59,6 +59,15 @@
     cursor: pointer;
 }
 
+.list > li > a {
+    text-decoration: none;
+    color: white;
+}
+
+.list > li > a:hover {
+    color: var(--secondary);
+}
+
 .name {
     display: flex;
     font-weight: bold;

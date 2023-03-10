@@ -9,7 +9,7 @@
 }
 
 .subs {
-    border: 0.15rem solid white;
+    border: 0.1rem solid var(--border);
     box-sizing: border-box;
     background: #292929;
     border-radius: 0.2rem;
@@ -22,7 +22,7 @@
     align-items: center;
     justify-content: space-between;
     font-weight: bold;
-    border: 0.15rem solid white;
+    border: 0.1rem solid var(--border);
     box-sizing: border-box;
     background: #292929;
     border-radius: 0.2rem;
@@ -50,12 +50,20 @@
 .info {
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 1rem 0;
     cursor: pointer;
 }
 
 .subcategory {
-    border-bottom:  0.15rem solid white;
+    display: flex;
+    border-bottom:  0.1rem solid var(--border);
+}
+
+.subcategory > :nth-child(1) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
 }
 
 .info:hover {
