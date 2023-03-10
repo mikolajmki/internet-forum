@@ -3,6 +3,7 @@
 }
 
 .wrapper {
+    display: flex;
     flex: 5;
 }
 
@@ -11,4 +12,10 @@
     align-items: center;
     flex-direction: column;
     justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
 }
