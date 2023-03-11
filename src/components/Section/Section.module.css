@@ -28,6 +28,7 @@
     border-radius: 0.2rem;
     padding: 1rem;
     margin-bottom: 1rem;
+    scroll-margin-top: 7rem;
 }
 
 .arrow {
@@ -50,7 +51,7 @@
 .info {
     display: flex;
     flex-direction: column;
-    padding: 1rem 0;
+    padding: 1rem 0.5rem 1rem 0;
     cursor: pointer;
 }
 

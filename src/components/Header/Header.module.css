@@ -1,11 +1,11 @@
 .container {
-    position: relative;
+    position: sticky;
+    top: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     background: #292929;
-    padding: 2rem;
     box-shadow: 1px 2px 11px 2px rgb(31, 31, 31);
 }
 
@@ -28,8 +28,11 @@
         width: 14rem;
         border-radius: 1rem;
         transition: 200ms ease-in-out;
-        opacity: 0;
         display: none;
+    }
+
+    .menuContainer {
+        position: relative;
     }
     
     .list {
@@ -40,9 +43,14 @@
     }
 
     .menuButton {
+        padding: 2rem;
         visibility: visible;
         display: block;
         cursor: pointer;
+    }
+
+    .container {
+        overflow-x: clip;
     }
 }
 
@@ -69,8 +77,11 @@
 }
 
 .name {
+    padding: 2rem;
+    color: white;
     display: flex;
     font-weight: bold;
+    text-decoration: none;
 }
 
 .name > span > span {
