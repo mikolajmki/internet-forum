@@ -12,5 +12,19 @@ export const threads = {
             name: "Grzeje sie",
             description: "Po krotkiej jezdzie pokazuje ponad 100 stopni"
         },
+    ],
+    "Skrzynia-biegow": [
+        {
+            name: "Zgrzytanie",
+            description: "Witam od jakiegos czasu zgrzyta na dwojce"
+        },
+        {
+            name: "Nie wchodzi trojka",
+            description: "Czy trojka w ogole jest potrzebna?"
+        },
+        {
+            name: "Swap na manual",
+            description: "Ktos robil?"
+        },
     ]
 }

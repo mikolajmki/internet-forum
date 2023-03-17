@@ -6,9 +6,9 @@ export const ThreadSection = ({ subId }) => {
     return (
         <div className={css.container}>
             <div className={css.threads}>
-                { threads[subId].map((thread) => {
+                { threads[subId].map((thread, i) => {
                         return (
-                            <div className={css.thread}>
+                            <div key={i} className={css.thread}>
                                 <div className={css.dot}></div>
                                 <div className={css.info}>
                                     <span>{thread.name}</span>

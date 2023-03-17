@@ -1,6 +1,8 @@
 :root {
   --secondary: rgb(55, 150, 209);
+  --buttonBorder: rgb(33, 117, 169);
   --border: rgb(126, 126, 126);
+  --bg: #323232;
 }
 
 body {

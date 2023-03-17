@@ -29,7 +29,7 @@ export const Header = () => {
                     <ul className={css.list}>
                     { categories.map((category, i) => {
                         return (
-                            <li><a href={"#" + category.name}>{category.name}</a></li>
+                            <li key={i}><a href={"#" + category.name}>{category.name}</a></li>
                         )
                     }) }
                     </ul>

@@ -25,9 +25,9 @@ export const Section = ({ category }) => {
                             <div>
                                 <UilCommentAltMessage/>
                             </div>
-                            <Link to={`/${category.name.trim()}/${sub.name.trim()}`} style={{ color: "white", textDecoration: "none" } }>
+                            <Link to={`/${category.name}/${sub.name}`} style={{ color: "white", textDecoration: "none" } }>
                                 <div className={css.info}>
-                                    <span className={css.name}>{sub.name}</span>
+                                    <span className={css.name.replace('-', ' ')}>{sub.name.replace('-', ' ')}</span>
                                     <span className={css.description}>{sub.description}</span>
                                 </div>
                             </Link>

@@ -5,19 +5,19 @@ export const subcategories = [
             description: "Jak zeswapowac na 2.5"
         },
         {
-            name: "Skrzynia biegow",
+            name: "Skrzynia-biegow",
             description: "Dwojka zwyciezca plebiscytu na najlepszy bieg w historii"
         },
         {
-            name: "Uklad napedowy",
+            name: "Uklad-napedowy",
             description: "Gdzie ojciec trzyma migomat"
         },
         {
-            name: "Uklad zaplonowy",
+            name: "Uklad-zaplonowy",
             description: "Opoznianie zaplonu"
         },
         {
-            name: "Uklad wydechowy",
+            name: "Uklad-wydechowy",
             description: "Co zrobic zeby dobrze strzelalo z puchy"
         },
         {
@@ -46,7 +46,7 @@ export const subcategories = [
             description: "Jakich srodkow uzywamy"
         },
         {
-            name: "Elementy wnetrza",
+            name: "Elementy-wnetrza",
             description: "Co do wywalenia"
         }
     ],
