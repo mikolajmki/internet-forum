@@ -40,6 +40,13 @@
     padding: 2rem;
     background: var(--bg);
     border-radius: 0.4rem;
+    margin: 2rem;
+}
+
+@media screen and (max-width: 768px) {
+   .container {
+      width: 70%;
+   }
 }
 
 .modal-backdrop {
