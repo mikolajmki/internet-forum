@@ -46,6 +46,7 @@
 @media screen and (max-width: 768px) {
    .container {
       width: 70%;
+      top: 2rem;
    }
 }
 
@@ -70,7 +71,8 @@
     gap: 1rem;
  }
 
- form > input {
+ form > textarea, form > input {
     padding: 0.5rem;
     border-radius: 0.4rem;
+    outline-color: var(--secondary);
  }

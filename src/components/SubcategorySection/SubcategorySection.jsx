@@ -24,12 +24,12 @@ export const SubcategorySection = () => {
                     <ThreadSection subId={params.subId}/>
                 </div>
                 <div className={css.btnWrapper}>
-                    <div className={css.btn} onClick={() => setModal((prev) => !prev)}>
+                    <div className="btn" onClick={() => setModal((prev) => !prev)}>
                         <div className={css.circle}><UilPlusCircle/></div>
-                        Utworz nowy
+                        Dodaj watek
                     </div>
                 </div>
-                <ThreadModal modal={modal} setModal={setModal}/>
+                <ThreadModal modal={modal} setModal={setModal} title={"Dodaj watek:"}/>
             </div>
         </div>
     )
