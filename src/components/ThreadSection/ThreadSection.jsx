@@ -16,8 +16,8 @@ export const ThreadSection = ({ subId }) => {
                                 <div key={i} className={css.thread}>
                                     <div className={css.dot}></div>
                                     <div className={css.info}>
-                                        <span>{thread.name}</span>
-                                        <span>{thread.description}</span>
+                                        <span>{thread.title}</span>
+                                        <span>dodany przez {thread.author} dnia {thread.date}</span>
                                     </div>
                                 </div>
                             </Link>

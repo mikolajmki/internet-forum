@@ -22,6 +22,7 @@
     
     .menu {
         position: absolute;
+        justify-content: center;
         padding: 2rem;
         right: 0;
         top: 100%;
@@ -41,6 +42,8 @@
         align-items: center;
         flex-direction: column;
         justify-content: center;
+        padding: 0;
+        padding-right: 0 !important;
     }
 
     .menuButton {
@@ -53,6 +56,25 @@
     .container {
         overflow-x: clip;
     }
+
+    .list > :last-child {
+        display: none;
+    }
+
+    .spacer {
+        margin: 0;
+        display: none;
+    }
+
+    .profileButton {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    li > span {
+        color: var(--secondary);
+    }
 }
 
 .list {
@@ -60,8 +82,27 @@
     list-style: none;
     gap: 2rem;
     flex-wrap: wrap;
-    padding: 0;
     margin: 0;
+    padding-right: 2rem;
+    align-items: center;
+}
+
+.profileButton {
+    display: flex;
+    line-height: 2rem;
+    gap: 0.5rem;
+    cursor: pointer;
+    text-decoration: none !important;
+    color: white;
+}
+
+.link {
+    text-decoration: none !important;
+}
+
+.profilePic {
+    width: 2rem;
+    height: 2rem;
 }
 
 .list > li {
@@ -77,6 +118,10 @@
     color: var(--secondary);
 }
 
+.spacer {
+    margin-left: auto;
+}
+
 .name {
     padding: 2rem;
     color: white;
@@ -87,4 +132,13 @@
 
 .name > span > span {
     color: rgb(55, 150, 209);
+}
+
+.link {
+    color: white;
+    text-decoration: none;
+}
+
+.right {
+    margin-right: 4rem;
 }
