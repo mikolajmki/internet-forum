@@ -9,6 +9,10 @@ import profPic from '../../public/defaultProfile.png'
 
 export const Header = ({ location }) => {
 
+    window.onresize = () => {
+        setMenuOpened(false);
+    }
+
     const [menuOpened, setMenuOpened] = useState(false);
     const dispatch = useDispatch();
 
@@ -29,6 +33,21 @@ export const Header = ({ location }) => {
         }
     }
 
+    const loggedUserRender = () => {
+        return localStorage.getItem("profile") == null ? (
+            <div style={{ cursor: 'pointer' }} onClick={handleLogIn}>
+                <li>Zaloguj sie</li>
+            </div> 
+        ) : (
+            <Link className={css.link} to={`/profile/${user.userId}`}>
+                <div className={css.profileButton}>
+                    <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
+                    { menuOpened ? <li>Zalogowano jako <span>{ user.username }</span></li> : <li>{ user.username }</li>}
+                </div>
+            </Link> 
+        )
+    }
+
     return (
         <div className={css.container}>
 
@@ -42,39 +61,19 @@ export const Header = ({ location }) => {
             <div className={css.menu} style={ menuHandler(menuOpened) }>
                 <ul className={css.list}>
 
-                    { menuOpened ?
-                            localStorage.getItem("profile") == null ? 
-                            <div style={{ cursor: 'pointer' }} onClick={handleLogIn}>
-                                <li>Zaloguj sie</li>
-                            </div> :
-                            <Link to={`/profile/${user.userId}`}>
-                                <div className={css.profileButton}>
-                                    <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
-                                    <li>Zalogowano jako <span>{ user.username }</span></li>
-                                </div>
-                            </Link> : '' }
+                    { menuOpened ? loggedUserRender() : '' }
 
                     { categories.map((category, i) => {
                             return location === "home" ?  (
                                 <li key={i}><a href={"#" + category.name}>{category.name}</a></li>
                             ) : (
                                 <Link className={css.link} to={`/#${category.name}`}><li key={i}><a>{category.name}</a></li></Link>
-                            )
-                    }) }
+                                )
+                    })}
 
                     <div className={css.spacer}></div>
 
-                    { localStorage.getItem("profile") == null ? 
-                            <div style={{ cursor: 'pointer' }} onClick={handleLogIn}>
-                                <li>Zaloguj sie</li>
-                            </div> 
-                            :
-                            <Link className={css.link} to={`/profile/${user.userId}`}>
-                                <div className={css.profileButton}>
-                                    <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
-                                    <li>{ user.username }</li>
-                                </div>
-                            </Link> }
+                    { loggedUserRender() }
 
                 </ul>
             </div>
