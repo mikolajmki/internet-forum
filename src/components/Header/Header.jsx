@@ -10,13 +10,15 @@ import profPic from '../../public/defaultProfile.png'
 export const Header = ({ location }) => {
 
     const [menuOpened, setMenuOpened] = useState(false);
-
     const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.authReducer.authData);
-    const serverPublic = '../../public/'
+
+    const user = useSelector((state) => state.authReducer.authData.user)
+
+    const serverPublic = '../../public/';
 
     const handleLogIn = () => {
         dispatch(logIn());
+        console.log()
     }
 
     console.log(serverPublic)
