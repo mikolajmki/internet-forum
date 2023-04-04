@@ -43,6 +43,10 @@ export const Header = ({ location }) => {
                 <ul className={css.list}>
 
                     { menuOpened ?
+                            localStorage.getItem("profile") == null ? 
+                            <div style={{ cursor: 'pointer' }} onClick={handleLogIn}>
+                                <li>Zaloguj sie</li>
+                            </div> :
                             <Link to={`/profile/${user.userId}`}>
                                 <div className={css.profileButton}>
                                     <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
