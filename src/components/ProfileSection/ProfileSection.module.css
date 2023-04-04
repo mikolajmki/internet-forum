@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5rem;
+    padding: 2rem;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.profile {
+    display: flex;
+    padding: 1rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 90%;
+    min-height: 10rem;
+    background: var(--bgsection);
+    color: white;
+    border-radius: 0.2rem;
+    border: 0.1rem solid var(--border);
+}
