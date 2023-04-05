@@ -34,16 +34,16 @@ export const Header = ({ location }) => {
     }
 
     const loggedUserRender = () => {
-        return localStorage.getItem("profile") == null ? (
-            <div style={{ cursor: 'pointer' }} onClick={handleLogIn}>
-                <li>Zaloguj sie</li>
-            </div> 
+        return user == null ? (
+            <li style={{ cursor: 'pointer' }} onClick={handleLogIn}>
+                <span>Zaloguj sie</span>
+            </li> 
         ) : (
             <Link className={css.link} to={`/profile/${user.userId}`}>
-                <div className={css.profileButton}>
+                <li className={css.profileButton}>
                     <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
-                    { menuOpened ? <li>Zalogowano jako <span>{ user.username }</span></li> : <li>{ user.username }</li>}
-                </div>
+                    { menuOpened ? <span>Zalogowano jako <span>{ user.username }</span></span> : <span>{ user.username }</span>}
+                </li>
             </Link> 
         )
     }
@@ -65,7 +65,7 @@ export const Header = ({ location }) => {
 
                     { categories.map((category, i) => {
                             return location === "home" ?  (
-                                <li key={i}><a href={"#" + category.name}>{category.name}</a></li>
+                                <li key={i}><a href={category.name}>{category.name}</a></li>
                             ) : (
                                 <Link className={css.link} to={`/#${category.name}`}><li key={i}><a>{category.name}</a></li></Link>
                                 )

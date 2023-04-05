@@ -4,9 +4,16 @@
   --border: rgb(126, 126, 126);
   --bg: #323232;
   --bgsection: #292929;
+  --buttonRed: rgb(188, 46, 46);
+  --buttonRedBorder: rgb(125, 52, 52);
+  --boxShadow: 1px 2px 11px 2px rgb(31, 31, 31);;
 }
 
-html, body {
+html {
+  overflow-x: clip;
+}
+
+body {
   width: 100%;
   margin: 0;
   /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -17,7 +24,8 @@ html, body {
   background: #323232;
   color: white;
   font-family: "eudoxus sans", sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
+  scroll-behavior: smooth;
 }
 
 code {

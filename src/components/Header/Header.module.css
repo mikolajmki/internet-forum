@@ -57,7 +57,7 @@
         overflow-x: clip;
     }
 
-    .list > :last-child {
+    .list > :nth-child(6) {
         display: none;
     }
 
@@ -72,9 +72,15 @@
         align-items: center;
     }
 
-    li > span {
+    span > span {
         color: var(--secondary);
     }
+}
+
+.btnWrapper {
+    width: 90%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .list {

@@ -21,7 +21,7 @@ export const Section = ({ category }) => {
                 <div className={css.subs}>
                     { subcategories[category.id].map((sub, i) => {
                         return (
-                        <div id={category.name} className={css.subcategory} key={i}>
+                        <div className={css.subcategory} key={i}>
                             <div>
                                 <UilCommentAltMessage/>
                             </div>

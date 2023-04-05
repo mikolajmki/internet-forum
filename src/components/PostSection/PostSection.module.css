@@ -60,12 +60,6 @@
     font-style: italic;
 }
 
-.btnWrapper {
-    width: 90%;
-    display: flex;
-    justify-content: flex-end;
-}
-
 .btn {
     width: 12rem;
 }

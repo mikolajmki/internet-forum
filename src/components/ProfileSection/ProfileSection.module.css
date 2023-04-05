@@ -16,8 +16,71 @@
     flex-wrap: wrap;
     width: 90%;
     min-height: 10rem;
+    background: var(--border);
+    color: white;
+    border-radius: 0.2rem;
+    border: 0.1rem solid var(--border);
+}
+
+.profile > span {
+    padding: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.cover {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0 1rem;
+    width: 90%;
+    min-height: 14rem;
     background: var(--bgsection);
     color: white;
     border-radius: 0.2rem;
     border: 0.1rem solid var(--border);
+}
+
+.btnWrapper {
+    width: 90%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn {
+    background-color: var(--buttonRed);
+    box-shadow: 0px 3px 0 0px var(--buttonRedBorder);
+}
+
+.username {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: 12rem;
+    bottom: 5.5rem;
+}
+
+.username > :first-child {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--secondary);
+}
+
+.bottomBar {
+    position: absolute;
+    width: 100%;
+    height: 5rem;
+    background: var(--border);
+    bottom: 0;
+}
+
+.profilePic {
+    background: var(--border);
+    width: 8rem;
+    height: 8rem;
+    border-radius: 100px;
+    position: absolute;
+    left: 2rem;
+    bottom: 2rem;
 }

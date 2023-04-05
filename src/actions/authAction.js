@@ -5,9 +5,10 @@ export const logIn = () => async (dispatch) => {
             data:  {
                 user: {
                     userId: 1,
-                    username: 'mikolajmki', 
+                    username: 'mikolajmki',
                     firstname: 'Mikolaj', 
-                    lastname: 'Marcinkowski'
+                    lastname: 'Marcinkowski',
+                    rank: 'Uzytkownik'
                 },
                 token: 'asdhasd981q79283711239a',
                 tokenExpiration: 1
@@ -19,4 +20,8 @@ export const logIn = () => async (dispatch) => {
         console.log(err);
         dispatch({ type: "AUTH_FAIL" });
     }
+}
+
+export const logOut = () => async (dispatch) => {
+    dispatch({ type: "LOGOUT_START" });
 }
