@@ -9,6 +9,7 @@
 
 .post {
     display: flex;
+    position: relative;
     padding: 1rem;
     flex-direction: row;
     flex-wrap: wrap;
@@ -19,6 +20,22 @@
     border-radius: 0.2rem;
     border: 0.1rem solid var(--border);
 }
+
+.reaction {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+ .reactionCircle {
+    background: var(--border);
+    padding: 1rem;
+    border-radius: 200px;
+    cursor: pointer;
+    right: 1.5rem;
+ }
 
 .profileInfo {
     flex: 1;
@@ -46,7 +63,14 @@
     border-radius: 100px;
 }
 
+.btnWrapper {
+    width: 90%;
+    display: flex;
+    justify-content: flex-end;
+}
+
 .content {
+    position: relative;
     flex: 5;
     padding: 0 1rem;
     display: flex;

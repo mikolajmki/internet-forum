@@ -8,11 +8,19 @@ import { useParams } from "react-router-dom";
 export const PostSection = () => {
 
     const [modal, setModal] = useState(false);
+    const [likes, setLikes] = useState({});
     const params = useParams();
+
     const thread = threads[params.subId].filter((thread) => {
         return thread.id == params.threadId;
     })[0]
+
     console.log(thread)
+
+    const handleLike = (postId, like) => {
+        setLikes({ ...likes, postId: like })
+    }
+
     return (
         <div className={css.container}>
             <ThreadModal modal={modal} setModal={setModal} title={"Dodaj odpowiedz:"}/>
@@ -38,6 +46,11 @@ export const PostSection = () => {
                     <span>{thread.date}</span>
                     <span>{thread.description}</span>
                 </div>
+                {/* <div className={css.reaction}>
+                        <span className={css.reactionCircle}></span>
+                        <span className={css.reactionCircle}>0</span>
+                        <span className={css.reactionCircle}></span>
+                </div> */}
             </div>
             
             { thread.posts.map((thread, i) => {
@@ -55,6 +68,11 @@ export const PostSection = () => {
                 <div className={css.content}>
                     <span>{thread.date}</span>
                     <span>{thread.content}</span>
+                </div>
+                <div className={css.reaction}>
+                        <span className={css.reactionCircle} onClick={() => {handleLike(thread.id, 1)}}></span>
+                        <span className={css.reactionCircle}>{ likes.postId }</span>
+                        <span className={css.reactionCircle} onClick={() => {handleLike(thread.id, 0)}}></span>
                 </div>
                 </div>)
             }) }
