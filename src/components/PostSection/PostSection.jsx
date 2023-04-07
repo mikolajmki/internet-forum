@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import css from './PostSection.module.css';
 import { UilPlusCircle } from '@iconscout/react-unicons';
 import { ThreadModal } from "../ThreadModal/ThreadModal";
@@ -15,11 +15,14 @@ export const PostSection = () => {
         return thread.id == params.threadId;
     })[0]
 
-    console.log(thread)
+    useEffect(() => {
+    }, [])
 
     const handleLike = (postId, like) => {
-        setLikes({ ...likes, postId: like })
+        setLikes({ ...likes, [postId]: like })
     }
+
+    console.log(likes)
 
     return (
         <div className={css.container}>
@@ -53,7 +56,7 @@ export const PostSection = () => {
                 </div> */}
             </div>
             
-            { thread.posts.map((thread, i) => {
+            { thread.posts.map((post, i) => {
                 return (
                 <div key={i} className={css.post}>
                 <div className={css.profileInfo}>
@@ -66,13 +69,13 @@ export const PostSection = () => {
                     <span>Dolaczyl 22.03.2023r.</span>
                 </div>
                 <div className={css.content}>
-                    <span>{thread.date}</span>
-                    <span>{thread.content}</span>
+                    <span>{post.date}</span>
+                    <span>{post.content}</span>
                 </div>
                 <div className={css.reaction}>
-                        <span className={css.reactionCircle} onClick={() => {handleLike(thread.id, 1)}}></span>
-                        <span className={css.reactionCircle}>{ likes.postId }</span>
-                        <span className={css.reactionCircle} onClick={() => {handleLike(thread.id, 0)}}></span>
+                        <span className={css.reactionCircle} onClick={() => {handleLike(post.id, post.likes + 1)}}><div>+</div></span>
+                        <span className={css.reactionCircle}>{ likes[post.id] ? likes[post.id] : post.likes }</span>
+                        <span className={css.reactionCircle} onClick={() => {handleLike(post.id, post.likes - 1)}}><div>-</div></span>
                 </div>
                 </div>)
             }) }

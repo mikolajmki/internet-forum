@@ -11,19 +11,22 @@ export const threads = {
                 "id": 54321,
                 "author": "bmwlover",
                 "date": "2022-03-15 11:15:00",
-                "content": "I think the M3 is the best BMW model for racing because of its powerful engine and precise handling."
+                "content": "I think the M3 is the best BMW model for racing because of its powerful engine and precise handling.",
+                "likes": 12
             },
             {
                 "id": 67890,
                 "author": "speeddemon",
                 "date": "2022-03-15 11:45:00",
-                "content": "I agree with bmwlover, the M3 is a great choice for racing. But if you're on a budget, the 3 Series is also a good option."
+                "content": "I agree with bmwlover, the M3 is a great choice for racing. But if you're on a budget, the 3 Series is also a good option.",
+                "likes": 2
             },
             {
                 "id": 24680,
                 "author": "racer86",
                 "date": "2022-03-15 12:30:00",
-                "content": "Thanks for the suggestions, guys. I'm definitely considering the M3, but I'll also look into the 3 Series."
+                "content": "Thanks for the suggestions, guys. I'm definitely considering the M3, but I'll also look into the 3 Series.",
+                "likes": 0
             }
             ]
         },
@@ -38,19 +41,22 @@ export const threads = {
                 "id": 54322,
                 "author": "bmwlover",
                 "date": "2022-03-15 11:15:00",
-                "content": "I think the M3 is the best BMW model for racing because of its powerful engine and precise handling."
+                "content": "I think the M3 is the best BMW model for racing because of its powerful engine and precise handling.",
+                "likes": 12
             },
             {
                 "id": 67891,
                 "author": "speeddemon",
                 "date": "2022-03-15 11:45:00",
-                "content": "I agree with bmwlover, the M3 is a great choice for racing. But if you're on a budget, the 3 Series is also a good option."
+                "content": "I agree with bmwlover, the M3 is a great choice for racing. But if you're on a budget, the 3 Series is also a good option.",
+                "likes": 12
             },
             {
                 "id": 24681,
                 "author": "racer86",
                 "date": "2022-03-15 12:30:00",
-                "content": "Thanks for the suggestions, guys. I'm definitely considering the M3, but I'll also look into the 3 Series."
+                "content": "Thanks for the suggestions, guys. I'm definitely considering the M3, but I'll also look into the 3 Series.",
+                "likes": 12
             }
             ]
         },

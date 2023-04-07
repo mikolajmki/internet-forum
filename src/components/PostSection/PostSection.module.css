@@ -26,15 +26,31 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
+}
+
+.reaction > :nth-child(2) {
+    cursor: default;
+    border-radius: 0.2rem;
 }
 
  .reactionCircle {
     background: var(--border);
-    padding: 1rem;
+    padding: 0.8rem;
     border-radius: 200px;
     cursor: pointer;
     right: 1.5rem;
+
+ }
+
+ .reactionCircle > div {
+    width: 1rem;
+    height: 1rem;
+    font-size: 1.2rem;
+    list-style: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
  }
 
 .profileInfo {
@@ -92,5 +108,14 @@
 
     .profileInfo > :nth-child(5) {
         padding: 1rem;
+    }
+
+    .sampleImg {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .reaction > * {
+            padding: 0.5rem;
     }
 }
