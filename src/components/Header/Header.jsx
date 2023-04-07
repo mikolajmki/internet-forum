@@ -13,13 +13,23 @@ import { NotificationIcon } from "../NotificationIcon/NotificationIcon";
 
 export const Header = ({ location }) => {
 
-    window.onresize = () => {
-        setMenuOpened(false);
-        setModalOpened({});
-    }
+    var doit;
 
     const [menuOpened, setMenuOpened] = useState(false);
     const [modalOpened, setModalOpened] = useState({ notifications: false, messages: false });
+
+        window.onresize = () => {
+        clearTimeout(doit);
+        doit = setTimeout(() => {
+            if (menuOpened) {
+                setMenuOpened(false);
+            }
+            if (modalOpened != {}) {
+                setModalOpened({});
+            }
+        }, 100)
+    }
+
 
     const dispatch = useDispatch();
 
@@ -35,7 +45,7 @@ export const Header = ({ location }) => {
     console.log(serverPublic)
 
     const menuHandler = (menuOpened) => {
-        if (document.documentElement.clientWidth <= 820) {
+        if (document.documentElement.clientWidth <= 830) {
             return menuOpened ? { display: "flex" } : {  }
         }
     }
