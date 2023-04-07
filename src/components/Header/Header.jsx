@@ -5,7 +5,9 @@ import { categories } from "../../data/categories";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logIn } from "../../actions/authAction";
-import profPic from '../../public/defaultProfile.png'
+import profPic from '../../public/defaultProfile.png';
+import { UilBell } from '@iconscout/react-unicons';
+import { UilEnvelope } from '@iconscout/react-unicons';
 
 export const Header = ({ location }) => {
 
@@ -28,7 +30,7 @@ export const Header = ({ location }) => {
     console.log(serverPublic)
 
     const menuHandler = (menuOpened) => {
-        if (document.documentElement.clientWidth <= 768) {
+        if (document.documentElement.clientWidth <= 820) {
             return menuOpened ? { display: "flex" } : {  }
         }
     }
@@ -39,12 +41,25 @@ export const Header = ({ location }) => {
                 <span>Zaloguj sie</span>
             </li> 
         ) : (
-            <Link className={css.link} to={`/profile/${user.userId}`}>
-                <li className={css.profileButton}>
-                    <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
-                    { menuOpened ? <span>Zalogowano jako <span>{ user.username }</span></span> : <span>{ user.username }</span>}
-                </li>
-            </Link> 
+            <li className={css.profileButton}>
+                <div className={css.menuIcons}>
+                    { user != null ? 
+                    <>
+                        <div className={css.icon}><UilBell/></div>
+                        <div className={css.icon}><UilEnvelope/></div>
+                    </> : ''}
+                    <Link className={css.link} to={`/profile/${user.userId}`}>
+                        <div className={css.profileButton}>
+                            <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
+                            { menuOpened ? '' : <span>{user.username}</span> }
+                        </div>
+                    </Link> 
+                </div>
+                { menuOpened ? 
+                <span>Zalogowano jako <span>{ user.username }</span></span>
+                : 
+                ''}
+            </li>
         )
     }
 
@@ -71,7 +86,7 @@ export const Header = ({ location }) => {
                                 )
                     })}
 
-                    <div className={css.spacer}></div>
+                    <li className={css.spacer}></li>
 
                     { loggedUserRender() }
 

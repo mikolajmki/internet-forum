@@ -15,12 +15,12 @@ export const ThreadModal = ({ modal, setModal, title }) => {
                     { title === 'Dodaj watek:' ? 
                     <>
                     <div>Tytul:</div>
-                    <input />
+                    <input autoFocus />
                     </> : ''}
                     <div>Tresc:</div>
                     <textarea rows={5} className={css.content}/>
                 </form>
-                <div className={css.exit}  onClick={() => setModal((prev) => !prev)}></div>
+                <div className={css.exit} onClick={() => setModal((prev) => !prev)}></div>
                 <div className={css.btn}>Dodaj</div>
             </div>
         </Modal>
