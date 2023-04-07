@@ -57,7 +57,7 @@
         overflow-x: clip;
     }
 
-    .list > :last-child {
+    .list > :last-child, .list > :nth-child(7) {
         display: none;
     }
 
@@ -163,6 +163,11 @@
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    cursor: default!important;
+}
+
+.right {
+    margin-right: 4rem;
 }
 
 .icon {
@@ -170,13 +175,5 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-}
-
-.icon > svg {
-    width: 2rem;
-    height: 2rem;
-}
-
-.right {
-    margin-right: 4rem;
+    position: relative;
 }

@@ -8,14 +8,19 @@ import { logIn } from "../../actions/authAction";
 import profPic from '../../public/defaultProfile.png';
 import { UilBell } from '@iconscout/react-unicons';
 import { UilEnvelope } from '@iconscout/react-unicons';
+import { UilCommentAltMessage } from '@iconscout/react-unicons'
+import { NotificationIcon } from "../NotificationIcon/NotificationIcon";
 
 export const Header = ({ location }) => {
 
     window.onresize = () => {
         setMenuOpened(false);
+        setModalOpened({});
     }
 
     const [menuOpened, setMenuOpened] = useState(false);
+    const [modalOpened, setModalOpened] = useState({ notifications: false, messages: false });
+
     const dispatch = useDispatch();
 
     const user = useSelector((state) => state.authReducer.authData.user)
@@ -41,25 +46,37 @@ export const Header = ({ location }) => {
                 <span>Zaloguj sie</span>
             </li> 
         ) : (
-            <li className={css.profileButton}>
-                <div className={css.menuIcons}>
+
+            <>
+            <li className={css.menuIcons}>
                     { user != null ? 
                     <>
-                        <div className={css.icon}><UilBell/></div>
-                        <div className={css.icon}><UilEnvelope/></div>
+                        <NotificationIcon modalOpened={modalOpened} setModalOpened={setModalOpened} type={0}/>
+                        <NotificationIcon modalOpened={modalOpened} setModalOpened={setModalOpened} type={1}/>
+                        { menuOpened ? 
+                        <div className={css.icon}>
+                            <Link className={css.link} to={`/profile/${user.userId}`}>
+                                <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
+                            </Link>
+                        </div> : ''}
                     </> : ''}
+            </li>
+            <li className={css.profileButton}>
                     <Link className={css.link} to={`/profile/${user.userId}`}>
                         <div className={css.profileButton}>
+                            { menuOpened ? '' : 
+                            <>
                             <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
-                            { menuOpened ? '' : <span>{user.username}</span> }
+                            <span>{user.username}</span>
+                            </>}
                         </div>
                     </Link> 
-                </div>
                 { menuOpened ? 
                 <span>Zalogowano jako <span>{ user.username }</span></span>
                 : 
                 ''}
             </li>
+            </>
         )
     }
 
@@ -82,13 +99,13 @@ export const Header = ({ location }) => {
                             return location === "home" ?  (
                                 <li key={i}><a href={category.name}>{category.name}</a></li>
                             ) : (
-                                <Link className={css.link} to={`/#${category.name}`}><li key={i}><a>{category.name}</a></li></Link>
+                                <li key={i}><Link className={css.link} to={`/#${category.name}`}><a>{category.name}</a></Link></li>
                                 )
                     })}
 
                     <li className={css.spacer}></li>
 
-                    { loggedUserRender() }
+                    { menuOpened ? '' : loggedUserRender() }
 
                 </ul>
             </div>
