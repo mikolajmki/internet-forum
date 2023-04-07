@@ -27,7 +27,7 @@ export const Header = ({ location }) => {
             if (modalOpened != {}) {
                 setModalOpened({});
             }
-        }, 100)
+        }, 200)
     }
 
 
@@ -58,34 +58,36 @@ export const Header = ({ location }) => {
         ) : (
 
             <>
-            <li className={css.menuIcons}>
-                    { user != null ? 
+            { user != null ? 
+            <li>
+                <div className={css.menuIcons}>
+                    <NotificationIcon modalOpened={modalOpened} setModalOpened={setModalOpened} type={0}/>
+                    <NotificationIcon modalOpened={modalOpened} setModalOpened={setModalOpened} type={1}/>
+                    { menuOpened ? 
                     <>
-                        <NotificationIcon modalOpened={modalOpened} setModalOpened={setModalOpened} type={0}/>
-                        <NotificationIcon modalOpened={modalOpened} setModalOpened={setModalOpened} type={1}/>
-                        { menuOpened ? 
-                        <div className={css.icon}>
-                            <Link className={css.link} to={`/profile/${user.userId}`}>
-                                <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
-                            </Link>
-                        </div> : ''}
-                    </> : ''}
-            </li>
-            <li className={css.profileButton}>
-                    <Link className={css.link} to={`/profile/${user.userId}`}>
-                        <div className={css.profileButton}>
-                            { menuOpened ? '' : 
-                            <>
+                    <div className={css.icon}>
+                        <Link className={css.link} to={`/profile/${user.userId}`}>
                             <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
-                            <span>{user.username}</span>
-                            </>}
-                        </div>
-                    </Link> 
+                        </Link>
+                    </div>
+
+                    </> : ''}
+                </div>
                 { menuOpened ? 
-                <span>Zalogowano jako <span>{ user.username }</span></span>
-                : 
-                ''}
-            </li>
+                <div className={css.loggedAs}>
+                    <span>Zalogowano jako <span>{ user.username }</span></span>
+                </div> : ''}
+            </li> : ''}
+
+            { menuOpened ? '' : 
+            <li className={css.profileButton}>
+                <Link className={css.link} to={`/profile/${user.userId}`}>
+                    <div className={css.profileButton}>
+                        <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
+                        <span>{user.username}</span>
+                    </div>
+                </Link> 
+            </li>}
             </>
         )
     }
