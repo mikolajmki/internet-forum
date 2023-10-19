@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import css from './SubcategorySection.module.css';
+import css from './ForumSection.module.css';
 import { ThreadSection } from "../ThreadSection/ThreadSection";
 import { useParams, useSearchParams } from "react-router-dom";
 import { UilPlusCircle } from '@iconscout/react-unicons';
 import { ThreadModal } from "../ThreadModal/ThreadModal";
 
-export const SubcategorySection = () => {
+export const ForumSection = () => {
 
     const [modal, setModal] = useState(false);
 

@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Home } from './pages/Home/Home';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { Subcategory } from './pages/Subcategory/Subcategory';
+import { Forum } from './pages/Forum/Forum';
 import { Thread } from './pages/Thread/Thread';
 import { Profile } from './pages/Profile/Profile';
 import { useSelector } from 'react-redux';
@@ -17,7 +17,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/:catId/:subId" element={<Subcategory/>} />
+            <Route path="/:catId/:subId" element={<Forum/>} />
             <Route path="/:catId/:subId/:threadId" element={<Thread/>}/>
             <Route path="/profile/:userId" element={user ? <Profile/> : <Navigate to={'/'}/>}/>
           </Routes>

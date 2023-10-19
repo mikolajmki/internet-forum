@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import css from './Section.module.css';
+import css from './CategorySection.module.css';
 import { subcategories } from "../../data/subcategories";
 import { UilArrowDown } from '@iconscout/react-unicons';
 import { Link } from "react-router-dom";
 import { UilCommentAltMessage } from '@iconscout/react-unicons'
 
-export const Section = ({ category }) => {
+export const CategorySection = ({ category }) => {
     const [opened, setOpened] = useState(true);
     useEffect(() => {
         console.log(opened);

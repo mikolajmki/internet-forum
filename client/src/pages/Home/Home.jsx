@@ -1,8 +1,8 @@
 import React from "react";
 import { Header } from "../../components/Header/Header";
-import { Section } from "../../components/Section/Section";
+import { Section } from "../../components/CategorySection/CategorySection";
 import css from './Home.module.css';
-import { MainSection } from "../../components/MainSection/MainSection";
+import { HomeSection } from "../../components/HomeSection/HomeSection";
 import { SideSection } from "../../components/SideSection/SideSection";
 
 export const Home = () => {
@@ -10,7 +10,7 @@ export const Home = () => {
         <>
         <Header/>
         <div className={css.container}>
-            <MainSection/>
+            <HomeSection/>
             <SideSection/>
         </div>
         </>

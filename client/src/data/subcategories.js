@@ -2,35 +2,43 @@ export const subcategories = [
     [
         {
             name: "Silnik",
-            description: "Jak zeswapowac na 2.5"
+            // description: "Jak zeswapowac na 2.5"
+            description: "Sample text"
         },
         {
             name: "Skrzynia-biegow",
-            description: "Dwojka zwyciezca plebiscytu na najlepszy bieg w historii"
+            // description: "Dwojka zwyciezca plebiscytu na najlepszy bieg w historii"
+            description: "Sample text"
         },
         {
             name: "Uklad-napedowy",
-            description: "Gdzie ojciec trzyma migomat"
+            // description: "Gdzie ojciec trzyma migomat"
+            description: "Sample text"
         },
         {
             name: "Uklad-zaplonowy",
-            description: "Opoznianie zaplonu"
+            // description: "Opoznianie zaplonu"
+            description: "Sample text"
         },
         {
             name: "Uklad-wydechowy",
-            description: "Co zrobic zeby dobrze strzelalo z puchy"
+            // description: "Co zrobic zeby dobrze strzelalo z puchy"
+            description: "Sample text"
         },
         {
             name: "Hamulce",
-            description: "Poradnik montazu hydrolapy"
+            // description: "Poradnik montazu hydrolapy"
+            description: "Sample text"
         },
         {
             name: "Opony",
-            description: "Guma, czyli na czym najlepiej upalac"
+            // description: "Guma, czyli na czym najlepiej upalac"
+            description: "Sample text"
         },
         {
             name: "Zawieszenie",
-            description: "Jaki najlepszy gwint do e36?"
+            // description: "Jaki najlepszy gwint do e36?"
+            description: "Sample text"
         },
     ], [
         {

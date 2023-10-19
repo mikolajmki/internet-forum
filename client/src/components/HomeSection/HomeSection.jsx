@@ -1,14 +1,14 @@
 import React from "react";
-import { Section } from "../Section/Section";
-import css from './MainSection.module.css';
+import { CategorySection } from "../CategorySection/CategorySection";
+import css from './HomeSection.module.css';
 import { categories } from "../../data/categories";
 
-export const MainSection = () => {
+export const HomeSection = () => {
     return (
         <div className={css.container}>
             { categories.map((category, i) => {
                 return (
-                    <Section category={category} key={i}/>
+                    <CategorySection category={category} key={i}/>
                 )
             }) }
         </div>
