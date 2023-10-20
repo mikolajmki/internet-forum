@@ -1,12 +1,10 @@
-import express from "express";
-import mongoose from "mongoose";
 import Post from "../Models/Post.js";
-import User from "../Models/User.js";
 import Thread from "../Models/Thread.js";
+import Forum from "../Models/Forum.js";
 
 export const createPost = async (req, res) => {
 
-    const threadId = req.params.threadId;
+    const threadId = req.body.threadId;
 
     const post = new Post({
         title: req.body.title,
@@ -16,8 +14,10 @@ export const createPost = async (req, res) => {
 
     try {
         const thread = await Thread.findByIdAndUpdate({ _id: threadId }, { $push: { posts: post._id } });
+        
+        await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $inc: { answers: 1 } });
+
         await post.save();
-        await thread.save();
 
         return res.status(200).json(post);
     } catch (err) {
@@ -25,29 +25,33 @@ export const createPost = async (req, res) => {
     }
 };
 
-// export const updatePost = async (req, res) => {
-//     const postId = req.params.id;
+export const updatePost = async (req, res) => {
+    const postId = req.params.id;
 
-//     try {
-//         // console.log(post.title.toString(), title);
-//         const post = await Post.findByIdAndUpdate(postId);
-//         await post.updateOne({ $set: req.body })
-//         return res.status(200).json({ message: "Post updated!" });
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).json({ message: err });
-//     }
-// };
+    try {
+        // console.log(post.title.toString(), title);
+        await Post.findByIdAndUpdate({ _id: postId }, { $set: req.body });
+        
+        return res.status(200).json({ message: "Post updated!" });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: err });
+    }
+};
 
 export const deletePost = async (req, res) => {
     const postId = req.params.id;
     const threadId = req.params.threadId;
 
     try {
-        await Thread.findOneAndUpdate(
+        const thread = await Thread.findOneAndUpdate(
             { _id: threadId }, 
             { $pull: { _id: postId } }
         );
+
+        await Post.findOneAndDelete({ _id: postId });
+
+        await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $dec: { answers: 1 } });
 
         return res.status(200).json({ message: "Post deleted." });
     } catch (err) {

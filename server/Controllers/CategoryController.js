@@ -1,11 +1,11 @@
-import express from "express";
-import mongoose from "mongoose";
 import Category from "../Models/Category.js";
 import User from "../Models/User.js";
 
-export const getCategories = async (req, res) => {
+export const getCategoriesWithForums = async (req, res) => {
     try {
-        let categories = await Category.find();
+        let categories = await Category
+        .find()
+        .populate("forums");
         
         return res.status(200).json(categories);
     } catch (err) {
@@ -47,12 +47,10 @@ export const updateCategory = async (req, res) => {
 
 export const deleteCategory = async (req, res) => {
     const categoryId = req.params.id;
-    const userId = req.body.userId;
 
-    const user = await User.findById(userId);
     try {
         const category = await category.findById(categoryId);
-        console.log(userId, category.userId, category._id)
+        console.log(category.userId, category._id);
         await category.deleteOne();
         return res.status(200).json({ message: "category deleted." });
     } catch (err) {

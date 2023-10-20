@@ -1,18 +1,16 @@
-import express from "express";
-import mongoose from "mongoose";
 import Thread from "../Models/Thread.js";
-import User from "../Models/User.js";
+import Forum from "../Models/Forum.js";
 
 export const getThreadsByForumId = async (req, res) => {
 
-    const forumId = req.params.forumId;
+    const forumId = req.body.forumId;
 
     try {
         let threads = await Thread
         .findOne({ forumId: forumId })
         .populate("author", ["username", "profilePicture"]);
 
-        const { forumId: id, posts, ...threadDetails } = threads._doc;
+        const { forumId: id, ...threadDetails } = threads._doc;
         return res.status(200).json(threadDetails);
     } catch (err) {
         console.log(err);
@@ -29,8 +27,10 @@ export const getThreadWithPostsById = async (req, res) => {
     try {
         let thread = await Thread
         .findById(threadId)
-        .populate("author", ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture"])
-        .populate("posts");
+        .populate({ path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture"]})
+        .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture"] } });
+
+        await Thread.updateOne({ _id: threadId }, { $inc: { views: 1 } });
 
         return res.status(200).json(thread);
     } catch (err) {
@@ -42,6 +42,9 @@ export const getThreadWithPostsById = async (req, res) => {
 };
 
 export const createThread = async (req, res) => {
+
+    const forumId = req.body.forumId;
+
     const thread = new Thread({
         forumId: req.body.forumId,
         title: req.body.title,
@@ -49,9 +52,12 @@ export const createThread = async (req, res) => {
         author: req.body.authorId,
     });
     try {
+        await Forum.findByIdAndUpdate({ _id: forumId }, { $set: { latestThreadId: thread._id } });
         await thread.save();
+        
         return res.status(200).json(thread);
     } catch (err) {
+        console.log(err);
         return res.status(500).json({ message: err });
     }
 };
@@ -62,9 +68,10 @@ export const updateThread = async (req, res) => {
 
     try {
         // console.log(thread.title.toString(), title);
-        const thread = await Thread.findByIdAndUpdate(threadId);
+        const thread = await Thread.findById(threadId);
         if (userId === thread.authorId) {
-            await thread.updateOne({ $set: req.body })
+            thread.updateOne({ $set: req.body });
+            console.log(thread);
             return res.status(200).json({ message: "Thread updated!" });
         }
         return res.status(403).json({ message: "Action forbidden. "});
@@ -78,7 +85,6 @@ export const deleteThread = async (req, res) => {
     const threadId = req.params.id;
     const userId = req.body.userId;
 
-    const user = await User.findById(userId);
     try {
         const thread = await thread.findById(threadId);
         if (userId === thread.authorId) {
