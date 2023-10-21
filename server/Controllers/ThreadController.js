@@ -3,15 +3,14 @@ import Forum from "../Models/Forum.js";
 
 export const getThreadsByForumId = async (req, res) => {
 
-    const forumId = req.body.forumId;
+    const forumId = req.params.forumId;
 
     try {
         let threads = await Thread
-        .findOne({ forumId: forumId })
+        .find({ forumId: forumId }, { projection: { forumId: 0 } })
         .populate("author", ["username", "profilePicture"]);
-
-        const { forumId: id, ...threadDetails } = threads._doc;
-        return res.status(200).json(threadDetails);
+  
+        return res.status(200).json(threads);
     } catch (err) {
         console.log(err);
         return res.status(500).json({
@@ -27,8 +26,8 @@ export const getThreadWithPostsById = async (req, res) => {
     try {
         let thread = await Thread
         .findById(threadId)
-        .populate({ path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture"]})
-        .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture"] } });
+        .populate({ path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"]})
+        .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
 
         await Thread.updateOne({ _id: threadId }, { $inc: { views: 1 } });
 

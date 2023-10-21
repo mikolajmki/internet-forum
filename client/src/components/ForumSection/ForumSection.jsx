@@ -1,36 +1,35 @@
 import React, { useEffect, useState } from "react";
 import css from './ForumSection.module.css';
-import { ThreadSection } from "../ThreadSection/ThreadSection";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Threads } from "../Threads/Threads.jsx";
 import { UilPlusCircle } from '@iconscout/react-unicons';
 import { ThreadModal } from "../ThreadModal/ThreadModal";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
-export const ForumSection = () => {
+export const ForumSection = ({ threads, loading }) => {
 
     const [modal, setModal] = useState(false);
-
-    useEffect(() => {
-        console.log(modal)
-    }, [modal])
-
     const params = useParams();
+
     return (
         <div className={css.wrapper}>
-            <div className={css.container}>
-                <div className={css.title}>
-                    {params.subId.replace('-', ' ')}
-                </div>
-                <div className={css.section}>
-                    <ThreadSection subId={params.subId}/>
-                </div>
-                <div className={css.btnWrapper}>
-                    <div className="btn" onClick={() => setModal((prev) => !prev)}>
-                        <div className={css.circle}><UilPlusCircle/></div>
-                        Dodaj watek
+            { loading ? <span className="loader"></span> : (                    
+                <div className={css.container}>
+                    <div className={css.title}>
+                        {params.forumId}
                     </div>
+                    <div className={css.section}>
+                        <Threads threads={threads}/>
+                    </div>
+                    <div className={css.btnWrapper}>
+                        <div className="btn" onClick={() => setModal((prev) => !prev)}>
+                            <div className={css.circle}><UilPlusCircle/></div>
+                            Dodaj watek
+                        </div>
+                    </div>
+                    <ThreadModal modal={modal} setModal={setModal} title={"Dodaj watek:"}/>
                 </div>
-                <ThreadModal modal={modal} setModal={setModal} title={"Dodaj watek:"}/>
-            </div>
+            ) }
         </div>
     )
 }

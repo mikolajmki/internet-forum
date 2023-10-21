@@ -3,7 +3,7 @@ import { getThreadsByForumId, getThreadWithPostsById, createThread, updateThread
 
 const router = express.Router();
 
-router.get("/", getThreadsByForumId);
+router.get("/forumId/:forumId", getThreadsByForumId);
 router.get("/:id", getThreadWithPostsById);
 router.post("/", createThread);
 router.put("/:id/:userId", updateThread);

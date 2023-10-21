@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import css from './Header.module.css';
 import { UilBars } from '@iconscout/react-unicons';
-import { categories } from "../../data/categories";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logIn } from "../../actions/authAction";
@@ -12,6 +11,8 @@ import { UilCommentAltMessage } from '@iconscout/react-unicons'
 import { NotificationIcon } from "../NotificationIcon/NotificationIcon";
 
 export const Header = ({ location }) => {
+
+    const { categoriesWithForums } = useSelector((state) => state.forumReducer);
 
     var doit;
 
@@ -107,11 +108,12 @@ export const Header = ({ location }) => {
 
                     { menuOpened ? loggedUserRender() : '' }
 
-                    { categories.map((category, i) => {
+                    { categoriesWithForums.map((category, i) => {
+                        console.log(category)
                             return location === "home" ?  (
-                                <li key={i}><a href={category.name}>{category.name}</a></li>
+                                <li key={i}><a href={category.title}>{category.title}</a></li>
                             ) : (
-                                <li key={i}><Link className={css.link} to={`/#${category.name}`}><a>{category.name}</a></Link></li>
+                                <li key={i}><Link className={css.link} to={`/#${category.title}`}><a>{category.title}</a></Link></li>
                                 )
                     })}
 

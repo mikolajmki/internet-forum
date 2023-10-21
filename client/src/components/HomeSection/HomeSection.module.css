@@ -6,3 +6,81 @@
     flex: 5;
     padding: 2rem;
 }
+
+.forum {
+    width: 70%;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+    }
+}
+
+.subs {
+    border: 0.1rem solid var(--border);
+    box-sizing: border-box;
+    background: #292929;
+    border-radius: 0.2rem;
+    box-shadow: 1px 2px 11px 2px rgb(31, 31, 31);
+    margin-bottom: 5rem;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+    border: 0.1rem solid var(--border);
+    box-sizing: border-box;
+    background: #292929;
+    border-radius: 0.2rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    scroll-margin-top: 7rem;
+}
+
+.arrow {
+    cursor: pointer;
+    transition: ease-in-out 300ms;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrow > svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+.subs > :last-child {
+    border-bottom: 0;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0.5rem 1rem 0;
+    cursor: pointer;
+}
+
+.subcategory {
+    display: flex;
+    border-bottom:  0.1rem solid var(--border);
+}
+
+.subcategory > :nth-child(1) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.info:hover {
+    transition: ease-in-out 200ms;
+    transform: translateX(1%)
+}
+
+.name {
+    font-weight: bold;
+}

@@ -3,7 +3,7 @@ import css from './ProfileSection.module.css';
 import { useDispatch, useSelector } from "react-redux";
 import { UilPlusCircle } from '@iconscout/react-unicons'
 import { logOut } from "../../actions/authAction";
-import { ThreadSection } from "../ThreadSection/ThreadSection";
+import { Threads } from "../Threads/Threads.jsx";
 
 export const ProfileSection = () => {
 
@@ -38,7 +38,7 @@ export const ProfileSection = () => {
                 </div>
             <div className={css.profile}>
                 <span>Watki uzytkownika:</span>
-                <ThreadSection location='profile' subId='Silnik'/>
+                <Threads location='profile' subId='Silnik'/>
             </div>
         </div>
     )

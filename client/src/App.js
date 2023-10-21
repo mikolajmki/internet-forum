@@ -17,8 +17,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/:catId/:subId" element={<Forum/>} />
-            <Route path="/:catId/:subId/:threadId" element={<Thread/>}/>
+            <Route path="/:catId/:forumId" element={<Forum/>} />
+            <Route path="/:catId/:forumId/:threadId" element={<Thread/>}/>
             <Route path="/profile/:userId" element={user ? <Profile/> : <Navigate to={'/'}/>}/>
           </Routes>
         </BrowserRouter>
