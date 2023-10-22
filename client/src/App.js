@@ -6,6 +6,7 @@ import { Forum } from './pages/Forum/Forum';
 import { Thread } from './pages/Thread/Thread';
 import { Profile } from './pages/Profile/Profile';
 import { useSelector } from 'react-redux';
+import { Auth } from './pages/Auth/Auth';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
             <Route path="/:catId/:forumId" element={<Forum/>} />
             <Route path="/:catId/:forumId/:threadId" element={<Thread/>}/>
             <Route path="/profile/:userId" element={user ? <Profile/> : <Navigate to={'/'}/>}/>
+            <Route path="/auth" element={<Auth/>}/>
           </Routes>
         </BrowserRouter>
       </div>

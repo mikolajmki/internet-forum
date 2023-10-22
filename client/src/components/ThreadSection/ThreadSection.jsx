@@ -15,11 +15,13 @@ export const ThreadSection = ({ thread }) => {
         setLikes({ ...likes, [postId]: like })
     }
 
+    const { user } = useSelector((state) => state.authReducer.authData);
+
     console.log(likes)
 
     return (
         <div className={css.container}>
-            <ThreadModal modal={modal} setModal={setModal} title={"Dodaj odpowiedz:"}/>
+            <ThreadModal modal={modal} setModal={setModal} userId={user.id} threadId={thread._id} type={"post"}/>
 
             <div className={css.btnWrapper}>
                 <div className={`btn ${css.btn}`} onClick={() => setModal((prev) => !prev)}>

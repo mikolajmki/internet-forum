@@ -4,7 +4,7 @@ export const logIn = () => async (dispatch) => {
         const { data } = {
             data:  {
                 user: {
-                    userId: 1,
+                    id: "6531b00064798c0e0fa67881",
                     username: 'mikolajmki',
                     firstname: 'Mikolaj', 
                     lastname: 'Marcinkowski',

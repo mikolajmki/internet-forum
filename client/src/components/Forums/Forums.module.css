@@ -11,7 +11,7 @@
 .subs {
     border: 0.1rem solid var(--border);
     box-sizing: border-box;
-    background: #292929;
+    background: var(--section);
     border-radius: 0.2rem;
     box-shadow: 1px 2px 11px 2px rgb(31, 31, 31);
     margin-bottom: 5rem;
@@ -24,7 +24,7 @@
     font-weight: bold;
     border: 0.1rem solid var(--border);
     box-sizing: border-box;
-    background: #292929;
+    background: var(--section);
     border-radius: 0.2rem;
     padding: 1rem;
     margin-bottom: 1rem;

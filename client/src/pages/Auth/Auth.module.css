@@ -1,0 +1,75 @@
+.container {
+    position: absolute;
+    display: flex;
+    align-items: start;
+    flex-direction: row;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.buttons {
+    flex-wrap: wrap;
+    display: flex;
+    margin: 1rem 0;
+    gap: 2rem;
+}
+
+.button {
+    border: none;
+    height: 3rem;
+    flex: 2;
+    width: fit-content;
+}
+
+.name {
+    font-weight: bold;
+    font-size: xx-large;
+    width: 100%;
+    height: 100%;
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.name > div > span > span {
+    color: rgb(55, 150, 209);
+}
+
+h1 {
+    width: 90%;
+    padding: 2rem 0;
+}
+
+.credentials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 30vw;
+    height: 100%;
+    background: rgb(2,0,28);
+    background: linear-gradient(90deg, rgba(2,0,28,1) 0%, rgba(1,27,59,1) 0%, rgba(27,79,106,1) 0%, rgba(14,56,133,1) 100%);
+    padding: 0 2rem;
+}
+
+form {
+    flex: 2;
+    display: flex;
+    justify-content: start;
+    width: 90%;
+    font-weight: 300;
+}
+
+form, .hiddenform > input {
+    border: none;
+}
+
+.brief {
+    padding: 0 2rem;
+    width: 100%;
+    height: 100%;
+    background: rgb(2,0,28);
+    background: linear-gradient(90deg, rgba(2,0,28,1) 0%, rgba(1,27,59,1) 0%, rgba(108,167,205,1) 100%, rgba(20,80,122,1) 100%);
+}

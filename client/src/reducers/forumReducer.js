@@ -21,6 +21,17 @@ const forumReducer = (state = { categoriesWithForums: [], threads: [], thread: n
         case "THREAD_FAIL":
             localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
             return { ...state, loading: false, error: true };
+        case "POST_VOTE_SUCCESS":
+            const updatedPosts = state.thread.posts.map((post) => {
+                if (action.data.postId === post._id) {
+                    return { ...post, upvotes: action.data.upvotes, downvotes: action.data.downvotes };
+                } else {
+                    return { ...post }
+                }
+            })
+            return { ...state, thread: { ...state.thread, posts: updatedPosts },  }
+        case "POST_CREATE_SUCCESS":
+            return { ...state, thread: { ...state.thread, posts: [ ...state.thread.posts, action.data ] } }
         default:
             return state;
     }

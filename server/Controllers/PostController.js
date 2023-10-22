@@ -74,7 +74,7 @@ export const votePost = async (req, res) => {
             }
         }
         const updatedPost = await Post.findById({ _id: postId });
-        return res.status(200).json({ message: "Successfully voted!", voteBalance: updatedPost.upvotes.length - updatedPost.downvotes.length });
+        return res.status(200).json({ message: "Successfully voted!", postId: postId, upvotes: updatedPost.upvotes, downvotes: updatedPost.downvotes });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: err });
@@ -85,6 +85,8 @@ export const createPost = async (req, res) => {
 
     const threadId = req.body.threadId;
 
+    console.log(threadId, req.body.authorId)
+
     const post = new Post({
         title: req.body.title,
         comment: req.body.comment,
@@ -92,15 +94,18 @@ export const createPost = async (req, res) => {
     });
 
     try {
-        const thread = await Thread.findByIdAndUpdate({ _id: threadId }, { $push: { posts: post._id } });
-        
+        const thread = await Thread
+        .findByIdAndUpdate({ _id: threadId }, { $push: { posts: post._id } })
+
+        const resultPost = await post.populate("author");
+        await post.save();
+
+
         await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $inc: { answers: 1 } });
 
         await User.findByIdAndUpdate({ _id: req.body.authorId }, { $inc: { answers: 1 } })
 
-        await post.save();
-
-        return res.status(200).json(post);
+        return res.status(200).json(resultPost);
     } catch (err) {
         return res.status(500).json({ message: err });
     }

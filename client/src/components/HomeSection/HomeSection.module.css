@@ -33,7 +33,7 @@
     font-weight: bold;
     border: 0.1rem solid var(--border);
     box-sizing: border-box;
-    background: #292929;
+    background: var(--section);
     border-radius: 0.2rem;
     padding: 1rem;
     margin-bottom: 1rem;

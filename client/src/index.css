@@ -2,11 +2,22 @@
   --secondary: rgb(55, 150, 209);
   --buttonBorder: rgb(33, 117, 169);
   --border: rgb(126, 126, 126);
-  --bg: #323232;
-  --bgsection: #292929;
+  
+  /* --bg1: #323232; */
+  /* --section: #292929; */
+
+  /* --section: rgb(12,42,64); */
+  /* --bg1: linear-gradient(90deg, rgba(2,0,28,1) 0%, rgba(1,27,59,1) 0%, rgba(108,167,205,1) 100%, rgba(20,80,122,1) 100%); */
+  /* --bg1: linear-gradient(90deg, rgba(29,101,148,1) 0%, rgba(24,56,80,1) 100%); */
+  /* --bg2: linear-gradient(90deg, rgba(42,74,94,1) 0%, rgba(12,42,64,1) 100%); */
+  
+  
+  --bg1: linear-gradient(90deg, rgba(13,53,79,1) 0%, rgba(43,80,108,1) 100%);
+  --section: rgb(6, 37, 60);
+
   --buttonRed: rgb(188, 46, 46);
   --buttonRedBorder: rgb(125, 52, 52);
-  --boxShadow: 1px 2px 11px 2px rgb(31, 31, 31);;
+  --boxShadow: 1px 2px 11px 2px rgb(31, 31, 31);
 }
 
 html {
@@ -21,7 +32,7 @@ body {
     sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #323232;
+  background: var(--bg1);
   color: white;
   font-family: "eudoxus sans", sans-serif;
   overflow-x: clip;
