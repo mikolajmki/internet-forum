@@ -1,21 +1,31 @@
 .title {
-    padding-top: 2rem;
-    font-size: 2.5rem;
-    font-weight: bolder;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+    border: 0.1rem solid var(--border);
+    box-sizing: border-box;
+    background: var(--section);
+    border-radius: 0.2rem;
+    padding: 1rem;
+    margin-bottom: 3rem;
+    background: var(--bg2);
+    scroll-margin-top: 7rem;
 }
 
 .wrapper {
-    width: 70%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     flex-direction: column;
+    padding: 2rem;
 }
 
 .container {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 90%;
     gap: 1rem;
 }
 

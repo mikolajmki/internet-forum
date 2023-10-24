@@ -3,12 +3,11 @@
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    flex: 5;
     padding: 2rem;
 }
 
 .forum {
-    width: 70%;
+    width: 90%;
 }
 
 @media screen and (max-width: 768px) {
@@ -27,6 +26,7 @@
 }
 
 .title {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;

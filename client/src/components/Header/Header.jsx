@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import css from './Header.module.css';
 import { UilBars } from '@iconscout/react-unicons';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logIn } from "../../actions/authAction";
 import profPic from '../../public/defaultProfile.png';
@@ -13,6 +13,8 @@ import { NotificationIcon } from "../NotificationIcon/NotificationIcon";
 export const Header = ({ location }) => {
 
     const { categoriesWithForums } = useSelector((state) => state.forumReducer);
+
+    const navigate = useNavigate();
 
     var doit;
 
@@ -53,9 +55,9 @@ export const Header = ({ location }) => {
 
     const loggedUserRender = () => {
         return user == null ? (
-            <li style={{ cursor: 'pointer' }} onClick={handleLogIn}>
-                <span>Zaloguj sie</span>
-            </li> 
+                <li className={css.link} style={{ cursor: 'pointer' }} onClick={() => navigate("/auth")}>
+                    <span>Zaloguj sie</span>
+                </li> 
         ) : (
 
             <>
@@ -67,11 +69,8 @@ export const Header = ({ location }) => {
                     { menuOpened ? 
                     <>
                     <div className={css.icon}>
-                        <Link className={css.link} to={`/profile/${user.userId}`}>
-                            <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
-                        </Link>
+                        <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
                     </div>
-
                     </> : ''}
                 </div>
                 { menuOpened ? 
@@ -82,7 +81,7 @@ export const Header = ({ location }) => {
 
             { menuOpened ? '' : 
             <li className={css.profileButton}>
-                <Link className={css.link} to={`/profile/${user.userId}`}>
+                <Link className={css.link} to={`/profile/${user._id}`}>
                     <div className={css.profileButton}>
                         <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
                         <span>{user.username}</span>

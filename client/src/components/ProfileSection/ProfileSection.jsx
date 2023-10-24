@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import css from './ProfileSection.module.css';
 import { useDispatch, useSelector } from "react-redux";
 import { UilPlusCircle } from '@iconscout/react-unicons'
 import { logOut } from "../../actions/authAction";
 import { Threads } from "../Threads/Threads.jsx";
+import { getThreadsByAuthorId } from "../../actions/threadAction";
+import { useNavigate } from "react-router-dom";
 
 export const ProfileSection = () => {
 
@@ -11,11 +13,23 @@ export const ProfileSection = () => {
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
     const img = require('../../public/defaultCover.jpg');
 
+    const { threads, loading } = useSelector((state) => state.forumReducer)
+
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         dispatch(logOut());
+        navigate("/")
     }
+
+    useEffect(() => {
+        if (user._id != null) {
+            console.log(user._id)
+            dispatch(getThreadsByAuthorId(user._id))
+        }
+        console.log(threads)
+    }, [user])
 
     return (
         <div className={css.container}>
@@ -38,7 +52,7 @@ export const ProfileSection = () => {
                 </div>
             <div className={css.profile}>
                 <span>Watki uzytkownika:</span>
-                <Threads location='profile' subId='Silnik'/>
+                { loading ? <span className="loader"></span> : <Threads threads={threads} location='profile' subId='Silnik'/>}
             </div>
         </div>
     )

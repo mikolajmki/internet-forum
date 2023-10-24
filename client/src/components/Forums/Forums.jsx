@@ -33,7 +33,7 @@ export const Forums = ({ category, opened }) => {
                         <div>
                             <UilCommentAltMessage/>
                         </div>
-                        <Link to={`/${category.title}/${forum.name}`} style={{ color: "white", textDecoration: "none" } } 
+                        <Link to={`/${forum.name}`} style={{ color: "white", textDecoration: "none" } } 
                         onClick={() => handleGetThreadsByForumId(forum._id)}
                         >
                             <div className={css.info}>

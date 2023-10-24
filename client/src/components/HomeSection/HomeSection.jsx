@@ -14,6 +14,7 @@ export const HomeSection = () => {
 
     return (
         <div className={css.container}>
+            <h1 className={css.title} style={{ width: "90%", marginBottom: "3rem", background: "var(--bg2)" }}>Fora dyskusyjne</h1>
             { loading ? <div className="loader"></div> : categoriesWithForums.map((category, i) => {
                 return (
                     <div className={css.forum}>

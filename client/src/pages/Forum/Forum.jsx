@@ -7,14 +7,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { getThreadsByForumId } from "../../actions/threadAction";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { getPostsByLimit } from "../../actions/postAction";
 
 export const Forum = () => {
 
     const params = useParams();
+    const dispatch = useDispatch();
 
     const { threads, loading } = useSelector((state) => state.forumReducer);
     
     console.log(threads, params.forumId)
+
+    useEffect(() => {
+        dispatch(getPostsByLimit(10));
+    }, [])
 
     return (
         <>

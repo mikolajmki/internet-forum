@@ -10,3 +10,5 @@ const threadSchema = mongoose.Schema({
 }, { timestamps: true });
 
 export default mongoose.model("Thread", threadSchema);
+
+// What do you think about Jetta being the best car in the world? Let me know in the comments.

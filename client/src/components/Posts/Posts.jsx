@@ -3,7 +3,7 @@ import css from './Posts.module.css';
 import { useDispatch } from "react-redux";
 import { PostItem } from "../PostItem/PostItem";
 
-export const Posts = ({ thread }) => {
+export const Posts = ({ posts, location }) => {
 
     const [modal, setModal] = useState(false);
     // const [likes, setLikes] = useState({});
@@ -12,8 +12,6 @@ export const Posts = ({ thread }) => {
     // const handleLike = (postId, like) => {
     //     setLikes({ ...likes, [postId]: like })
     // }
-
-    console.log(thread)
 
     const dispatch = useDispatch();
 
@@ -29,12 +27,12 @@ export const Posts = ({ thread }) => {
 
     useEffect(() => {
 
-    }, [thread])
+    }, [posts])
 
     return (
-            <div className={css.container}>
-                { thread.posts.map((post) => 
-                    <PostItem post={post}/>
+            <div className={css.container} style={ location === "forums" ? { gap: "0.5rem", paddingTop: "1rem"} : null  }>
+                { posts.map((post) => 
+                    <PostItem post={post} location={location}/>
             ) }
             </div>
     )

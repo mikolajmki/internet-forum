@@ -1,4 +1,4 @@
-const forumReducer = (state = { categoriesWithForums: [], threads: [], thread: null, loading: false, error: false,}, action) => {
+const forumReducer = (state = { categoriesWithForums: [], threads: [], thread: null, posts: [], loading: false, error: false,}, action) => {
     switch (action.type) {
         case "CATEGORIES_START":
             return { ...state, loading: true, error: false };
@@ -18,7 +18,16 @@ const forumReducer = (state = { categoriesWithForums: [], threads: [], thread: n
             return { ...state, loading: true, error: false };
         case "THREAD_SUCCESS":
             return { ...state, thread: action.data, loading: false, error: false };
+        case "THREAD_CREATE_SUCCESS":
+            return { ...state, threads: [ ...state.threads, action.data ], loading: false, error: false }
         case "THREAD_FAIL":
+            localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
+            return { ...state, loading: false, error: true };
+        case "POST_START":
+            return { ...state, loading: true, error: false };
+        case "POST_SUCCESS":
+            return { ...state, posts: [ ...action.data ], loading: false, error: false };
+        case "POST_FAIL":
             localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
             return { ...state, loading: false, error: true };
         case "POST_VOTE_SUCCESS":
@@ -29,7 +38,7 @@ const forumReducer = (state = { categoriesWithForums: [], threads: [], thread: n
                     return { ...post }
                 }
             })
-            return { ...state, thread: { ...state.thread, posts: updatedPosts },  }
+            return { ...state, thread: { ...state.thread, posts: updatedPosts }, loading: false}
         case "POST_CREATE_SUCCESS":
             return { ...state, thread: { ...state.thread, posts: [ ...state.thread.posts, action.data ] } }
         default:

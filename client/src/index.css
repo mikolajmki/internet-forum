@@ -8,11 +8,13 @@
 
   /* --section: rgb(12,42,64); */
   /* --bg1: linear-gradient(90deg, rgba(2,0,28,1) 0%, rgba(1,27,59,1) 0%, rgba(108,167,205,1) 100%, rgba(20,80,122,1) 100%); */
-  /* --bg1: linear-gradient(90deg, rgba(29,101,148,1) 0%, rgba(24,56,80,1) 100%); */
-  /* --bg2: linear-gradient(90deg, rgba(42,74,94,1) 0%, rgba(12,42,64,1) 100%); */
+  
   
   
   --bg1: linear-gradient(90deg, rgba(13,53,79,1) 0%, rgba(43,80,108,1) 100%);
+  --bg1Border: rgb(13,53,79);
+  /* --bg2: linear-gradient(90deg, rgba(42,74,94,1) 0%, rgba(12,42,64,1) 100%); */
+  --bg2: linear-gradient(90deg, rgba(29,101,148,1) 0%, rgba(24,56,80,1) 100%);
   --section: rgb(6, 37, 60);
 
   --buttonRed: rgb(188, 46, 46);

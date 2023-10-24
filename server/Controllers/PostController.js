@@ -3,6 +3,49 @@ import Thread from "../Models/Thread.js";
 import Forum from "../Models/Forum.js";
 import User from "../Models/User.js";
 
+export const getPostsByLimit = async (req, res) => {
+
+    const limit = req.params.limit;
+
+    try {
+        let posts = await Post
+        .find({}, "-upvotes -downvotes")
+        .sort("-createdAt")
+        .limit(limit)
+        .populate("author", ["username", "profilePicture"]);
+
+        console.log(posts)
+
+        const threads = await Thread.find({ posts: { $in: posts } }, ["_id", "title", "posts"]);
+        // const threads = await Thread.aggregate([{ $match: { posts: { $in: posts } } }]);
+        console.log(threads)
+
+        const results = posts.map((postDoc, i) => {
+            let post = postDoc._doc;
+            
+            let thread = threads.filter((threadDoc, i) => {
+                let thread = threadDoc._doc;
+                if (thread.posts.includes(post._id)) return thread;
+            })
+
+            return { postId: post._id, threadId: thread[0]._doc._id, ...post, ...thread[0]._doc }
+        })
+
+        console.log(results)
+
+        // const results = posts.map((post, i) => {
+        //     return { threadId: threads[i]._doc._id, postId: post._doc._id, title: threads[i]._doc.title, ...post._doc };
+        // });
+  
+        return res.status(200).json(results);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: err
+        });
+    }
+};
+
 export const getVotes = async (req, res) => {
     const postId = req.params.id;
 

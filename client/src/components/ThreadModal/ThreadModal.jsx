@@ -1,19 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import css from "./ThreadModal.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../../actions/postAction";
+import { createThread } from "../../actions/threadAction";
+import { useNavigate } from "react-router-dom";
 
-export const ThreadModal = ({ modal, setModal, type, userId, threadId }) => {
+export const ThreadModal = ({ modal, setModal, type, userId, threadId, forumId }) => {
 
-    const [ formData, setFormData ] = useState({ authorId: userId, threadId: threadId });
+    const [ formData, setFormData ] = useState({ authorId: userId });
 
     const dispatch = useDispatch();
 
-    console.log(formData);
+    console.log(formData, forumId, userId);
 
-    const handleCreate = (userId, threadId, formData) => {
-        if(type === "post") dispatch(createPost(userId, threadId, formData.comment));
+    const handleCreate = () => {
+        if(type === "post") {
+            dispatch(createPost({ ...formData, threadId: threadId }));
+        }
+        else if (type === "thread") {
+            dispatch(createThread({ ...formData, forumId: forumId }));
+        }
         setModal(false);
     }
 
@@ -28,16 +35,16 @@ export const ThreadModal = ({ modal, setModal, type, userId, threadId }) => {
             <div className={css.container}>
                 <h1>{title}</h1>
                 <form>
-                    { title === 'Dodaj watek:' ? 
+                    { type === "thread" ? 
                     <>
                     <div>Tytul:</div>
-                    <input autoFocus />
+                    <input id="title" onChange={(e) => setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value }) } autoFocus />
                     </> : ''}
                     <div>Tresc:</div>
                     <textarea id={type === "post" ? "comment" : "description"} onChange={(e) => { setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value }) }} rows={5} className={css.content}/>
                 </form>
                 <div className={css.exit} onClick={() => setModal((prev) => !prev)}></div>
-                <div className={css.btn} onClick={() => { handleCreate(userId, threadId, formData) }}>Dodaj</div>
+                <div className={css.btn} onClick={() => { handleCreate() }}>Dodaj</div>
             </div>
         </Modal>
     )

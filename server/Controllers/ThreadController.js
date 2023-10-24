@@ -1,6 +1,43 @@
 import Thread from "../Models/Thread.js";
 import Forum from "../Models/Forum.js";
 
+export const getThreadsByLimit = async (req, res) => {
+
+    const limit = req.params.limit;
+
+    try {
+        let threads = await Thread
+        .find({}, "-forumId")
+        .sort("-createdAt")
+        .limit(limit)
+        .populate("author", ["username", "profilePicture"]);
+  
+        return res.status(200).json(threads);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: err
+        });
+    }
+};
+
+export const getThreadsByAuthorId = async (req, res) => {
+
+    const authorId = req.params.authorId;
+
+    try {
+        let threads = await Thread
+        .find({ author: authorId }, { projection: { forumId: 0 } });
+  
+        return res.status(200).json(threads);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: err
+        });
+    }
+};
+
 export const getThreadsByForumId = async (req, res) => {
 
     const forumId = req.params.forumId;
@@ -44,7 +81,7 @@ export const createThread = async (req, res) => {
 
     const forumId = req.body.forumId;
 
-    const thread = new Thread({
+    const thread = await new Thread({
         forumId: req.body.forumId,
         title: req.body.title,
         description: req.body.description,
@@ -53,8 +90,9 @@ export const createThread = async (req, res) => {
     try {
         await Forum.findByIdAndUpdate({ _id: forumId }, { $set: { latestThreadId: thread._id } });
         await thread.save();
+        const resultThread = await thread.populate("author", ["username", "profilePicture"]);
         
-        return res.status(200).json(thread);
+        return res.status(200).json(resultThread);
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: err });

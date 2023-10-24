@@ -18,9 +18,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/:catId/:forumId" element={<Forum/>} />
-            <Route path="/:catId/:forumId/:threadId" element={<Thread/>}/>
-            <Route path="/profile/:userId" element={user ? <Profile/> : <Navigate to={'/'}/>}/>
+            <Route path="/:forumId" element={<Forum/>} />
+            <Route path="/thread/:threadId" element={<Thread/>}/>
+            <Route path="/profile/:userId" element={user ? <Profile/> : <Navigate to={'/auth'}/>}/>
             <Route path="/auth" element={<Auth/>}/>
           </Routes>
         </BrowserRouter>

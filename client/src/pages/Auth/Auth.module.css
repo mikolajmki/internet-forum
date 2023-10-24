@@ -54,6 +54,10 @@ h1 {
     padding: 0 2rem;
 }
 
+.link {
+    text-decoration: none;
+}
+
 form {
     flex: 2;
     display: flex;
@@ -62,9 +66,11 @@ form {
     font-weight: 300;
 }
 
-form, .hiddenform > input {
+form > input {
     border: none;
 }
+
+
 
 .brief {
     padding: 0 2rem;
