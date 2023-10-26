@@ -20,6 +20,7 @@ export const Forum = () => {
 
     useEffect(() => {
         dispatch(getPostsByLimit(10));
+        dispatch(getThreadsByForumId(params.forumId))
     }, [])
 
     return (

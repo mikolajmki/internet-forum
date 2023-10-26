@@ -33,7 +33,7 @@
     justify-content: center;
 }
 
-.name > div > span > span {
+.name > div > :nth-child(2) {
     color: rgb(55, 150, 209);
 }
 
@@ -69,8 +69,6 @@ form {
 form > input {
     border: none;
 }
-
-
 
 .brief {
     padding: 0 2rem;

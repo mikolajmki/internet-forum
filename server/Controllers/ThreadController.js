@@ -7,10 +7,11 @@ export const getThreadsByLimit = async (req, res) => {
 
     try {
         let threads = await Thread
-        .find({}, "-forumId")
+        .find({})
         .sort("-createdAt")
         .limit(limit)
-        .populate("author", ["username", "profilePicture"]);
+        .populate("author", ["username", "profilePicture", "createdAt"])
+        .populate("forumId", ["name"]);
   
         return res.status(200).json(threads);
     } catch (err) {
@@ -27,7 +28,8 @@ export const getThreadsByAuthorId = async (req, res) => {
 
     try {
         let threads = await Thread
-        .find({ author: authorId }, { projection: { forumId: 0 } });
+        .find({ author: authorId })
+        .populate("forumId", ["name"]);
   
         return res.status(200).json(threads);
     } catch (err) {
@@ -44,8 +46,9 @@ export const getThreadsByForumId = async (req, res) => {
 
     try {
         let threads = await Thread
-        .find({ forumId: forumId }, { projection: { forumId: 0 } })
-        .populate("author", ["username", "profilePicture"]);
+        .find({ forumId: forumId })
+        .populate("forumId", ["name"])
+        .populate("author", ["username", "createdAt", "profilePicture"]);
   
         return res.status(200).json(threads);
     } catch (err) {
@@ -64,6 +67,7 @@ export const getThreadWithPostsById = async (req, res) => {
         let thread = await Thread
         .findById(threadId)
         .populate({ path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"]})
+        .populate({ path: "forumId", select: ["name"] })
         .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
 
         await Thread.updateOne({ _id: threadId }, { $inc: { views: 1 } });

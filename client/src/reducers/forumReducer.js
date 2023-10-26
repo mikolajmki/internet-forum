@@ -1,4 +1,4 @@
-const forumReducer = (state = { categoriesWithForums: [], threads: [], thread: null, posts: [], loading: false, error: false,}, action) => {
+const forumReducer = (state = { categoriesWithForums: [], threads: [], thread: null, posts: [], visitedUser: null, loading: false, error: false,}, action) => {
     switch (action.type) {
         case "CATEGORIES_START":
             return { ...state, loading: true, error: false };
@@ -39,6 +39,8 @@ const forumReducer = (state = { categoriesWithForums: [], threads: [], thread: n
                 }
             })
             return { ...state, thread: { ...state.thread, posts: updatedPosts }, loading: false}
+        case "VISITED_USER_SUCCESS":
+            return { ...state, visitedUser: action.data, loading: false, error: false }
         case "POST_CREATE_SUCCESS":
             return { ...state, thread: { ...state.thread, posts: [ ...state.thread.posts, action.data ] } }
         default:

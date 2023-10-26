@@ -55,12 +55,13 @@
     cursor: pointer;
 }
 
-.subcategory {
+.forum {
     display: flex;
+    flex-direction: row;
     border-bottom:  0.1rem solid var(--border);
 }
 
-.subcategory > :nth-child(1) {
+.forum > :nth-child(1) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,4 +75,50 @@
 
 .name {
     font-weight: bold;
+}
+
+.latestThread {
+    margin-left: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.latestThread > :nth-child(1) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profilePic {
+    background: var(--border);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100px;
+    display: flex;
+}
+
+.brief {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.brief > div {
+    height: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.brief > div > :nth-child(2) {
+    cursor: pointer;
+}
+
+.brief > div > :nth-child(1) {
+    font-weight: bold;
+    color: var(--secondary);
 }

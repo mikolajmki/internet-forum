@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import css from './Header.module.css';
 import { UilBars } from '@iconscout/react-unicons';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logIn } from "../../actions/authAction";
 import profPic from '../../public/defaultProfile.png';
@@ -13,8 +13,10 @@ import { NotificationIcon } from "../NotificationIcon/NotificationIcon";
 export const Header = ({ location }) => {
 
     const { categoriesWithForums } = useSelector((state) => state.forumReducer);
-
+    
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const params = useParams();
 
     var doit;
 
@@ -34,7 +36,6 @@ export const Header = ({ location }) => {
     }
 
 
-    const dispatch = useDispatch();
 
     const user = useSelector((state) => state.authReducer.authData.user)
 

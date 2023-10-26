@@ -1,23 +1,39 @@
 import React, { createRef, useEffect, useState } from "react";
 import css from './PostItem.module.css';
 import { votePost } from "../../actions/postAction.js";
+import { getThreadWithPostsById } from "../../actions/threadAction";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { convertUrlString } from "../../helpers/convertUrlString";
+import { toDate, toDateAndTime } from "../../helpers/toDate";
 
 export const PostItem = ({ post, location }) => {
 
     const { user } = useSelector((state) => state.authReducer.authData);
+    const { thread, loading } = useSelector((state) => state.forumReducer) ;
 
     const [ votes, setVotes ] = useState({})
+    const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
     
     console.log(user)
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const params = useParams();
 
     const handleVote = async (postId, type) => {
         try {
             dispatch(votePost(postId, user._id, type));
         } catch (err) {
             console.log(err);
+        }
+    };
+
+    const handlegetThreadWithPostsById = (threadId) => {
+        console.log(threadId)
+        dispatch(getThreadWithPostsById(threadId));
+        if (!loading) {
+            navigate(`/${convertUrlString(thread.forumId.name)}/${convertUrlString(thread.title)}`)
         }
     }
 
@@ -31,11 +47,15 @@ export const PostItem = ({ post, location }) => {
     if (location && location === "forums") {
         return (
             <div className={css.post} style={{ minHeight: "5rem" }}>
-                <div className={css.profileInfo} style={{ alignItems: "start", flex: "6" }}>
-                    <span>{post.author.username}</span>
-                    <span>{post.title}</span>
+                <div className={css.profileInfo} style={{ alignItems: "center", flex: "8", flexDirection: "row" }}>
+                    <img style={{ width: "3rem", height: "3rem" }} className={css.profilePic} src={ post.author.profilePicture ? serverPublic + post.author.profilePicture : require('../../public/defaultProfile.png')} alt="" />
+                    <div className={css.brief}>
+                        <span className="textlink" onClick={() => {navigate(`/profile/${post.author._id}`)}}>{post.author.username}</span>
+                        <span className="textlink" onClick={() => handlegetThreadWithPostsById(post.threadId)}>{post.title}</span>
+                    </div>
+                    <span></span>
                 </div>
-                <div className={css.content}>
+                <div className={css.content} style={{ overflowY: "hidden", overflowX: "visible", paddingTop: "1rem" }}>
                     <span>{post.comment}</span>
                 </div>
             </div>
@@ -44,21 +64,24 @@ export const PostItem = ({ post, location }) => {
 
     return (
         <div key={post.id} className={css.post}>
-            <div className={css.profileInfo}>
-                    <span>{post.author.username}</span>
-                <div className={css.sampleImg}>
-                    <span></span>
+                <div className={css.profileInfo}>
+                    <span className="textlink" onClick={() => navigate(`/profile/${thread.author._id}`)}>{thread.author.username}</span>
+                    <div className={css.sampleImg}>
+                        <span></span>
+                    </div>
+                    <span>{thread.author.rank}</span>
+                    {/* <span>Reputacja: <div className={`numberBadge ${css.numberBadge}`}><div>{thread.author.reputation}</div></div></span>
+                    <span>Odpowiedzi: <div className={`numberBadge ${css.numberBadge}`}><div>{thread.author.answers}</div></div></span> */}
+                    <div className={css.stats}>
+                        <span>Reputacja: <div className={`numberBadge ${css.numberBadge}`}><div>{thread.author.reputation}</div></div></span>
+                        <span>Odpowiedzi: <div className={`numberBadge ${css.numberBadge}`}><div>{thread.author.answers}</div></div></span>
+                    </div>
+                    <span>Dołączono {toDate(thread.author.createdAt)}</span>
                 </div>
-                <span>{post.author.rank}</span>
-                <span>{post.author.reputation}</span>
-                <span>{post.author.answers}</span>
-                <span>{post.author.createdAt}</span>
-            </div>
             <div className={css.content}>
-                <span>{post.createdAt}</span>
+                <span>{toDateAndTime(post.createdAt)}</span>
                 <span>{post.comment}</span>
             </div>
-            { user && user._id === post.author._id ? <></> :
             <div className={css.reaction}>
                 {/* <span className={css.reactionCircle} onClick={() => {handleLike(post.id, post.likes + 1)}}><div>+</div></span>
                 <span className={css.reactionCircle}>{ post.upvotes.length - post.downvotes.length}</span>
@@ -83,6 +106,6 @@ export const PostItem = ({ post, location }) => {
                     onClick={() => { handleVote(post._id, 0) }}>
                         <div>-</div>
                 </button> : <></> }
-            </div> }
+            </div>
         </div>)
 }

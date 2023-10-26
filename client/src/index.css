@@ -16,6 +16,7 @@
   /* --bg2: linear-gradient(90deg, rgba(42,74,94,1) 0%, rgba(12,42,64,1) 100%); */
   --bg2: linear-gradient(90deg, rgba(29,101,148,1) 0%, rgba(24,56,80,1) 100%);
   --section: rgb(6, 37, 60);
+  --textLight: rgb(113, 128, 150);
 
   --buttonRed: rgb(188, 46, 46);
   --buttonRedBorder: rgb(125, 52, 52);
@@ -71,6 +72,29 @@ code {
 .btn:hover {
   transform: translate(0, 3px);
   box-shadow: none;
+}
+
+.textlink {
+  cursor: pointer;
+}
+
+.textlink:hover {
+  text-decoration: underline;
+}
+
+.numberBadge {
+  border-radius: 999px;
+  background: var(--secondary);
+}
+
+.numberBadge > div {
+  line-height: 1.5rem;
+  height: 1.2rem;
+  width: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
 }
 
 .loader {

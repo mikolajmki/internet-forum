@@ -41,7 +41,7 @@ export const Auth = () => {
             <div className={css.credentials}>
                 <div className={css.name} style={ !login ? { flex: 1 } : {}}>
                     <div style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
-                        <span>Baw<span>aria.pl</span> </span>
+                        <span>Baw</span><span>aria.pl</span>
                     </div>
                 </div>
                 <form onSubmit={(e) => e.preventDefault()} style={ !login ? { flex: 3 } : {}}>

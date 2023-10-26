@@ -12,7 +12,8 @@ export const ForumSection = ({ threads, loading }) => {
     const params = useParams();
     const navigate = useNavigate();
 
-    const forumId = useSelector((state) => state.forumReducer.threads[0].forumId);
+    const forum = useSelector((state) => state.forumReducer.threads[0].forumId);
+    console.log(forum.name)
     const user = useSelector((state) => state.authReducer.authData.user);
 
     return (
@@ -20,7 +21,7 @@ export const ForumSection = ({ threads, loading }) => {
             { loading ? <span className="loader"></span> : (                    
                 <div className={css.container}>
                     <h1 className={css.title}>
-                        {params.forumId}
+                        {forum.name}
                     </h1>
                     <div className={css.section}>
                         <Threads threads={threads}/>
@@ -31,7 +32,7 @@ export const ForumSection = ({ threads, loading }) => {
                             Dodaj watek
                         </div>
                     </div>
-                    { user ? <ThreadModal modal={modal} setModal={setModal} userId={user._id} forumId={forumId} type={"thread"}/> : <></> }
+                    { user ? <ThreadModal modal={modal} setModal={setModal} userId={user._id} forumId={forum._id} type={"thread"}/> : <></> }
                 </div>
             ) }
         </div>

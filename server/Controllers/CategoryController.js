@@ -5,7 +5,13 @@ export const getCategoriesWithForums = async (req, res) => {
     try {
         let categories = await Category
         .find()
-        .populate("forums");
+        // .populate("forums");
+
+        .populate(
+            { path: "forums", populate: 
+            { path: "latestThreadId", select: ["title", "author"], populate: 
+            { path: "author", select: ["username"] } }}
+        )
         
         return res.status(200).json(categories);
     } catch (err) {

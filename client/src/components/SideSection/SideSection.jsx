@@ -13,7 +13,7 @@ export const SideSection = ({ location }) => {
         <div className={css.wrapper}>
             <div className={css.container}>
                 <h1 className={css.title} >{ location === "home" ? "Najnowsze wątki" : "Najnowsze odpowiedzi" }</h1>
-                { loading ? <></> : location === "home" ? <Threads threads={threads} /> : <Posts posts={posts} location={"forums"}/> }
+                { loading ? <></> : location === "home" ? <Threads threads={threads} location={"home"} /> : <Posts posts={posts} location={"forums"}/> }
             </div>
         </div>
     )

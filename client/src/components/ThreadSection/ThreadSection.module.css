@@ -68,9 +68,39 @@
     color: var(--secondary);
 }
 
-.profileInfo > :nth-child(4),
-.profileInfo > :nth-child(5) {
-    font-size: 0.8rem;
+.numberBadge {
+
+    background: var(--bg2);
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 7rem;
+}
+
+.profileInfo > span, .stats > span {
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.profileInfo > :last-child {
+    color: var(--textLight);
+}
+
+.profileInfo > :nth-child(3) {
+    font-size: 1rem;
+}
+
+.profileInfo > :last-child > :last-child {
+    /* border-radius: 20px;
+    background: var(--bg2);
+    padding: 0.25rem 1rem; */
 }
 
 .sampleImg {
