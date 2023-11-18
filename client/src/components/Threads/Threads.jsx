@@ -7,7 +7,7 @@ import { convertUrlString } from "../../helpers/convertUrlString";
 import { toDate } from "../../helpers/toDate";
 
 
-export const Threads = ({ threads, location }) => {
+export const Threads = ({ loading, threads, location }) => {
 
     const params = useParams();
     const dispatch = useDispatch();
@@ -18,17 +18,15 @@ export const Threads = ({ threads, location }) => {
         dispatch(getThreadWithPostsById(threadId));
     }
 
-
     return (
         <div className={css.container}>
             <div className={css.threads} style={ location === 'profile' ? { boxShadow: 'none', border: 'none' } : {} }>
             { threads.map((thread, i) => {
-                        console.log(thread)
                         return (
 
                                 <div key={i} className={css.thread}>
                                     <div className={css.dot}></div>
-                                    <Link to={`/${convertUrlString(thread.forumId.name)}/${convertUrlString(thread.title)}`} style={{ color: "white", textDecoration: "none" }} 
+                                    <Link to={`/thread/${convertUrlString(thread.title)}`} style={{ color: "white", textDecoration: "none" }} 
                                     onClick={() => handleGetThreadWithPostsById(thread._id)}
                                     >
                                         <div className={css.info}>

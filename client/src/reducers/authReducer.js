@@ -1,4 +1,4 @@
-const authReducer = (state = { authData: { user: null }, loading: false, updateLoading: false, error: false, allUsers: [] }, action) => {
+const authReducer = (state = { authData: { user: null }, notifications: [], loading: false, updateLoading: false, error: false }, action) => {
     switch (action.type) {
         case "AUTH_START":
             return { ...state, loading: true, error: false };
@@ -15,9 +15,12 @@ const authReducer = (state = { authData: { user: null }, loading: false, updateL
             return { ...state, updateLoading: false, error: false, authData: action.data };
         case "UPDATING_FAIL":
             return { ...state, updateLoading: false, error: true };
-        case "GET_USERS_SUCCESS":
-            console.log(action.data);
-            return { ...state, allUsers: action.data };
+        case "NOTIFICATIONS_START":
+            return { ...state, loading: true, error: false };
+        case "NOTIFICATIONS_SUCCESS":
+            return { ...state, loading: false, error: false, notifications: action.data };
+        case "NOTIFICATIONS_FAIL":
+            return { ...state, loading: false, error: true };
         case "LOGOUT_START":
             localStorage.clear();
             return { ...state, authData: { user: null }, loading: false, error: false };

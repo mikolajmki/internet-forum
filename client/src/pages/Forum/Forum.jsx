@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "../../components/Header/Header";
 import css from './Forum.module.css';
 import { ForumSection } from "../../components/ForumSection/ForumSection";
@@ -7,29 +7,54 @@ import { useDispatch, useSelector } from "react-redux";
 import { getThreadsByForumId } from "../../actions/threadAction";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { getPostsByLimit } from "../../actions/postAction";
+import { getPostsByLimit } from "../../api/postRequest";
+import { getForumById } from "../../api/forumRequest";
 
 export const Forum = () => {
 
     const params = useParams();
     const dispatch = useDispatch();
 
-    const { threads, loading } = useSelector((state) => state.forumReducer);
-    
-    console.log(threads, params.forumId)
+    const [ forum, setForum ] = useState(null);
+    const [ posts, setPosts ] = useState(null);
+
+    // const handleGetContent = async () => {
+    //     if (location === "home") {
+    //         const { data } = await getThreadsByLimit(2);
+    //         setContent(data)
+    //     } else {
+    //         const { data } = await getPostsByLimit(10);
+    //         setContent(data)
+    //     }
+    // };
+
+    const handleGetPosts = async () => {
+        const { data } = await getPostsByLimit(10);
+        setPosts(data);
+    };
+
+    const handleGetForumById = async (forumId) => {
+        const { data } = await getForumById(forumId);
+        setForum(data);
+    }
 
     useEffect(() => {
-        dispatch(getPostsByLimit(10));
-        dispatch(getThreadsByForumId(params.forumId))
+        dispatch(getThreadsByForumId(params.forumId));
+        handleGetForumById(params.forumId);
+        handleGetPosts();
     }, [])
 
     return (
         <>
             <Header/>
+            { forum && posts ? 
+
             <div className={css.container}>
-                <ForumSection threads={threads} loading={loading}/>
-                <SideSection/>
+                <ForumSection forum={forum}/>
+                <SideSection content={posts}/>
             </div>
+            
+            : <span className="loader"></span> }
         </>
     )
 }

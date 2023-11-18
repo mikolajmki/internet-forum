@@ -6,20 +6,20 @@ import { createPost } from "../../actions/postAction";
 import { createThread } from "../../actions/threadAction";
 import { useNavigate } from "react-router-dom";
 
-export const ThreadModal = ({ modal, setModal, type, userId, threadId, forumId }) => {
+export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId }) => {
 
-    const [ formData, setFormData ] = useState({ authorId: userId });
+    const [ formData, setFormData ] = useState({});
 
     const dispatch = useDispatch();
 
-    console.log(formData, forumId, userId);
+    // console.log(formData, forumId);
 
     const handleCreate = () => {
         if(type === "post") {
-            dispatch(createPost({ ...formData, threadId: threadId }));
+            dispatch(createPost({ body: { ...formData, threadId: threadId }, token }));
         }
         else if (type === "thread") {
-            dispatch(createThread({ ...formData, forumId: forumId }));
+            dispatch(createThread({ body: { ...formData, forumId: forumId }, token}));
         }
         setModal(false);
     }

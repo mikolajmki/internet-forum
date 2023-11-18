@@ -1,5 +1,7 @@
 import Thread from "../Models/Thread.js";
 import Forum from "../Models/Forum.js";
+import Notification from "../Models/Notification.js";
+import { createNotificationsOfType } from "./NotificationController.js";
 
 export const getThreadsByLimit = async (req, res) => {
 
@@ -81,20 +83,57 @@ export const getThreadWithPostsById = async (req, res) => {
     }
 };
 
+export const followThread = async (req, res) => {
+
+    const threadId = req.params.id;
+    const type = req.params.type;
+    const userId = req.body.userId;
+
+    try {
+        const thread = await Thread.findById(threadId)
+
+        if (thread.author.toString() === userId) {
+            return res.status(403).json({ message: "Can not follow own thread." })
+        }
+
+        if (type === "0" && thread.followers.includes(userId)) {
+            // unfollow
+            await thread.updateOne({ $pull: { followers: req.body.userId } });
+        } else if (type === "1" && !thread.followers.includes(userId)) {
+            // follow
+            await thread.updateOne({ $push: { followers: req.body.userId } });
+        } else {
+            return res.status(403).json({ message: "Forbidden action." })
+        }
+        
+        return res.status(200).json({ message: "Thread followed!" });
+    } catch (err) {
+        return res.status(500).json({ message: err });
+    }
+};
+
 export const createThread = async (req, res) => {
 
     const forumId = req.body.forumId;
+    const authorId = req.body.userId;
 
-    const thread = await new Thread({
+    const thread = new Thread({
         forumId: req.body.forumId,
         title: req.body.title,
         description: req.body.description,
-        author: req.body.authorId,
+        author: authorId,
     });
     try {
-        await Forum.findByIdAndUpdate({ _id: forumId }, { $set: { latestThreadId: thread._id } });
+        const forum = await Forum.findByIdAndUpdate({ _id: forumId }, { $set: { latestThreadId: thread._id } });
+        await forum.updateOne({ latestThreadId: thread._id });
         await thread.save();
-        const resultThread = await thread.populate("author", ["username", "profilePicture"]);
+        
+        const resultThread = await thread
+        .populate("author forumId", ["username", "profilePicture", "createdAt", "name"])
+
+        // thread notifications
+
+        if (forum.followers.length > 0) await Notification.insertMany(createNotificationsOfType("forum", { ...forum._doc, threadId: thread._id }, authorId));
         
         return res.status(200).json(resultThread);
     } catch (err) {
@@ -110,10 +149,10 @@ export const updateThread = async (req, res) => {
     try {
         // console.log(thread.title.toString(), title);
         const thread = await Thread.findById(threadId);
-        if (userId === thread.authorId) {
-            thread.updateOne({ $set: req.body });
+        if (userId === thread.authorId.toString()) {
+            const resultThread = await thread.updateOne({ $set: req.body });
             console.log(thread);
-            return res.status(200).json({ message: "Thread updated!" });
+            return res.status(200).json(resultThread);
         }
         return res.status(403).json({ message: "Action forbidden. "});
     } catch (err) {
@@ -124,16 +163,27 @@ export const updateThread = async (req, res) => {
 
 export const deleteThread = async (req, res) => {
     const threadId = req.params.id;
-    const userId = req.body.userId;
 
     try {
-        const thread = await thread.findById(threadId);
-        if (userId === thread.authorId) {
-            console.log(userId, thread.userId, thread._id)
-            await thread.deleteOne();
-            return res.status(200).json({ message: "Thread deleted." });
+        const thread = await Thread.findById(threadId);
+
+        await Notification.deleteMany({ thread: thread._id });
+
+        console.log(thread.posts.length)
+        if (thread.posts.length === 0) {
+
+            console.log(thread._id)
+            const resultThread = await thread.deleteOne();
+
+            const latestThread = await Thread.find({ forumId: thread.forumId }).sort("-createdAt").limit(1);
+
+            console.log(latestThread[0]._id)
+    
+            await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $set: { latestThreadId: latestThread[0]._id } })
+
+            return res.status(200).json({ threadId: resultThread._id });
         }
-        return res.status(403).json({ message: "Action forbidden." })
+        return res.status(403).json({ message: "Action forbidden. Threads of " + thread.posts.length + " remaining." })
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: err });

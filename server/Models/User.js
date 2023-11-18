@@ -14,8 +14,6 @@ const userSchema = mongoose.Schema({
     followers: [],
     following: [],
 
-    threadsFollowed: [],
-
     profilePicture: String,
     coverPicture: String,
     about: String,

@@ -1,36 +1,63 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import { Section } from "../../components/Forums/Forums.jsx";
 import css from './Home.module.css';
 import { HomeSection } from "../../components/HomeSection/HomeSection";
 import { SideSection } from "../../components/SideSection/SideSection";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategoriesWithForums } from "../../actions/categoryAction";
-import { getThreadsByLimit } from "../../actions/threadAction";
+import { getCategoriesWithForums } from "../../api/categoryRequest.js";
+import { getThreadsByLimit } from "../../api/threadRequest.js";
+import { setCategories } from "../../actions/categoryAction.js";
 
 export const Home = () => {
     
     const dispatch = useDispatch();
 
+    const [ categoriesWithForums, setCategoriesWithForums ] = useState(null);
+    const [ threads, setThreads ] = useState(null);
+
+    const handleGetCategoriesWithForums = async () => {
+        const { data } = await getCategoriesWithForums();
+        setCategoriesWithForums(data);
+    }
+
+    const handleGetThreads = async () => {
+        const { data } = await getThreadsByLimit(2);
+        setThreads(data)
+    };
+
     useEffect(() => {
-        dispatch(getCategoriesWithForums());
-        dispatch(getThreadsByLimit(2));
+        handleGetCategoriesWithForums();
+        handleGetThreads();
     }, []);
 
-    const { loading } = useSelector((state) => state.forumReducer);
+    useEffect(() => {
+        if (categoriesWithForums) {
+            dispatch(setCategories(categoriesWithForums));
+        }
+    }, [categoriesWithForums])
 
-        return (
+    // const handleGetContent = async () => {
+    //     if (location === "home") {
+    //         const { data } = await getThreadsByLimit(2);
+    //         setContent(data)
+    //     } else {
+    //         const { data } = await getPostsByLimit(10);
+    //         setContent(data)
+    //     }
+    // };
+
+    return (
         <>
         <Header/>
-        { loading ?
-            <span className="loader"></span> :
-        <>
+        { categoriesWithForums && threads ?
+
         <div className={css.container}>
-            <HomeSection/>
-            <SideSection location="home"/>
+            <HomeSection content={categoriesWithForums}/>
+            <SideSection location="home" content={threads}/>
         </div>
-        </>
-        }
+          
+        : <span className="loader"></span>}
         </>
     )
 }

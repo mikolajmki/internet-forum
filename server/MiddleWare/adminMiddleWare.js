@@ -1,6 +1,6 @@
 export const adminMiddleWare = async (req, res, next) => {
     const adminId = process.env.FORUM_ADMIN_ID;
-    const userId = req.params.adminId;
+    const userId = req.body.userId;
 
     try {
         if (userId === adminId) {

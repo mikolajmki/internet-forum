@@ -1,12 +1,7 @@
-const forumReducer = (state = { categoriesWithForums: [], threads: [], thread: null, posts: [], visitedUser: null, loading: false, error: false,}, action) => {
+const forumReducer = (state = { categories: [], threads: [], thread: null, visitedUser: null, loading: false, error: false,}, action) => {
     switch (action.type) {
-        case "CATEGORIES_START":
-            return { ...state, loading: true, error: false };
-        case "CATEGORIES_SUCCESS":
-            return { ...state, categoriesWithForums: action.data, loading: false, error: false };
-        case "CATEGORIES_FAIL":
-            localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
-            return { ...state, loading: false, error: true };
+        case "SET_CATEGORIES_SUCCESS":
+            return { ...state, categories: action.data }
         case "THREADS_START":
             return { ...state, loading: true, error: false };
         case "THREADS_SUCCESS":
@@ -20,16 +15,15 @@ const forumReducer = (state = { categoriesWithForums: [], threads: [], thread: n
             return { ...state, thread: action.data, loading: false, error: false };
         case "THREAD_CREATE_SUCCESS":
             return { ...state, threads: [ ...state.threads, action.data ], loading: false, error: false }
+        case "THREAD_DELETE_SUCCESS":
+            return { ...state, thread: [], loading: false, error: false }
         case "THREAD_FAIL":
             localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
             return { ...state, loading: false, error: true };
-        case "POST_START":
-            return { ...state, loading: true, error: false };
-        case "POST_SUCCESS":
-            return { ...state, posts: [ ...action.data ], loading: false, error: false };
-        case "POST_FAIL":
-            localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
-            return { ...state, loading: false, error: true };
+        case "POST_CREATE_SUCCESS":
+            return { ...state, thread: { ...state.thread, posts: [ ...state.thread.posts, action.data ] } }
+        case "POST_DELETE_SUCCESS":
+            return { ...state, thread: { ...state.thread, posts: state.thread.posts.filter(post => post._id !== action.data.postId) } }
         case "POST_VOTE_SUCCESS":
             const updatedPosts = state.thread.posts.map((post) => {
                 if (action.data.postId === post._id) {
@@ -41,8 +35,6 @@ const forumReducer = (state = { categoriesWithForums: [], threads: [], thread: n
             return { ...state, thread: { ...state.thread, posts: updatedPosts }, loading: false}
         case "VISITED_USER_SUCCESS":
             return { ...state, visitedUser: action.data, loading: false, error: false }
-        case "POST_CREATE_SUCCESS":
-            return { ...state, thread: { ...state.thread, posts: [ ...state.thread.posts, action.data ] } }
         default:
             return state;
     }

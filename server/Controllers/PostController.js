@@ -2,6 +2,8 @@ import Post from "../Models/Post.js";
 import Thread from "../Models/Thread.js";
 import Forum from "../Models/Forum.js";
 import User from "../Models/User.js";
+import Notification from "../Models/Notification.js";
+import { createNotificationsOfType } from "./NotificationController.js";
 
 export const getPostsByLimit = async (req, res) => {
 
@@ -127,13 +129,14 @@ export const votePost = async (req, res) => {
 export const createPost = async (req, res) => {
 
     const threadId = req.body.threadId;
+    const authorId = req.body.userId;
 
     console.log(threadId, req.body.authorId)
 
     const post = new Post({
         title: req.body.title,
         comment: req.body.comment,
-        author: req.body.authorId,
+        author: authorId,
     });
 
     try {
@@ -143,10 +146,13 @@ export const createPost = async (req, res) => {
         const resultPost = await post.populate("author");
         await post.save();
 
+        const forum = await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $inc: { answers: 1 } });
 
-        await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $inc: { answers: 1 } });
-
-        await User.findByIdAndUpdate({ _id: req.body.authorId }, { $inc: { answers: 1 } })
+        await User.findByIdAndUpdate({ _id: authorId }, { $inc: { answers: 1 } })
+        
+        if (authorId !== thread.author.toString()) await Notification.insertMany(createNotificationsOfType("thread-author", thread, authorId));
+        
+        if (thread.followers > 0) await Notification.insertMany(createNotificationsOfType("thread", thread, authorId));
 
         return res.status(200).json(resultPost);
     } catch (err) {
@@ -159,9 +165,9 @@ export const updatePost = async (req, res) => {
 
     try {
         // console.log(post.title.toString(), title);
-        await Post.findByIdAndUpdate({ _id: postId }, { $set: req.body });
+        const post = await Post.findByIdAndUpdate({ _id: postId }, { $set: req.body });
         
-        return res.status(200).json({ message: "Post updated!" });
+        return res.status(200).json({ post });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: err });
@@ -175,16 +181,18 @@ export const deletePost = async (req, res) => {
     try {
         const thread = await Thread.findOneAndUpdate(
             { _id: threadId }, 
-            { $pull: { _id: postId } }
+            { $pull: { posts: postId } }
         );
 
-        await Post.findOneAndDelete({ _id: postId });
+        const post = await Post.findOneAndDelete({ _id: postId });
+
+        await Notification.deleteMany({ type: { $in: [ "thread-author", "thread" ] }, thread: threadId });
 
         await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $inc: { answers: -1 } });
 
-        await User.findByIdAndUpdate({ _id: req.body.authorId }, { $inc: { answers: -1 } })
+        await User.findByIdAndUpdate({ _id: post.author._id }, { $inc: { answers: -1 } })
 
-        return res.status(200).json({ message: "Post deleted." });
+        return res.status(200).json({ postId: postId });
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: err });

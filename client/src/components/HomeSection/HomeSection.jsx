@@ -5,17 +5,16 @@ import css from './HomeSection.module.css';
 import { useDispatch, useSelector } from "react-redux";
 import { UilArrowDown } from '@iconscout/react-unicons';
 
-export const HomeSection = () => {
+export const HomeSection = ({ content }) => {
 
     const [opened, setOpened] = useState(true);
 
-    const { categoriesWithForums, loading } = useSelector((state) => state.forumReducer);
-    console.log(categoriesWithForums)
+    console.log(content)
 
     return (
         <div className={css.container}>
             <h1 className={css.title} style={{ width: "90%", marginBottom: "3rem", background: "var(--bg2)" }}>Fora dyskusyjne</h1>
-            { loading ? <div className="loader"></div> : categoriesWithForums.map((category, i) => {
+            { content.map((category, i) => {
                 return (
                     <div className={css.forum}>
                         <div id={category.title} className={css.title}>

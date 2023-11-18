@@ -18,8 +18,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/:forumId" element={<Forum/>} />
-            <Route path="/:forumId/:threadId" element={<Thread/>}/>
+            <Route path="/forum/:forumId" element={<Forum/>} />
+            <Route path="/thread/:threadId" element={<Thread/>}/>
             <Route path="/profile/:userId" element={<Profile/>}/>
             <Route path="/auth" element={<Auth/>}/>
           </Routes>

@@ -15,14 +15,10 @@ export const Forums = ({ category, opened }) => {
 
     const dispatch = useDispatch();
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
-
-    const handleGetThreadsByForumId = (forumId) => {
-        dispatch(getThreadsByForumId(forumId));
-    }
-
-    const handleGetThreadWithPostsById = (forumName, threadId) => {
+    
+    const handleGetThreadWithPostsById = (threadId) => {
         dispatch(getThreadWithPostsById(threadId));
-        navigate(`/${forumName}/${threadId}`);
+        navigate(`/thread/${threadId}`);
     }
 
     // useEffect(() => {
@@ -41,7 +37,7 @@ export const Forums = ({ category, opened }) => {
                         <div>
                             <UilCommentAltMessage/>
                         </div>
-                        <Link to={`/${forum._id}`} style={{ color: "white", textDecoration: "none" } } 
+                        <Link to={`/forum/${forum._id}`} style={{ color: "white", textDecoration: "none" } } 
                         // onClick={() => handleGetThreadsByForumId(forum._id)}
                         >
                             <div className={css.info}>
@@ -55,8 +51,12 @@ export const Forums = ({ category, opened }) => {
                             <div className={css.brief}>
                                 <img className={css.profilePic} src={ forum.latestThreadId.author.profilePicture ? serverPublic + forum.latestThreadId.author.profilePicture : require('../../public/defaultProfile.png')} alt="" />
                                 <div>
-                                    <span className="textlink" onClick={() => {navigate(`/profile/${forum.latestThreadId.author._id}`)}}>{forum.latestThreadId.author.username}</span>
-                                    <span className="textlink" onClick={() => handleGetThreadWithPostsById(forum.name, forum.latestThreadId._id)}>{forum.latestThreadId.title}</span>
+                                    <span className="textlink" onClick={() => {navigate(`/profile/${forum.latestThreadId.author._id}`)}}>
+                                        {forum.latestThreadId.author.username}
+                                    </span>
+                                    <span className="textlink" onClick={() => handleGetThreadWithPostsById(forum.latestThreadId._id)}>
+                                        {forum.latestThreadId.title}
+                                    </span>
                                 </div>
                             </div>
                             <span></span>

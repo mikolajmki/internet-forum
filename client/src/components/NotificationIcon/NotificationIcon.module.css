@@ -34,6 +34,10 @@
     padding-left: 0;
 }
 
+.content :hover {
+  cursor: pointer;
+}
+
 .content > div {
     line-height: 1.2rem;
 }
@@ -50,7 +54,7 @@
     border-left: 1rem solid transparent;
     border-right: 1rem solid transparent;
     border-bottom: 1rem solid var(--section);
-  }
+}
 
   .numberBadge {
     position: absolute;

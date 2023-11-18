@@ -10,6 +10,7 @@ import CategoryRoutes from "./Routes/Category.js";
 import ForumRoutes from "./Routes/Forum.js";
 import ThreadRoutes from "./Routes/Thread.js";
 import PostRoutes from "./Routes/Post.js";
+import NotificationRoutes from "./Routes/Notification.js";
 
 
 const app = express();
@@ -33,3 +34,4 @@ app.use("/category", CategoryRoutes);
 app.use("/forum", ForumRoutes);
 app.use("/thread", ThreadRoutes);
 app.use("/post", PostRoutes);
+app.use("/notification", NotificationRoutes);

@@ -36,12 +36,24 @@ export const getThreadsByAuthorId = (userId) => async (dispatch) => {
     }
 };
 
-export const createThread = (formData) => async (dispatch) => {
+export const createThread = (reqData) => async (dispatch) => {
     dispatch({ type: "THREAD_START" });
     try {
-        const { data } = await ThreadApi.createThread(formData);
+        const { data } = await ThreadApi.createThread(reqData);
         console.log(data)
         dispatch({ type: "THREAD_CREATE_SUCCESS", data: data });
+    } catch (err) {
+        console.log(err);
+        dispatch({ type: "THREAD_FAIL" });
+    }
+};
+
+export const deleteThread = (reqData) => async (dispatch) => {
+    dispatch({ type: "THREAD_START" });
+    try {
+        const { data } = await ThreadApi.deleteThread(reqData);
+        console.log(data)
+        dispatch({ type: "THREAD_DELETE_SUCCESS", data: data });
     } catch (err) {
         console.log(err);
         dispatch({ type: "THREAD_FAIL" });

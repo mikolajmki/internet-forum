@@ -56,9 +56,13 @@ export const deleteCategory = async (req, res) => {
 
     try {
         const category = await category.findById(categoryId);
-        console.log(category.userId, category._id);
-        await category.deleteOne();
-        return res.status(200).json({ message: "category deleted." });
+        if (category.forums.length === 0) {
+
+            await category.deleteOne();
+            console.log(category.userId, category._id);
+            return res.status(200).json({ message: "Category deleted." });
+        }
+        return res.status(403).json({ message: "Action forbidden. Forums of " + category.forums.length +  " remaining." })
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: err });

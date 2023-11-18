@@ -3,11 +3,11 @@ const monthDictionary = { 0 : "Stycznia", 1: "Lutego", 2 : "Marca", 3 : "Kwietni
 export const toDate = (createdAt) => {
     const date = new Date(createdAt);
     
-    return date.getDay() + " " + monthDictionary[date.getMonth()] + " " + date.getFullYear();
+    return date.getDate() + " " + monthDictionary[date.getMonth()] + " " + date.getFullYear();
 }
 
 export const toDateAndTime = (createdAt) => {
     const date = new Date(createdAt);
     
-    return date.getDay() + " " + monthDictionary[date.getMonth()] + " " + date.getFullYear() + " o godz. " + date.getHours() + ":" + date.getMinutes();
+    return date.getDate() + " " + monthDictionary[date.getMonth()] + " " + date.getFullYear() + " o godz. " + date.getHours() + ":" + date.getMinutes();
 }

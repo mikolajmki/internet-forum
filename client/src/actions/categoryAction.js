@@ -1,13 +1,7 @@
 import * as CategoryApi from '../api/categoryRequest.js';
 
-export const getCategoriesWithForums = () => async (dispatch) => {
-    dispatch({ type: "CATEGORIES_START" });
-    try {
-        const { data } = await CategoryApi.getCategoriesWithForums();
-        console.log(data)
-        dispatch({ type: "CATEGORIES_SUCCESS", data: data });
-    } catch (err) {
-        console.log(err);
-        dispatch({ type: "CATEGORIES_FAIL" });
-    }
+export const setCategories = (catgoriesWithForums) => (dispatch) => {
+    const data = catgoriesWithForums.map((category) => category.title);
+    console.log(data);
+    dispatch({ type: "SET_CATEGORIES_SUCCESS", data: data });
 }
