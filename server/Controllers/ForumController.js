@@ -27,6 +27,19 @@ export const followForum = async (req, res) => {
     }
 };
 
+export const getFoumsByCategoryId = async (req, res) => {
+    const categoryId = req.params.id;
+    try {
+        let forums = await Category.findById(categoryId)
+        .populate(
+            { path: "forums"})
+            .select('forums')
+        return res.status(200).json(forums)
+    } catch (err) {
+        return res.status(500).json({ message: err });
+    } 
+}
+
 export const getForumById = async (req, res) => {
     const forumId = req.params.id;
 

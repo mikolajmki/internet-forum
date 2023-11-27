@@ -3,6 +3,29 @@ import Forum from "../Models/Forum.js";
 import Notification from "../Models/Notification.js";
 import { createNotificationsOfType } from "./NotificationController.js";
 
+
+export const getAllThreadsWithPosts = async (req, res) => {
+
+    const limit = req.params.limit;
+
+    try {
+        let threads = await Thread
+        .find({})
+        .sort("-createdAt")
+        .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } })
+        .populate("author", ["username", "profilePicture", "createdAt"])
+        .populate("forumId", ["name"]);
+        
+  
+        return res.status(200).json(threads);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: err
+        });
+    }
+};
+
 export const getThreadsByLimit = async (req, res) => {
 
     const limit = req.params.limit;
@@ -50,7 +73,8 @@ export const getThreadsByForumId = async (req, res) => {
         let threads = await Thread
         .find({ forumId: forumId })
         .populate("forumId", ["name"])
-        .populate("author", ["username", "createdAt", "profilePicture"]);
+        .populate("author", ["username", "createdAt", "profilePicture"])
+        .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
   
         return res.status(200).json(threads);
     } catch (err) {
