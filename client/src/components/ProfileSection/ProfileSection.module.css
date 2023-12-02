@@ -53,6 +53,7 @@
     width: 90%;
     display: flex;
     justify-content: flex-end;
+    gap: 1rem;
 }
 
 .btn {

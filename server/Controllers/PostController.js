@@ -16,11 +16,8 @@ export const getPostsByLimit = async (req, res) => {
         .limit(limit)
         .populate("author", ["username", "profilePicture"]);
 
-        console.log(posts)
-
         const threads = await Thread.find({ posts: { $in: posts } }, ["_id", "title", "posts"]);
         // const threads = await Thread.aggregate([{ $match: { posts: { $in: posts } } }]);
-        console.log(threads)
 
         const results = posts.map((postDoc, i) => {
             let post = postDoc._doc;
@@ -32,8 +29,6 @@ export const getPostsByLimit = async (req, res) => {
 
             return { postId: post._id, threadId: thread[0]._doc._id, ...post, ...thread[0]._doc }
         })
-
-        console.log(results)
 
         // const results = posts.map((post, i) => {
         //     return { threadId: threads[i]._doc._id, postId: post._doc._id, title: threads[i]._doc.title, ...post._doc };
@@ -131,8 +126,6 @@ export const createPost = async (req, res) => {
     const threadId = req.body.threadId;
     const authorId = req.body.userId;
 
-    console.log(threadId, req.body.authorId)
-
     const post = new Post({
         title: req.body.title,
         comment: req.body.comment,
@@ -152,7 +145,7 @@ export const createPost = async (req, res) => {
         
         if (authorId !== thread.author.toString()) await Notification.insertMany(createNotificationsOfType("thread-author", thread, authorId));
         
-        if (thread.followers > 0) await Notification.insertMany(createNotificationsOfType("thread", thread, authorId));
+        if (thread.followers.length > 0) await Notification.insertMany(createNotificationsOfType("thread", thread, authorId));
 
         return res.status(200).json(resultPost);
     } catch (err) {

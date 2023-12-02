@@ -1,0 +1,127 @@
+h1 {
+    padding: 1rem 0;
+}
+
+.modal {
+   position: fixed;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background: #00000045;
+   top: 5rem;
+   width: 100%;
+}
+
+
+.container, .scrollContainer {
+    position: relative;
+    width: 50%;
+    min-width: 40rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+    background: var(--section);
+    border-radius: 0.4rem;
+    margin: 2rem;
+    max-height: 80vh;
+}
+
+.scrollContainer {
+   padding-top: 0;
+   padding-left: 2rem;
+   padding-bottom: 1rem;
+}
+
+.scrollContainer > div {
+   overflow-y: scroll;
+}
+
+.scrollContainer ::-webkit-scrollbar {
+   scrollbar-color: var(--bg1) var(--bg2);
+   width: 1rem;
+   height: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+   .container {
+      width: 70%;
+      top: 2rem;
+   }
+}
+
+.modal-backdrop {
+    background-color: red;
+ }
+
+ .exit {
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    background: red;
+    padding: 1.5rem;
+    font-size: 2rem;
+    border-radius: 200px;
+    cursor: pointer;
+ }
+
+ .form {
+   display: flex;
+   width: 100%;
+   flex-direction: column;
+   gap: 1rem;
+   margin-bottom: 2rem;
+ }
+
+ .form > textarea, form > input {
+   padding: 0.5rem;
+   border-radius: 0.4rem;
+   font-size: 1.2rem;
+   outline-color: var(--secondary);
+ }
+
+ .moderators {
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+ }
+
+.moderator {
+
+   display: flex;
+   align-items: center;
+   justify-content: start;
+   padding: 0.5rem 1rem;
+   flex-direction: row;
+   gap: 2rem;
+   background: var(--bg1);
+   border-radius: 0.2rem;
+   cursor: pointer;
+}
+
+.profilePic {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 4rem;
+   height: 4rem;
+}
+
+.info {
+   display: flex;
+   flex-direction: column;
+   gap: 0.5rem;
+   line-height: 1.5rem;
+}
+
+.info > div {
+   display: flex;
+   flex-direction: row;
+   gap: 1rem;
+}
+
+.moderator > :last-child {
+   margin-left: auto;
+   padding: 0 2rem;
+}

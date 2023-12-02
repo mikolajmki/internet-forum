@@ -9,10 +9,12 @@ import { useNavigate } from "react-router-dom";
 import { toDate, toDateAndTime } from "../../helpers/toDate";
 import { MoreOptions } from "../MoreOptions/MoreOptions";
 import { deleteThread } from "../../actions/threadAction";
+import { followThread } from "../../api/threadRequest";
 
 export const ThreadSection = ({ thread }) => {
 
-    const [modal, setModal] = useState(false);
+    const [ modal, setModal ] = useState(false);
+    const [ followers, setFollowers ] = useState(thread.followers);
 
     const dispatch = useDispatch();
 
@@ -24,6 +26,15 @@ export const ThreadSection = ({ thread }) => {
         dispatch(deleteThread(data));
         navigate(`/forum/${thread.forumId._id}`)
     }
+
+    const handleFollow = async (type) => {
+        const { data } = await followThread({ threadId: thread._id, type, token });
+        setFollowers(data);
+    }
+
+    useEffect(() => {
+        setFollowers(thread.followers)
+    }, [])
 
     const navigate = useNavigate();
     // <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
@@ -38,14 +49,19 @@ export const ThreadSection = ({ thread }) => {
 
             <div className={css.btnWrapper}>
                 { thread.posts.length === 0 && user && user._id === thread.author._id ?
-                <div className={`btn ${css.btn}`} style={{ background: "var(--buttonRed)", boxShadow: "var(--buttonRedBoxShadow)" }} onClick={() => handleDelete({ threadId: thread._id, token})}>
+                <div className={`btnRed ${css.btn}`} onClick={() => handleDelete({ threadId: thread._id, token})}>
                     <div className={css.circle}><UilTrashAlt/></div>
                     Usun
                 </div> : <></> }
-                <div className="btn" style={{ width: "fit-content" }} onClick={() => user ? setModal((prev) => !prev) : navigate("/auth")}>
-                        <div className="numberBadge" style={{ background: "var(--bg1)" }} ><div>{thread.followers.length}</div></div>
-                        Obserwuj watek
-                    </div>
+                { user && followers.includes(user._id) ? 
+                <div className="btn" onClick={() => user ? handleFollow(0) : navigate("/auth")}>
+                    <div className="numberBadge" style={{ background: "var(--bg1)" }} ><div>{followers.length}</div></div>
+                    Przestan obserwowac
+                </div> :
+                <div className="btn" onClick={() => { handleFollow(1) }}>
+                    <div className="numberBadge" style={{ background: "var(--bg1)" }} ><div>{followers.length}</div></div>
+                    Obserwuj watek
+                </div> }
                 <div className={`btn ${css.btn}`} onClick={() => user? setModal((prev) => !prev) : navigate("/auth")}>
                     <div className={css.circle}><UilPlusCircle/></div>
                     Dodaj odpowiedz
@@ -58,7 +74,7 @@ export const ThreadSection = ({ thread }) => {
                     <div className={css.sampleImg}>
                         <span></span>
                     </div>
-                    <span>{thread.author.rank}</span>
+                    <span style={ thread.author.rank === "Moderator" ? { color: "yellow" } : thread.author.rank === "Administrator" ? { color: "orange" } : {} }>{thread.author.rank}</span>
                     <div className={css.stats}>
                         <span>Reputacja: <div className={`numberBadge ${css.numberBadge}`}><div>{thread.author.reputation}</div></div></span>
                         <span>Odpowiedzi: <div className={`numberBadge ${css.numberBadge}`}><div>{thread.author.answers}</div></div></span>

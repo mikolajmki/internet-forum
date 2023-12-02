@@ -82,7 +82,7 @@ export const PostItem = ({ post, location }) => {
                     <div className={css.sampleImg}>
                         <span></span>
                     </div>
-                    <span>{post.author.rank}</span>
+                    <span style={ post.author.rank === "Moderator" ? { color: "yellow" } : post.author.rank === "Administrator" ? { color: "orange" } : {} }>{post.author.rank}</span>
                     {/* <span>Reputacja: <div className={`numberBadge ${css.numberBadge}`}><div>{thread.author.reputation}</div></div></span>
                     <span>Odpowiedzi: <div className={`numberBadge ${css.numberBadge}`}><div>{thread.author.answers}</div></div></span> */}
                     <div className={css.stats}>

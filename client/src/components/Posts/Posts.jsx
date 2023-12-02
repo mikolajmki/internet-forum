@@ -14,8 +14,8 @@ export const Posts = ({ posts, location }) => {
 
     return (
             <div className={css.container} style={ location === "forums" ? { gap: "0.5rem", paddingTop: "1rem"} : null  }>
-                { posts.map((post) => 
-                    <PostItem post={post} location={location}/>
+                { posts.map((post, i) => 
+                    <PostItem key={i} post={post} location={location}/>
             ) }
             </div>
     )

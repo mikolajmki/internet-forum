@@ -71,3 +71,16 @@ export const getThreadsByLimit = (limit) => async (dispatch) => {
         dispatch({ type: "THREADS_FAIL" });
     }
 };
+
+export const getThreadsByForumIdSortedByParam = (forumId, sort) => async (dispatch) => {
+    dispatch({ type: "THREADS_UPDATE_START" });
+    try {
+        const { data } = await ThreadApi.getThreadsByForumIdSortedByParam(forumId, sort);
+        console.log(data)
+        dispatch({ type: "THREADS_SUCCESS", data: data });
+    } catch (err) {
+        console.log(err);
+        dispatch({ type: "THREADS_FAIL" });
+    }
+};
+

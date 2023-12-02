@@ -10,6 +10,8 @@ const userSchema = mongoose.Schema({
     reputation: { type: Number, default: 0 },
     answers: { type: Number, default: 0 },
     signature: { type: String },
+    city: { type: String, default: "Polska" },
+    isModerator: { type: Boolean, default: false },
     
     followers: [],
     following: [],
@@ -17,7 +19,6 @@ const userSchema = mongoose.Schema({
     profilePicture: String,
     coverPicture: String,
     about: String,
-    country: String,
 
 }, { timestamps: true });
 

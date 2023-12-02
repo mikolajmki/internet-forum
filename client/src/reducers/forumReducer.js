@@ -4,6 +4,8 @@ const forumReducer = (state = { categories: [], threads: [], thread: null, visit
             return { ...state, categories: action.data }
         case "THREADS_START":
             return { ...state, loading: true, error: false };
+        case "THREADS_UPDATE_START":
+            return { ...state, loading: false, error: false };
         case "THREADS_SUCCESS":
             return { ...state, threads: action.data, loading: false, error: false };
         case "THREADS_FAIL":

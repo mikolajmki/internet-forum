@@ -3,7 +3,11 @@ import { useSelector } from 'react-redux';
 
 const API = axios.create({ baseURL: "http://localhost:5000" });
 
+export const followThread = (data) => API.put(`/thread/${data.threadId}/follow`, { type: data.type }, { headers: { Authorization: `Bearer ${data.token}` } })
+
 export const getThreadsByForumId = (forumId) => API.get(`/thread/forumId/${forumId}`);
+export const getThreadsByForumIdSortedByParam = (forumId, sort) => API.get(`/thread/forumId/${forumId}/sort/${sort}`);
+
 export const getThreadsByAuthorId = (userId) => API.get(`/thread/authorId/${userId}`);
 export const getThreadWithPostsById = (threadId) => API.get(`/thread/${threadId}`);
 

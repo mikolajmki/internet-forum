@@ -21,6 +21,52 @@ export const getUser = async (req, res) => {
     }
 }
 
+export const getUsersModerators = async (req, res) => {
+    
+    try {
+        const users = await User.find({ isModerator: true })
+        .select("username profilePicture reputation answers createdAt");
+        
+        return res.status(200).json(users);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
+export const getUsersByUsernameLike = async (req, res) => {
+
+    const username = req.params.username;
+
+    try {
+        const users = await User.find({ username: { $regex: username, $options: "i" } })
+        .select("username profilePicture reputation answers createdAt isModerator");
+
+        if (users) {
+            return res.status(200).json(users);
+        } else {
+            return res.status(204).json([]);
+        }
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
+export const toggleUserIsModerator = async (req, res) => {
+
+    const toggleUserId = req.body.toggleUserId;
+    console.log(toggleUserId)
+
+    try {
+        const user = await User.findOneAndUpdate({ _id: toggleUserId }, [ { $set: { isModerator: { $eq: [ false, "$isModerator" ] } } } ]);
+        
+        user.isModerator ? await user.updateOne({ rank: "Uzytkownik" }) : await user.updateOne({ rank: "Moderator" });
+
+        return res.status(200).json({ message: "Toggled successfully." });
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
 export const updateUser = async (req, res) => {
     
     const id = req.params.id;

@@ -2,6 +2,7 @@ import Thread from "../Models/Thread.js";
 import Forum from "../Models/Forum.js";
 import Notification from "../Models/Notification.js";
 import { createNotificationsOfType } from "./NotificationController.js";
+import mongoose from "mongoose";
 
 
 export const getAllThreadsWithPosts = async (req, res) => {
@@ -65,6 +66,36 @@ export const getThreadsByAuthorId = async (req, res) => {
     }
 };
 
+export const getThreadsByForumIdSortedByParam = async (req, res) => {
+
+    const forumId = req.params.forumId;
+    const sort = req.params.sort;
+
+    try {
+        let threads = await Thread
+        .find({ forumId: forumId })
+        .sort(sort)
+        .populate("forumId", ["name"])
+        .populate("author", ["username", "createdAt", "profilePicture"])
+
+        if (sort === "-posts") {
+            const sortedThreads = threads.sort((a, b) => {
+                return b.posts.length - a.posts.length;
+            });
+            return res.status(200).json(sortedThreads);
+        }
+
+        // .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
+  
+        return res.status(200).json(threads);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: err
+        });
+    }
+};
+
 export const getThreadsByForumId = async (req, res) => {
 
     const forumId = req.params.forumId;
@@ -74,7 +105,7 @@ export const getThreadsByForumId = async (req, res) => {
         .find({ forumId: forumId })
         .populate("forumId", ["name"])
         .populate("author", ["username", "createdAt", "profilePicture"])
-        .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
+        // .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
   
         return res.status(200).json(threads);
     } catch (err) {
@@ -110,27 +141,33 @@ export const getThreadWithPostsById = async (req, res) => {
 export const followThread = async (req, res) => {
 
     const threadId = req.params.id;
-    const type = req.params.type;
-    const userId = req.body.userId;
+    const type = req.body.type;
+    const userId = new mongoose.Types.ObjectId(req.body.userId);
 
     try {
-        const thread = await Thread.findById(threadId)
+        const thread = await Thread.findById(threadId);
 
-        if (thread.author.toString() === userId) {
+        console.log(thread.author, userId)
+
+        if (thread.author.toString() === userId.toString()) {
             return res.status(403).json({ message: "Can not follow own thread." })
         }
 
-        if (type === "0" && thread.followers.includes(userId)) {
+        if (type === 0 && thread.followers.includes(userId)) {
             // unfollow
             await thread.updateOne({ $pull: { followers: req.body.userId } });
-        } else if (type === "1" && !thread.followers.includes(userId)) {
+        } else if (type === 1 && !thread.followers.includes(userId)) {
             // follow
             await thread.updateOne({ $push: { followers: req.body.userId } });
         } else {
             return res.status(403).json({ message: "Forbidden action." })
         }
+
+        const result = await Thread.findById(threadId).select("followers");
+
+        console.log(result.followers)
         
-        return res.status(200).json({ message: "Thread followed!" });
+        return res.status(200).json(result.followers);
     } catch (err) {
         return res.status(500).json({ message: err });
     }

@@ -44,7 +44,7 @@ export const Auth = () => {
                         <span>Baw</span><span>aria.pl</span>
                     </div>
                 </div>
-                <form onSubmit={(e) => e.preventDefault()} style={ !login ? { flex: 3 } : {}}>
+                <form className={css.form} onSubmit={(e) => e.preventDefault()} style={ !login ? { flex: 3 } : {}}>
                     <span>Nazwa użytkownika:</span>
                     <input id="username" onChange={(e) => setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value })} type="text" />
 

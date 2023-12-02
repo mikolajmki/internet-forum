@@ -43,7 +43,7 @@ export const createNotificationsOfType = (type, section, authorId) => {
             }
         });
     }
-
+    console.log("notifications", notifications)
     return notifications;
 }
 

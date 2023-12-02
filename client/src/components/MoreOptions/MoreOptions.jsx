@@ -1,0 +1,50 @@
+import { useState } from "react";
+import css from "./MoreOptions.module.css";
+import { useDispatch } from "react-redux";
+import { deletePost } from "../../actions/postAction";
+import { getThreadsByForumIdSortedByParam } from "../../actions/threadAction";
+
+export const MoreOptions = ({ data, location, forumId }) => {
+
+    const [ menu, setMenu ] = useState(false)
+
+    const dispatch = useDispatch();
+
+    const handleDelete = (data) => {
+        dispatch(deletePost(data));
+        setMenu(false);
+    }
+
+    const forumForm = () => {
+        return (
+            <form className={css.sortForm} onChange={(e) => { handleSortThreads(e) }}>
+                <label>Najpopularniejsze <input type="radio" value="-views" name="group" /></label>
+                <label>Najnowsze<input type="radio" value="-createdAt" name="group" /></label>
+                <label>Najstarsze<input type="radio" value="createdAt" name="group" /></label>
+                <label>Alfabetycznie<input type="radio" value="title" name="group" /></label>
+                <label>Najwiecej odpowiedzi<input type="radio" value="-posts" name="group" /></label>
+            </form> 
+        )
+    }
+
+    const handleSortThreads = (e) => {
+        e.preventDefault();
+        dispatch(getThreadsByForumIdSortedByParam(forumId, document.querySelector('input[name="group"]:checked').value))
+        setMenu(false);
+    }
+
+    return (
+        <div className={css.options}>
+            <div onClick={() => setMenu((prev) => !prev)}>...</div>
+            { menu ? 
+            <div className={ css.menu } >
+                <div className={css.arrowUp}></div>
+                { location !== "forum" ? 
+                <span>Edytuj</span> :
+                    forumForm()
+                }
+                { location === "post" ? <span onClick={() => handleDelete(data)}>Usun</span> : <></> }
+            </div> : <></> }
+        </div>
+    )
+}

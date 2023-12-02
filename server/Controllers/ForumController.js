@@ -1,27 +1,32 @@
 import Forum from "../Models/Forum.js";
 import Category from "../Models/Category.js";
 import Thread from "../Models/Thread.js";
+import mongoose from "mongoose";
 
 export const followForum = async (req, res) => {
 
     const forumId = req.params.id;
-    const type = req.params.type;
     const userId = req.body.userId;
+    const type = req.body.type;
+
+    console.log(type)
 
     try {
         const forum = await Forum.findById(forumId);
-        console.log(forum)
-        if (type === "0" && forum.followers.includes(userId)) {
+        console.log(forum.followers, userId)
+        if (type === 0 && forum.followers.includes(userId)) {
             // unfollow
             await forum.updateOne({ $pull: { followers: userId } });
-        } else if (type === "1" && !forum.followers.includes(userId)) {
+        } else if (type === 1 && !forum.followers.includes(userId)) {
             // follow
             await forum.updateOne({ $push: { followers: userId } });
         } else {
             return res.status(403).json({ message: "Forbidden action." })
         }
+
+        const result = await Forum.findById(forumId).select("followers");
         
-        return res.status(200).json({ message: "Follow status updated!" });
+        return res.status(200).json(result.followers);
     } catch (err) {
         return res.status(500).json({ message: err });
     }
@@ -89,14 +94,14 @@ export const updateForum = async (req, res) => {
 };
 
 export const deleteForum = async (req, res) => {
-    const categoryId = req.body.categoryId;
+    const categoryId = req.params.categoryId;
     const forumId = req.params.id;
 
     try {
         
         const threads = await Thread.find({ forumId: forumId });
 
-        if (!threads) {
+        if (threads.length === 0) {
             await Category.findByIdAndUpdate({ _id: categoryId }, { $pull: { forums: forumId } });
             await Forum.findOneAndDelete({ _id: forumId });
             return res.status(200).json({ message: "Forum deleted." });

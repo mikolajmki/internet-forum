@@ -53,7 +53,7 @@ export const Home = () => {
         { categoriesWithForums && threads ?
 
         <div className={css.container}>
-            <HomeSection content={categoriesWithForums}/>
+            <HomeSection content={categoriesWithForums} setContent={setCategoriesWithForums}/>
             <SideSection location="home" content={threads}/>
         </div>
           

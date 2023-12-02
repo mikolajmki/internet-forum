@@ -34,7 +34,7 @@ export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId })
         style={{ overlay: { background: "#00000095" } }}>
             <div className={css.container}>
                 <h1>{title}</h1>
-                <form>
+                <form className={css.form}>
                     { type === "thread" ? 
                     <>
                     <div>Tytul:</div>

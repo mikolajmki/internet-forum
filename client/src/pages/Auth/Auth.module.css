@@ -43,7 +43,9 @@ h1 {
 }
 
 .credentials {
+    min-width: 18rem;
     display: flex;
+    flex: 1;
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -54,26 +56,58 @@ h1 {
     padding: 0 2rem;
 }
 
+.form > input {
+    font-size: 0.9rem;
+}
+
 .link {
     text-decoration: none;
 }
 
-form {
+.form {
     flex: 2;
     display: flex;
+    flex-direction: column;
+    gap: 1rem;
     justify-content: start;
     width: 90%;
     font-weight: 300;
 }
 
-form > input {
+.form > textarea {
+    border-radius: 0.5rem;
+    max-height: 4rem;
+    max-width: 100%;
+}
+
+.form > input {
     border: none;
 }
 
 .brief {
     padding: 0 2rem;
+    flex: 3;
     width: 100%;
     height: 100%;
     background: rgb(2,0,28);
     background: linear-gradient(90deg, rgba(2,0,28,1) 0%, rgba(1,27,59,1) 0%, rgba(108,167,205,1) 100%, rgba(20,80,122,1) 100%);
+}
+
+@media screen and (max-width: 768px) {
+    .credentials {
+        width: 100%;
+    }
+
+    .form > input {
+        font-size: 1rem;
+    }
+
+    .form > textarea {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .brief {
+        display: none;
+    }
 }

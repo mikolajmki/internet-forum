@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { UilPlusCircle } from '@iconscout/react-unicons'
 import { logOut } from "../../actions/authAction";
 import { Threads } from "../Threads/Threads.jsx";
+import { AdminModal } from '../AdminModal/AdminModal.jsx';
 import { getThreadsByAuthorId } from "../../actions/threadAction";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserById } from "../../actions/userAction";
@@ -18,6 +19,9 @@ export const ProfileSection = () => {
     const { visitedUser } = useSelector((state) => state.forumReducer);
 
     const [ user, setUser ] = useState(null);
+    const [ modal, setModal ] = useState(false);
+
+    const adminId = process.env.REACT_APP_FORUM_ADMIN_ID;
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -62,6 +66,11 @@ export const ProfileSection = () => {
             { user && threads[0].author === user._id && user._id === params.userId ?
             <>
                 <div className={css.btnWrapper}>
+                    { loggedInUser && loggedInUser._id === adminId ? 
+                    <div className="btn" onClick={() => setModal(true)}>
+                        <div className={css.circle}><UilPlusCircle/></div>
+                        Zarzadzaj moderatorami
+                    </div> : <></>  }
                     { loggedInUser && params.userId === loggedInUser._id ? 
                     <div className={`btn ${css.btn}`} onClick={() => handleLogout()}>
                         <div className={css.circle}><UilPlusCircle/></div>
@@ -90,6 +99,8 @@ export const ProfileSection = () => {
                     <Threads threads={threads} location='profile'/>
                 </div>
             </> : <span className="loader"></span> }
+            
+            <AdminModal adminId={adminId} modal={modal} setModal={setModal} type="moderator" />
         </div>
     )
 }
