@@ -10,6 +10,8 @@ import { getCategoriesWithForums } from "../../api/categoryRequest";
 
 export const Forums = ({ category, opened, setContent }) => {
 
+    const [ error, setError ] = useState(null);
+
     const navigate = useNavigate();
 
     const forums = category.forums;
@@ -25,9 +27,19 @@ export const Forums = ({ category, opened, setContent }) => {
     }
 
     const handleDeleteForum = async (forumId) =>  {
-        const { status } = await deleteForum({ categoryId: category._id, forumId, token });
-        if (status === 200) {
-            window.location.reload();
+        try {
+            const { status } = await deleteForum({ categoryId: category._id, forumId, token });
+            if (status === 200) {
+                window.location.reload();
+            }
+        } catch (err) {
+            console.log(err.response.data.message)
+            
+            setError(err.response.data.message);
+
+            setTimeout( () => {
+                setError(null)
+            } , 5000)
         }
     }
 
@@ -72,6 +84,10 @@ export const Forums = ({ category, opened, setContent }) => {
                     </div>
                     )
                 }) : <h4 style={{ paddingLeft: "1rem" }}>Nie ma jeszcze forow w tej kategorii.</h4> }
+            { error ? 
+            <div className="error">
+                <span>{error}</span>
+            </div> : <></> }
             </div> : "" }
         </div>
     )

@@ -29,9 +29,9 @@ export const registerUser = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 
-    const token = jwt.sign({ id: user._id, username: user.username }, process.env.SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id, username: user.username }, process.env.SECRET_KEY, { expiresIn: '4h' });
 
-    res.status(200).json({ user: user._doc, token: token, tokenExpiration: 1 });
+    res.status(200).json({ user: user._doc, token: token, tokenExpiration: 4 });
 }
 
 export const loginUser = async (req, res) => {
@@ -43,10 +43,10 @@ export const loginUser = async (req, res) => {
     const isEqual = await bcrypt.compare(req.body.password, user.password);
 
     if (!isEqual) {
-        return res.status(500).json({ message: "Password doesn't match." })
+        return res.status(401).json({ message: "Password doesn't match." })
     }
 
-    const token = jwt.sign({ id: user._id, username: user.username }, process.env.SECRET_KEY, { expiresIn: '1h' })
+    const token = jwt.sign({ id: user._id, username: user.username }, process.env.SECRET_KEY, { expiresIn: '4h' })
     
-    return res.status(200).json({ user: user._doc, token: token, tokenExpiration: 1 });
+    return res.status(200).json({ user: user._doc, token: token, tokenExpiration: 4 });
 }

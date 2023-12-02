@@ -149,6 +149,13 @@
     gap: 1rem;
 }
 
+.closed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
 .btn {
     width: 12rem;
 }

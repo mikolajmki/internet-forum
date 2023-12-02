@@ -57,7 +57,11 @@
         overflow-x: clip;
     }
 
-    .list > :last-child, .list > :nth-child(7) {
+    .container > :last-child {
+        display: none;
+    }
+
+    .list > :nth-child(1), .list > :nth-child(2) {
         display: none;
     }
 
@@ -106,6 +110,8 @@
     list-style: none;
     gap: 2rem;
     flex-wrap: wrap;
+    flex-direction: row;
+    padding: 1rem;
     margin: 0;
     padding-right: 2rem;
     align-items: center;

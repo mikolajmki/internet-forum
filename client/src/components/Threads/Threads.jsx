@@ -3,6 +3,7 @@ import css from './Threads.module.css';
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toDate } from "../../helpers/toDate";
+import limitString from "../../helpers/limitString.js"
 
 
 export const Threads = ({ loading, threads, location }) => {
@@ -20,7 +21,7 @@ export const Threads = ({ loading, threads, location }) => {
                     <div key={i} className={css.thread} onClick={() => navigate(`/thread/${thread._id}`)}>
                         <div className={css.dot}></div>
                             <div className={css.info}>
-                                <span>{thread.title}</span>
+                                <span>{limitString(thread.title) === thread.title ? thread.title : limitString(thread.title) + "..."}</span>
                                 <span>dodany przez {thread.author.username} dnia {toDate(thread.createdAt)}</span>
                             </div>
                         <div className={css.brief}>
@@ -42,7 +43,7 @@ export const Threads = ({ loading, threads, location }) => {
                         </div>
                     </div>
                 )
-            }) : <h2>Nie ma jeszcze watkow na tym forum.</h2> }
+            }) : location === "profile" ? <h1 style={{ padding: "2rem 1rem" }}>Uzytkownik nie opublikowal jeszcze zadnych watkow.</h1> : <h2>Nie ma jeszcze watkow na tym forum.</h2> }
             </div>
         </div>
     )

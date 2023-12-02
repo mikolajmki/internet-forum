@@ -15,13 +15,14 @@ export const Thread = () => {
     const params = useParams();
 
     useEffect(() => {
+        console.log("get")
         dispatch(getThreadWithPostsById(params.threadId))
     }, [])
 
     return (
         <>
             <Header/>
-            { loading ? <span className="loader"></span> : <ThreadSection thread={thread}/> }
+            { !thread || loading ? <span className="loader"></span> : <ThreadSection thread={thread}/> }
         </>
     )
 }

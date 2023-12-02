@@ -29,11 +29,11 @@ export const PostItem = ({ post, location }) => {
         }
     };
 
-    const handlegetThreadWithPostsById = (thread) => {
-        console.log(thread._id)
-        dispatch(getThreadWithPostsById(thread._id));
+    const handlegetThreadWithPostsById = (threadId) => {
+        console.log(threadId)
+        dispatch(getThreadWithPostsById(threadId));
         if (!loading) {
-            navigate(`/thread/${convertUrlString(thread.title)}`)
+            navigate(`/thread/${threadId}`)
         }
     }
 
@@ -106,7 +106,7 @@ export const PostItem = ({ post, location }) => {
                         {/* <span className={css.reactionCircle} onClick={() => {handleLike(post.id, post.likes + 1)}}><div>+</div></span>
                         <span className={css.reactionCircle}>{ post.upvotes.length - post.downvotes.length}</span>
                         <span className={css.reactionCircle} onClick={() => {handleLike(post.id, post.likes - 1)}}><div>-</div></span> */}
-                        {console.log(post.upvotes.length - post.downvotes.length)}
+                        {/* {console.log(post.upvotes.length - post.downvotes.length)} */}
                         { user && user._id !== post.author._id ? 
                         <button className={css.vote}
                             disabled={votes.userUpvoted || !user}

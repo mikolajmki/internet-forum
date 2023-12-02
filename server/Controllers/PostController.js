@@ -134,7 +134,11 @@ export const createPost = async (req, res) => {
 
     try {
         const thread = await Thread
-        .findByIdAndUpdate({ _id: threadId }, { $push: { posts: post._id } })
+        .findByIdAndUpdate({ _id: threadId }, { $push: { posts: post._id } });
+
+        if (thread.isClosed) {
+            return res.status(403).json({ message: "Thread closed." })
+        }
 
         const resultPost = await post.populate("author");
         await post.save();

@@ -66,6 +66,8 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
             }
         }) )
 
+        setUsers([])
+
         console.log(users)
     }
 

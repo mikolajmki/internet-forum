@@ -3,12 +3,13 @@ import * as AuthApi from '../api/authRequest.js';
 export const logIn = (formData) => async (dispatch) => {
     dispatch({ type: "AUTH_START" });
     try {
-        const { data } = await AuthApi.logIn(formData);
+        const { data, status } = await AuthApi.logIn(formData);
         dispatch({ type: "AUTH_SUCCESS", data: data });
         return false;
     } catch (err) {
-        console.log(err);
-        dispatch({ type: "AUTH_FAIL" });
+        const { data } = err.response;
+        console.log(data);
+        dispatch({ type: "AUTH_FAIL", data: data.message } );
         return true;
     }
 }
@@ -19,8 +20,9 @@ export const signUp = (formData) => async (dispatch) => {
         const { data } = await AuthApi.signUp(formData);
         dispatch({ type: "AUTH_SUCCESS", data: data });
     } catch (err) {
-        console.log(err);
-        dispatch({ type: "AUTH_FAIL" });
+        const { data } = err.response;
+        console.log(data);
+        dispatch({ type: "AUTH_FAIL", data: data.message });
     }
 }
 

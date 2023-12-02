@@ -103,6 +103,13 @@ button, input[type="submit"], input[type="reset"] {
   background: var(--secondary);
 }
 
+.error {
+  border-radius: 0.5rem;
+  background: var(--section);
+  padding: 0.5rem;
+  color: var(--buttonRed);
+}
+
 .numberBadge > div {
   line-height: 1.5rem;
   height: 1.2rem;

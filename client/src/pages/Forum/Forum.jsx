@@ -30,6 +30,7 @@ export const Forum = () => {
 
     const handleGetPosts = async () => {
         const { data } = await getPostsByLimit(10);
+        console.log(data)
         setPosts(data);
     };
 

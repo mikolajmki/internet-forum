@@ -7,7 +7,8 @@ const threadSchema = mongoose.Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User"},
     views: { type: Number, default: 0 },
     posts: [ { type: mongoose.Schema.Types.ObjectId, ref: "Post", required: false } ],
-    followers: [ { type: mongoose.Schema.Types.ObjectId, ref: "User" } ]
+    followers: [ { type: mongoose.Schema.Types.ObjectId, ref: "User" } ],
+    isClosed: { type: Boolean, default: false }
 }, { timestamps: true });
 
 export default mongoose.model("Thread", threadSchema);

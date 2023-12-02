@@ -63,7 +63,7 @@ export const ProfileSection = () => {
 
     return (
         <div className={css.container}>
-            { user && threads[0].author === user._id && user._id === params.userId ?
+            { user && threads && user._id === params.userId ?
             <>
                 <div className={css.btnWrapper}>
                     { loggedInUser && loggedInUser._id === adminId ? 
@@ -96,7 +96,7 @@ export const ProfileSection = () => {
                     </div>
                 <div className={css.profile}>
                     <span>Watki uzytkownika:</span>
-                    <Threads threads={threads} location='profile'/>
+                    <Threads location="profile" threads={threads}/>
                 </div>
             </> : <span className="loader"></span> }
             

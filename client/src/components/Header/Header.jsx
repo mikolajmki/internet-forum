@@ -14,6 +14,8 @@ import { getNotificationsOfAuthUser } from "../../actions/notificationAction";
 export const Header = ({ location }) => {
 
     const { categories } = useSelector((state) => state.forumReducer);
+
+    // const categories = ["Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze"]
     
     const { user, token } = useSelector((state) => state.authReducer.authData)
     
@@ -57,7 +59,11 @@ export const Header = ({ location }) => {
     }
 
     const loggedUserRender = () => {
-        return user == null ? (
+        return (
+            <>
+                <li></li>
+                <li></li>
+                { user == null ? (
                 <li className={css.link} style={{ cursor: 'pointer' }} onClick={() => navigate("/auth")}>
                     <span>Zaloguj sie</span>
                 </li> 
@@ -70,7 +76,7 @@ export const Header = ({ location }) => {
                         <NotificationIcon modalOpened={modalOpened} setModalOpened={setModalOpened} type={1}/>
                         { menuOpened ? 
                         <>
-                        <div className={css.icon}>
+                        <div className={css.icon} onClick={() => {navigate(`/profile/${user._id}`)}}>
                             <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
                         </div>
                         </> : ''}
@@ -91,7 +97,9 @@ export const Header = ({ location }) => {
                     </Link> 
                 </li>}
             </>
-        )
+        ) }
+            </>
+        ) 
     }
 
     return (
@@ -119,8 +127,12 @@ export const Header = ({ location }) => {
 
                     <li className={css.spacer}></li>
 
-                    { menuOpened ? '' : loggedUserRender() }
+                </ul>
 
+            </div>
+            <div>
+                <ul className={css.list}>
+                    { menuOpened ? '' : loggedUserRender() }
                 </ul>
             </div>
         </div>

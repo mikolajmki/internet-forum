@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import css from "./MoreOptions.module.css";
 import { useDispatch } from "react-redux";
 import { deletePost } from "../../actions/postAction";
 import { getThreadsByForumIdSortedByParam } from "../../actions/threadAction";
+import { toggleThreadIsClosed } from "../../api/threadRequest";
 
-export const MoreOptions = ({ data, location, forumId }) => {
+export const MoreOptions = ({ data, location, forumId, isModerator, value, setValue }) => {
 
     const [ menu, setMenu ] = useState(false)
 
     const dispatch = useDispatch();
+
+    const handleToggleThreadIsClosed = async (data) => {
+        await toggleThreadIsClosed(data);
+    }
+
+    useEffect(() => {
+        console.log(value)
+        // handleToggleThreadIsClosed(data);
+    }, [value])
+
 
     const handleDelete = (data) => {
         dispatch(deletePost(data));
@@ -39,10 +50,8 @@ export const MoreOptions = ({ data, location, forumId }) => {
             { menu ? 
             <div className={ css.menu } >
                 <div className={css.arrowUp}></div>
-                { location !== "forum" ? 
-                <span>Edytuj</span> :
-                    forumForm()
-                }
+                { location !== "threads" ? <span>Edytuj</span> : forumForm()}
+                { location === "thread" && isModerator ? <span onClick={() => { setValue(prev => !prev) }}>{ value ? "Otworz watek" : "Zamknij watek" }</span> : <></> }
                 { location === "post" ? <span onClick={() => handleDelete(data)}>Usun</span> : <></> }
             </div> : <></> }
         </div>

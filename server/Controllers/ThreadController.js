@@ -173,6 +173,18 @@ export const followThread = async (req, res) => {
     }
 };
 
+export const toggleThreadIsClosed = async (req, res) => {
+    const threadId = req.body.threadId;
+
+    try {
+        await Thread.findOneAndUpdate({ _id: threadId }, [ { $set: { isClosed: { $eq: [ false, "$isClosed" ] } } } ]);
+
+        return res.status(200).json({ message: "Toggled successfully" });
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
 export const createThread = async (req, res) => {
 
     const forumId = req.body.forumId;

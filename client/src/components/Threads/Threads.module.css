@@ -91,6 +91,7 @@ h2 {
 
 .info > :nth-child(1) {
     margin-bottom: 1rem;
+    overflow-x: hidden;
     font-weight: bold;
 }
 

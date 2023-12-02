@@ -15,6 +15,7 @@ export const ThreadSection = ({ thread }) => {
 
     const [ modal, setModal ] = useState(false);
     const [ followers, setFollowers ] = useState(thread.followers);
+    const [ closed, setClosed ] = useState(thread.isClosed);
 
     const dispatch = useDispatch();
 
@@ -31,10 +32,6 @@ export const ThreadSection = ({ thread }) => {
         const { data } = await followThread({ threadId: thread._id, type, token });
         setFollowers(data);
     }
-
-    useEffect(() => {
-        setFollowers(thread.followers)
-    }, [])
 
     const navigate = useNavigate();
     // <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
@@ -53,6 +50,11 @@ export const ThreadSection = ({ thread }) => {
                     <div className={css.circle}><UilTrashAlt/></div>
                     Usun
                 </div> : <></> }
+                { closed ? 
+                <div className={css.closed}>
+                    <span>Watek zostal zamkniety przez moderatora</span>
+                </div> : 
+                <>
                 { user && followers.includes(user._id) ? 
                 <div className="btn" onClick={() => user ? handleFollow(0) : navigate("/auth")}>
                     <div className="numberBadge" style={{ background: "var(--bg1)" }} ><div>{followers.length}</div></div>
@@ -66,6 +68,7 @@ export const ThreadSection = ({ thread }) => {
                     <div className={css.circle}><UilPlusCircle/></div>
                     Dodaj odpowiedz
                 </div>
+                </> }
             </div>
             
             <div className={css.post}>
@@ -84,8 +87,8 @@ export const ThreadSection = ({ thread }) => {
                 <div className={css.contentWrapper}>
                     <div className={css.top}>
                             <span>{toDateAndTime(thread.createdAt)}</span>
-                            { user && user._id === thread.author._id ? 
-                            <MoreOptions data={{ threadId: thread._id, token }}/> : <></> }
+                            { user && (user._id === thread.author._id || user.isModerator) ? 
+                            <MoreOptions value={closed} setValue={setClosed} isModerator={user.isModerator} location="thread" data={{ threadId: thread._id, token }}/> : <></> }
                     </div>
                     <div className={css.content}>
                         <span>{thread.description}</span>
