@@ -7,6 +7,6 @@ export const getUserById = (userId) => async (dispatch) => {
         dispatch({ type: "VISITED_USER_SUCCESS", data: data });
     } catch (err) {
         console.log(err);
-        dispatch({ type: "THREAD_FAIL" });
+        dispatch({ type: "THREAD_FAIL", data: err.response.data.message });
     }
 }

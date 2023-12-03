@@ -34,8 +34,12 @@ export const Forums = ({ category, opened, setContent }) => {
             }
         } catch (err) {
             console.log(err.response.data.message)
-            
-            setError(err.response.data.message);
+
+            if (err.response.status === 401) {
+                dispatch({ type: "JWT_FAIL", data: err.response.data.message });
+            } else {            
+                setError(err.response.data.message);
+            }
 
             setTimeout( () => {
                 setError(null)

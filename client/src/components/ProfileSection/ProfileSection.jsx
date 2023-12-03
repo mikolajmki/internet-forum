@@ -11,7 +11,7 @@ import { getUserById } from "../../actions/userAction";
 
 export const ProfileSection = () => {
 
-    const loggedInUser = useSelector((state) => state.authReducer.authData.user);
+    const { user: loggedInUser, token } = useSelector((state) => state.authReducer.authData);
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
     const img = require('../../public/defaultCover.jpg');
 
@@ -100,7 +100,7 @@ export const ProfileSection = () => {
                 </div>
             </> : <span className="loader"></span> }
             
-            <AdminModal adminId={adminId} modal={modal} setModal={setModal} type="moderator" />
+            <AdminModal token={token} adminId={adminId} modal={modal} setModal={setModal} type="moderator" />
         </div>
     )
 }

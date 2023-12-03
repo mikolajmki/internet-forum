@@ -6,7 +6,8 @@ import { createCategory } from "../../api/categoryRequest";
 import { getUsersByUsernameLike, getUsersModerators, toggleUserIsModerator } from "../../api/userRequest";
 import { toDate } from "../../helpers/toDate";
 import useDebounce from "../../helpers/useDebounce";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }) => {
 
@@ -25,27 +26,41 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
     }, [toggleUserId])
 
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const logOut = (err) => {
+        dispatch({ type: "LOGOUT_START" });
+        navigate("/auth");
+    }
 
     const handleCreate = async (e) => {
         e.preventDefault()
-        if (type === "forum") {
-            const { status } = await createForum({ body: { ...formData, categoryId }, token });
-            if (status === 200) {
-                setModal((prev) => !prev);
-                window.location.reload();
+        try {
+            if (type === "forum") {
+                await createForum({ body: { ...formData, categoryId }, token });
+            } else {
+                await createCategory({ body: formData, token });
             }
-        }
-        const { status } = await createCategory({ body: formData, token });
-        if (status === 200) {
             window.location.reload();
+        } catch (err) {
+            if (err.response.status === 401) {
+                logOut(err);
+            } else {
+
+            }
         }
     }
 
     // user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')
 
     const handleGetUsersModerators = async () => {
-        const { data } = await getUsersModerators();
-        setModerators(data);
+        try {
+            const { data } = await getUsersModerators();
+            setModerators(data);
+        } catch (err) {
+            logOut(err);
+        }
     } 
 
     const handleToggleUserIsModerator = async (toggleUserId) => {
@@ -54,7 +69,13 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
             return;
         }
 
-        await toggleUserIsModerator({ toggleUserId, token: adminToken })
+        try {
+            await toggleUserIsModerator({ toggleUserId, token: adminToken })
+        } catch (err) {
+            if (err.response.status === 401) {
+                logOut(err);
+            }
+        }
 
         handleGetUsersModerators();
 
@@ -71,9 +92,19 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
         console.log(users)
     }
 
+    // getUsersByUsernameLike
+
     useDebounce(async () => {
-        const { data } = await getUsersByUsernameLike(formData.username);
-        setUsers(data);
+        if (type === "moderator" && formData.username ) {
+            try {
+                const { data } = await getUsersByUsernameLike({ username: formData.username, token });
+                setUsers(data);
+            } catch (err) {
+                if (err.response.status === 401) {
+                    logOut(err);
+                }
+            }
+        }
     }, [formData], 1000)
 
     useEffect(() => {

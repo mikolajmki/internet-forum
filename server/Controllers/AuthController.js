@@ -46,7 +46,7 @@ export const loginUser = async (req, res) => {
         return res.status(401).json({ message: "Password doesn't match." })
     }
 
-    const token = jwt.sign({ id: user._id, username: user.username }, process.env.SECRET_KEY, { expiresIn: '4h' })
+    const token = jwt.sign({ id: user._id, username: user.username }, process.env.SECRET_KEY, { expiresIn: '10s' })
     
     return res.status(200).json({ user: user._doc, token: token, tokenExpiration: 4 });
 }

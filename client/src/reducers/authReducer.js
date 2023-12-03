@@ -8,6 +8,11 @@ const authReducer = (state = { authData: { user: null }, notifications: [], load
         case "AUTH_FAIL":
             localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
             return { ...state, loading: false, error: action.data };
+        case "ERROR_RESET":
+            return { ...state, error: null };
+        case "JWT_FAIL":
+            // localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
+            return { ...state, loading: false, authData: { user: null } , error: action.data };
         case "UPDATING_START":
             return { ...state, loading: true, error: false };
         case "UPDATING_SUCCESS":

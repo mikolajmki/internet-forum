@@ -110,6 +110,12 @@ button, input[type="submit"], input[type="reset"] {
   color: var(--buttonRed);
 }
 
+.errorWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .numberBadge > div {
   line-height: 1.5rem;
   height: 1.2rem;

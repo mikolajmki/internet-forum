@@ -20,9 +20,9 @@ export const getAllThreadsWithPosts = async (req, res) => {
   
         return res.status(200).json(threads);
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         return res.status(500).json({
-            error: err
+            message: err.message
         });
     }
 };
@@ -41,9 +41,9 @@ export const getThreadsByLimit = async (req, res) => {
   
         return res.status(200).json(threads);
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         return res.status(500).json({
-            error: err
+            message: err.message
         });
     }
 };
@@ -59,12 +59,27 @@ export const getThreadsByAuthorId = async (req, res) => {
   
         return res.status(200).json(threads);
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         return res.status(500).json({
-            error: err
+            message: err.message
         });
     }
 };
+
+export const getThreadsByTitleLike = async (req, res) => {
+    const title = req.params.title;
+
+    try {
+        const threads = await Thread.find({ username: { $regex: title, $options: "i" } })
+        .populate("author", ["username", "createdAt", "profilePicture"])
+
+        return res.status(200).json(threads);
+
+    } catch (err) {
+        
+        return res.status(500).json({ message: err.message })
+    }
+}
 
 export const getThreadsByForumIdSortedByParam = async (req, res) => {
 
@@ -75,7 +90,6 @@ export const getThreadsByForumIdSortedByParam = async (req, res) => {
         let threads = await Thread
         .find({ forumId: forumId })
         .sort(sort)
-        .populate("forumId", ["name"])
         .populate("author", ["username", "createdAt", "profilePicture"])
 
         if (sort === "-posts") {
@@ -89,9 +103,9 @@ export const getThreadsByForumIdSortedByParam = async (req, res) => {
   
         return res.status(200).json(threads);
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         return res.status(500).json({
-            error: err
+            message: err.message
         });
     }
 };
@@ -103,15 +117,15 @@ export const getThreadsByForumId = async (req, res) => {
     try {
         let threads = await Thread
         .find({ forumId: forumId })
-        .populate("forumId", ["name"])
+        .sort("-createdAt")
         .populate("author", ["username", "createdAt", "profilePicture"])
         // .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
   
         return res.status(200).json(threads);
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         return res.status(500).json({
-            error: err
+            message: err.message
         });
     }
 };
@@ -131,9 +145,9 @@ export const getThreadWithPostsById = async (req, res) => {
 
         return res.status(200).json(thread);
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         return res.status(500).json({
-            error: err
+            message: err.message
         });
     }
 };
@@ -169,7 +183,7 @@ export const followThread = async (req, res) => {
         
         return res.status(200).json(result.followers);
     } catch (err) {
-        return res.status(500).json({ message: err });
+        return res.status(500).json({ message: err.message });
     }
 };
 
@@ -181,7 +195,7 @@ export const toggleThreadIsClosed = async (req, res) => {
 
         return res.status(200).json({ message: "Toggled successfully" });
     } catch (err) {
-        return res.status(500).json(err);
+        return res.status(500).json({ message: err.message });
     }
 }
 
@@ -211,7 +225,7 @@ export const createThread = async (req, res) => {
         return res.status(200).json(resultThread);
     } catch (err) {
         console.log(err);
-        return res.status(500).json({ message: err });
+        return res.status(500).json({ message: err.message });
     }
 };
 
@@ -230,7 +244,7 @@ export const updateThread = async (req, res) => {
         return res.status(403).json({ message: "Action forbidden. "});
     } catch (err) {
         console.log(err);
-        res.status(500).json({ message: err });
+        res.status(500).json({ message: err.message });
     }
 };
 
@@ -259,6 +273,6 @@ export const deleteThread = async (req, res) => {
         return res.status(403).json({ message: "Action forbidden. Threads of " + thread.posts.length + " remaining." })
     } catch (err) {
         console.log(err);
-        return res.status(500).json({ message: err });
+        return res.status(500).json({ message: err.message });
     }
 };

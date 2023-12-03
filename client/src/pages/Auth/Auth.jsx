@@ -10,10 +10,10 @@ export const Auth = () => {
     const [ formData, setFormData ] = useState({ username: "", password: "" });
     const [ login, setLogin ] = useState(true);
     const [ pass, setPass ] = useState(false);
-    const [ err, setErr ] = useState(null)
+    const [ error, setError ] = useState(null)
 
     const { user } = useSelector((state) => state.authReducer.authData);
-    const { error, loading } = useSelector((state) => state.authReducer);
+    const { error: err, loading } = useSelector((state) => state.authReducer);
 
     const navigate = useNavigate();
     
@@ -23,7 +23,7 @@ export const Auth = () => {
     const handleAuth = () => {
 
         if (!login && formData.password !== formData.confirmPassword) {
-            setErr("Passwords doesn't match")
+            setError("Passwords doesn't match")
             console.log(err)
         } else if (login) {
             dispatch(logIn(formData));
@@ -33,17 +33,17 @@ export const Auth = () => {
     }
 
     useEffect(() => {
-        setErr(error);
+        setError(err);
     }, [loading])
 
     useEffect(() => {
         setFormData({ username: "", password: "" })
-        setErr(null)  
+        setError(null)  
     }, [login]);
 
     useEffect(() => {
-        console.log(user, error)
-        if (user && !error) {
+        console.log(user, err)
+        if (user && !err) {
             navigate(-1);
         }
     }, [user, error])
@@ -80,9 +80,9 @@ export const Auth = () => {
                         <span>Potwierdź hasło:</span>
                         <input id="confirmPassword" onChange={(e) => setFormData({ ...formData, confirmPassword: e.currentTarget.value })} type="password" required/>
                     </> : <></> }
-                    { err && !loading ?
+                    { error && !loading ?
                     <div className="error">
-                        <span>{err}</span>
+                        <span>{error}</span>
                     </div> : <></> }
                     <div className={css.buttons}>
                         <button className={`${css.button} btn`} onClick={(e) => {!login ? setLogin(true) : handleAuth(e)}}>Zaloguj sie</button>

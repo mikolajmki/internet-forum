@@ -36,9 +36,9 @@ export const getPostsByLimit = async (req, res) => {
   
         return res.status(200).json(results);
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         return res.status(500).json({
-            error: err
+            message: err.message
         });
     }
 };
@@ -53,7 +53,7 @@ export const getVotes = async (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(500).json({ message: err });
+        res.status(500).json({ message: err.message });
     }
 }
 
@@ -117,7 +117,7 @@ export const votePost = async (req, res) => {
         return res.status(200).json({ message: "Successfully voted!", postId: postId, upvotes: updatedPost.upvotes, downvotes: updatedPost.downvotes });
     } catch (err) {
         console.log(err);
-        res.status(500).json({ message: err });
+        res.status(500).json({ message: err.message });
     }
 };
 
@@ -153,7 +153,7 @@ export const createPost = async (req, res) => {
 
         return res.status(200).json(resultPost);
     } catch (err) {
-        return res.status(500).json({ message: err });
+        return res.status(500).json({ message: err.message });
     }
 };
 
@@ -167,7 +167,7 @@ export const updatePost = async (req, res) => {
         return res.status(200).json({ post });
     } catch (err) {
         console.log(err);
-        res.status(500).json({ message: err });
+        res.status(500).json({ message: err.message });
     }
 };
 
@@ -192,6 +192,6 @@ export const deletePost = async (req, res) => {
         return res.status(200).json({ postId: postId });
     } catch (err) {
         console.log(err);
-        return res.status(500).json({ message: err });
+        return res.status(500).json({ message: err.message });
     }
 };

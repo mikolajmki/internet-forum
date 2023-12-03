@@ -16,6 +16,7 @@ export const ThreadSection = ({ thread }) => {
     const [ modal, setModal ] = useState(false);
     const [ followers, setFollowers ] = useState(thread.followers);
     const [ closed, setClosed ] = useState(thread.isClosed);
+    const [ error, setError ] = useState(null);
 
     const dispatch = useDispatch();
 
@@ -28,9 +29,25 @@ export const ThreadSection = ({ thread }) => {
         navigate(`/forum/${thread.forumId._id}`)
     }
 
+    const flashError = (message) => {
+        setError(message);
+
+        setTimeout( () => {
+            setError(null)
+        } , 3000)
+    }
+
     const handleFollow = async (type) => {
-        const { data } = await followThread({ threadId: thread._id, type, token });
-        setFollowers(data);
+        try {
+            const { data } = await followThread({ threadId: thread._id, type, token });
+            setFollowers(data);
+        } catch (err) {
+            if (err.response.status === 401) {
+                dispatch({ type: "JWT_FAIL", data: err.response.data.message })
+            } else {
+                flashError(err.response.data.message);
+            }
+        }
     }
 
     const navigate = useNavigate();
@@ -49,6 +66,10 @@ export const ThreadSection = ({ thread }) => {
                 <div className={`btnRed ${css.btn}`} onClick={() => handleDelete({ threadId: thread._id, token})}>
                     <div className={css.circle}><UilTrashAlt/></div>
                     Usun
+                </div> : <></> }
+                { error ? 
+                <div className="errorWrapper">
+                    <span className="error">{error}</span>
                 </div> : <></> }
                 { closed ? 
                 <div className={css.closed}>

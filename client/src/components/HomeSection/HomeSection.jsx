@@ -4,7 +4,7 @@ import css from './HomeSection.module.css';
 // import { categories } from "../../data/categories";
 import { AdminModal } from "../AdminModal/AdminModal.jsx";
 import { UilArrowDown, UilPlusCircle, UilTrashAlt } from '@iconscout/react-unicons';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteCategory } from "../../api/categoryRequest.js";
 
 export const HomeSection = ({ content, setContent }) => {
@@ -18,7 +18,7 @@ export const HomeSection = ({ content, setContent }) => {
     const [type, setType] = useState("forum");
     const [ error, setError ] = useState({});
 
-    const adminId = process.env.REACT_APP_FORUM_ADMIN_ID;
+    const dispatch = useDispatch();
 
     const handleDeleteCategory = async (categoryId, i) => {
         try {
@@ -28,9 +28,13 @@ export const HomeSection = ({ content, setContent }) => {
                 window.location.reload();
             }
         } catch (err) {
-            console.log(err.response.data.message)
-            
-            setError({ [i]: err.response.data.message });
+            console.log(err.response.data.message);
+
+            if (err.response.status === 401) {
+                dispatch({ type: "JWT_FAIL", data: err.response.data.message });
+            } else {
+                setError({ [i]: err.response.data.message });
+            }
 
             setTimeout( () => {
                 setError({})

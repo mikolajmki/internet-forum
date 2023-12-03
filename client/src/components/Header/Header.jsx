@@ -17,8 +17,9 @@ export const Header = ({ location }) => {
 
     // const categories = ["Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze"]
     
-    const { user, token } = useSelector((state) => state.authReducer.authData)
-    
+    const { user, token } = useSelector((state) => state.authReducer.authData);
+    const { error: err } = useSelector((state) => state.authReducer);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const params = useParams();
@@ -28,6 +29,16 @@ export const Header = ({ location }) => {
 
     const [menuOpened, setMenuOpened] = useState(false);
     const [modalOpened, setModalOpened] = useState({ notifications: false, messages: false });
+    const [ error, setError ] = useState(null);
+
+    useEffect(() => {
+        setError(err);
+
+        setTimeout( () => {
+            setError(null)
+            dispatch({ type: "ERROR_RESET" });
+        } , 5000)
+    }, [err]);
 
     useEffect(() => {
         if (user) {
@@ -108,6 +119,14 @@ export const Header = ({ location }) => {
             <Link to={"/"} className={css.name}>
                 <span>Baw<span>aria.pl</span> </span>
             </Link>
+
+
+            { error ? 
+            <div className={` ${css.error}`}>
+                <div className="error">
+                <span>{error}</span>
+                </div>
+            </div> : <></> }
 
             <div className={css.menuButton} onClick={() => setMenuOpened((prev) => !prev)}>
                 <UilBars/>

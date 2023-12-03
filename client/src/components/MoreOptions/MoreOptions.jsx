@@ -29,9 +29,9 @@ export const MoreOptions = ({ data, location, forumId, isModerator, value, setVa
     const forumForm = () => {
         return (
             <form className={css.sortForm} onChange={(e) => { handleSortThreads(e) }}>
-                <label>Najpopularniejsze <input type="radio" value="-views" name="group" /></label>
                 <label>Najnowsze<input type="radio" value="-createdAt" name="group" /></label>
                 <label>Najstarsze<input type="radio" value="createdAt" name="group" /></label>
+                <label>Najpopularniejsze <input type="radio" value="-views" name="group" /></label>
                 <label>Alfabetycznie<input type="radio" value="title" name="group" /></label>
                 <label>Najwiecej odpowiedzi<input type="radio" value="-posts" name="group" /></label>
             </form> 

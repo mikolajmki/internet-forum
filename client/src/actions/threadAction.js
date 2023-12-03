@@ -44,7 +44,10 @@ export const createThread = (reqData) => async (dispatch) => {
         dispatch({ type: "THREAD_CREATE_SUCCESS", data: data });
     } catch (err) {
         console.log(err);
-        dispatch({ type: "THREAD_FAIL" });
+        dispatch({ type: "THREAD_FAIL", data: err.response.data.message });
+        if (err.response.status === 401) {
+            dispatch({ type: "JWT_FAIL", data: err.response.data.message })
+        }
     }
 };
 
@@ -56,7 +59,10 @@ export const deleteThread = (reqData) => async (dispatch) => {
         dispatch({ type: "THREAD_DELETE_SUCCESS", data: data });
     } catch (err) {
         console.log(err);
-        dispatch({ type: "THREAD_FAIL" });
+        dispatch({ type: "THREAD_FAIL", data: err.response.data.message });
+        if (err.response.status === 401) {
+            dispatch({ type: "JWT_FAIL", data: err.response.data.message })
+        }
     }
 };
 
