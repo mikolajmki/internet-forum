@@ -110,6 +110,26 @@ export const getThreadsByForumIdSortedByParam = async (req, res) => {
     }
 };
 
+// export const getThreadsByForumId = async (req, res) => {
+
+//     const forumId = req.params.forumId;
+
+//     try {
+//         let threads = await Thread
+//         .find({ forumId: forumId })
+//         .sort("-createdAt")
+//         .populate("author", ["username", "createdAt", "profilePicture"])
+//         .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
+  
+//         return res.status(200).json(threads);
+//     } catch (err) {
+//         console.log(err.message);
+//         return res.status(500).json({
+//             message: err.message
+//         });
+//     }
+// };
+
 export const getThreadsByForumId = async (req, res) => {
 
     const forumId = req.params.forumId;
@@ -117,18 +137,20 @@ export const getThreadsByForumId = async (req, res) => {
     try {
         let threads = await Thread
         .find({ forumId: forumId })
+        .populate("forumId", ["name"])
         .sort("-createdAt")
         .populate("author", ["username", "createdAt", "profilePicture"])
-        // .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
+        .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
   
         return res.status(200).json(threads);
     } catch (err) {
-        console.log(err.message);
+        console.log(err);
         return res.status(500).json({
-            message: err.message
+            error: err
         });
     }
 };
+
 
 export const getThreadWithPostsById = async (req, res) => {
 
