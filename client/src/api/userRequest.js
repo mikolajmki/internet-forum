@@ -6,4 +6,6 @@ export const getUserById = (userId) => API.get(`/user/${userId}`);
 export const getUsersByUsernameLike = (data) => API.get(`/user/all/like/${data.username}`, { headers: { Authorization: "Bearer " + data.token } });
 export const toggleUserIsModerator = (data) => API.put("/user/toggle/moderator", { toggleUserId: data.toggleUserId }, { headers: { Authorization: "Bearer " + data.token } })
 
+export const updateUser = (data) => API.put(`/user/${data.body._id}`, data.body, { headers: { Authorization: "Bearer " + data.token } });
+
 export const getUsersModerators = () => API.get("/user/all/moderators");

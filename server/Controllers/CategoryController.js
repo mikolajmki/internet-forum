@@ -10,7 +10,7 @@ export const getCategoriesWithForums = async (req, res) => {
         .populate(
             { path: "forums", populate: 
             { path: "latestThreadId", select: ["title", "author"], populate: 
-            { path: "author", select: ["username"] } }}
+            { path: "author", select: ["username", "profilePicture"] } }}
         )
         
         return res.status(200).json(categories);

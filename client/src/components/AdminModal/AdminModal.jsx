@@ -25,7 +25,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
         console.log(toggleUserId)
     }, [toggleUserId])
 
-    const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
+    const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -124,9 +124,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
             <div className={css.moderators}>
                 { users.map((user, i) => (
                 <label key={i} htmlFor={user._id} className={css.moderator}>
-                    <div className={css.profilePic}>
-                        <img width={50} height={50} src={user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
-                    </div>
+                    <img className={css.profilePic} width={50} height={50} src={user.profilePicture ? serverPublic + "users/" + user.username + "/" + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
                     <div className={css.info}>
                         <span>{user.username}</span>
                         <span>{ toDate(user.createdAt) }</span>

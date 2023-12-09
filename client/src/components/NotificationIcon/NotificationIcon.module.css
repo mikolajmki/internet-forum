@@ -7,11 +7,25 @@
     cursor: default;
     display: flex;
     justify-content: center;
+    max-height: 30rem;
+    padding-bottom: 1rem;
 }
 
 .notificationModal > div {
-    position: relative;
+  position: relative;
+  max-height: 30rem;
+  overflow-y: scroll;
+}
+
+.notificationModal > ::-webkit-scrollbar {
+  scrollbar-color: var(--bg1) var(--bg2);
+  width: 0;
+  height: 0;
+}
+
+.notificationModal > div > div {
     display: flex;
+    height: 100%;
     align-items: center;
     justify-content: center;
     padding: 1rem;
@@ -25,6 +39,16 @@
     min-height: 4rem;
     background: var(--bg1);
     border-radius: 0.2rem;
+}
+
+.clear {
+  font-size: 0.8rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.clear:hover {
+  text-decoration: underline;
 }
 
 .content {

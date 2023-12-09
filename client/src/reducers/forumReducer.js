@@ -18,7 +18,7 @@ const forumReducer = (state = { categories: [], threads: [], thread: null, visit
         case "THREAD_CREATE_SUCCESS":
             return { ...state, threads: [ ...state.threads, action.data ], loading: false, error: null }
         case "THREAD_DELETE_SUCCESS":
-            return { ...state, thread: [], loading: false, error: null }
+            return { ...state, thread: null, loading: false, error: null }
         case "THREAD_FAIL":
             // localStorage.setItem("profile", JSON.stringify({ ...a1ction?.data }));
             return { ...state, loading: false, error: action.data };

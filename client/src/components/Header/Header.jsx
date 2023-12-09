@@ -10,6 +10,7 @@ import { UilEnvelope } from '@iconscout/react-unicons';
 import { UilCommentAltMessage } from '@iconscout/react-unicons'
 import { NotificationIcon } from "../NotificationIcon/NotificationIcon";
 import { getNotificationsOfAuthUser } from "../../actions/notificationAction";
+import { Error } from "../Error/Error";
 
 export const Header = ({ location }) => {
 
@@ -18,33 +19,31 @@ export const Header = ({ location }) => {
     // const categories = ["Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze"]
     
     const { user, token } = useSelector((state) => state.authReducer.authData);
-    const { error: err } = useSelector((state) => state.authReducer);
+    const { error: err, notifications, message: msg } = useSelector((state) => state.authReducer);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const params = useParams();
-    const serverPublic = '../../public/';
+    const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
 
     var doit;
 
-    const [menuOpened, setMenuOpened] = useState(false);
-    const [modalOpened, setModalOpened] = useState({ notifications: false, messages: false });
-    const [ error, setError ] = useState(null);
+    const [ menuOpened, setMenuOpened ] = useState(false);
+    const [ modalOpened, setModalOpened ] = useState({ notifications: false, messages: false });
+    const [ profilePicture, setProfilePicture ] = useState("");
+
 
     useEffect(() => {
-        setError(err);
-
-        setTimeout( () => {
-            setError(null)
-            dispatch({ type: "ERROR_RESET" });
-        } , 5000)
-    }, [err]);
+        if (user) {
+            user.profilePicture ? setProfilePicture(serverPublic + "users/" + user.username + "/" + user.profilePicture) : setProfilePicture(require('../../public/defaultProfile.png'));
+        }
+    }, [user])
 
     useEffect(() => {
         if (user) {
             dispatch(getNotificationsOfAuthUser(token));
         }
-    }, [user])
+    }, [params])
 
     window.onresize = () => {
         clearTimeout(doit);
@@ -88,7 +87,7 @@ export const Header = ({ location }) => {
                         { menuOpened ? 
                         <>
                         <div className={css.icon} onClick={() => {navigate(`/profile/${user._id}`)}}>
-                            <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
+                            <img className={css.profilePic} src={profilePicture} alt="" />
                         </div>
                         </> : ''}
                     </div>
@@ -102,7 +101,7 @@ export const Header = ({ location }) => {
                 <li className={css.profileButton}>
                     <Link className={css.link} to={`/profile/${user._id}`}>
                         <div className={css.profileButton}>
-                            <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
+                            <img className={css.profilePic} src={profilePicture} alt="" />
                             <span>{user.username}</span>
                         </div>
                     </Link> 
@@ -121,12 +120,14 @@ export const Header = ({ location }) => {
             </Link>
 
 
-            { error ? 
+            {/* { error || message ? 
             <div className={` ${css.error}`}>
                 <div className="error">
-                <span>{error}</span>
+                    <span style={ message ? { color: "green" } : {}}>{error ? error : message}</span>
                 </div>
-            </div> : <></> }
+            </div> : <></> } */}
+
+            <Error/>
 
             <div className={css.menuButton} onClick={() => setMenuOpened((prev) => !prev)}>
                 <UilBars/>

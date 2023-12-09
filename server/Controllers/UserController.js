@@ -69,24 +69,36 @@ export const toggleUserIsModerator = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     
-    const id = req.params.id;
-    
-    if (id === req.body._id) {
+    const userId = req.body.userId;
+
+    console.log(req.params.id, req.body.userId);
+
+    if (req.params.id === req.body.userId) {
         
         try {
-            
-            if (req.body.password) {
-                req.body.password = await bcrypt.hash(req.body.password, 10);
+            if (!req.body.password) {
+                const userWithPassword = await User.findByIdAndUpdate(userId, req.body, { new: true });
+                const { password, ...user } = userWithPassword._doc;
+                return res.status(200).json({ user });
+
+            } else if (req.body.password) {
+                const userWithPassword = await User.findById(userId);
+                const isEqual = await bcrypt.compare(req.body.password, userWithPassword.password);
+                if (!isEqual) {
+                    return res.status(401).json({ message: "Password doesn't match." })
+                }
+                
+                const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+                await userWithPassword.updateOne({ password: hashedPassword }, { new: true })
+                
+                const { password, ...user } = userWithPassword._doc;
+
+                return res.status(200).json({ user });
             }
-            
-            const user = await User.findByIdAndUpdate(id, req.body, {new: true});
-            const token = jwt.sign({ userId: user._id, username: user.username }, process.env.SECRET_KEY, { expiresIn: '1h' });
-            
-            return res.status(200).json({ user, token });
         } catch (err) { 
             
             console.log(err);
-            return res.status(500).json({ message: "Couldn't update" });
+            return res.status(500).json({ message: err.message });
         }
     }
     

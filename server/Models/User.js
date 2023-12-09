@@ -12,13 +12,13 @@ const userSchema = mongoose.Schema({
     signature: { type: String },
     city: { type: String, default: "Polska" },
     isModerator: { type: Boolean, default: false },
+    about: { type: String, required: false },
+    profilePicture: { type: String, required: false },
+    coverPicture: { type: String, required: false },
     
     followers: [],
     following: [],
 
-    profilePicture: String,
-    coverPicture: String,
-    about: String,
 
 }, { timestamps: true });
 

@@ -13,8 +13,13 @@ export const PostItem = ({ post, location }) => {
     const { user, token } = useSelector((state) => state.authReducer.authData);
     const { thread, loading } = useSelector((state) => state.forumReducer) ;
 
-    const [ votes, setVotes ] = useState({})
-    const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
+    const [ votes, setVotes ] = useState({});
+    const [ profilePicture, setProfilePicture ] = useState("");
+
+    const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
+    const author = post.author;
+
+    const authorProfilePicture = author.profilePicture ? serverPublic + "users/" + author.username + "/" + author.profilePicture : require('../../public/defaultProfile.png');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -61,7 +66,7 @@ export const PostItem = ({ post, location }) => {
         return (
             <div className={css.post} style={{ minHeight: "5rem", padding: "1rem" }}>
                 <div className={css.profileInfo} style={{ alignItems: "center", flex: "2", flexDirection: "row", padding: "0" }}>
-                    <img style={{ width: "3rem", height: "3rem" }} className={css.profilePic} src={ post.author.profilePicture ? serverPublic + post.author.profilePicture : require('../../public/defaultProfile.png')} alt="" />
+                    <img style={{ width: "3rem", height: "3rem" }} className={css.profilePic} src={authorProfilePicture} alt="" />
                     <div className={css.brief}>
                         <span className="textlink" style={{ fontSize: "1rem" }} onClick={() => {navigate(`/profile/${post.author._id}`)}}>{post.author.username}</span>
                         <span className="textlink" onClick={() => handlegetThreadWithPostsById(post.threadId)}>{post.title}</span>
@@ -79,9 +84,7 @@ export const PostItem = ({ post, location }) => {
         <div key={post.id} className={css.post}>
                 <div className={css.profileInfo}>
                     <span className="textlink" onClick={() => navigate(`/profile/${post.author._id}`)}>{post.author.username}</span>
-                    <div className={css.sampleImg}>
-                        <span></span>
-                    </div>
+                    <img src={authorProfilePicture} alt="" className={css.sampleImg} />
                     <span style={ post.author.rank === "Moderator" ? { color: "yellow" } : post.author.rank === "Administrator" ? { color: "orange" } : {} }>{post.author.rank}</span>
                     {/* <span>Reputacja: <div className={`numberBadge ${css.numberBadge}`}><div>{thread.author.reputation}</div></div></span>
                     <span>Odpowiedzi: <div className={`numberBadge ${css.numberBadge}`}><div>{thread.author.answers}</div></div></span> */}

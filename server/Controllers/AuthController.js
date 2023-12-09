@@ -35,18 +35,27 @@ export const registerUser = async (req, res) => {
 }
 
 export const loginUser = async (req, res) => {
-    const user = await User.findOne({username: req.body.username});
-    if (!user) {
-        return res.status(500).json({ message: "User doesn't exist!" })
-    }
 
-    const isEqual = await bcrypt.compare(req.body.password, user.password);
-
-    if (!isEqual) {
-        return res.status(401).json({ message: "Password doesn't match." })
-    }
-
-    const token = jwt.sign({ id: user._id, username: user.username }, process.env.SECRET_KEY, { expiresIn: '10s' })
+    try {
+        const userWithPassword = await User.findOne({username: req.body.username});
     
-    return res.status(200).json({ user: user._doc, token: token, tokenExpiration: 4 });
+        if (!userWithPassword) {
+            return res.status(500).json({ message: "User doesn't exist!" })
+        }
+    
+        const isEqual = await bcrypt.compare(req.body.password, userWithPassword.password);
+    
+        if (!isEqual) {
+            return res.status(401).json({ message: "Password doesn't match." })
+        }
+
+        const { password, ...user } = userWithPassword._doc;
+
+        const token = jwt.sign({ id: user._id, username: user.username }, process.env.SECRET_KEY, { expiresIn: '4h' })
+    
+        return res.status(200).json({ user, token: token, tokenExpiration: 4 });
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({ message: err.message })
+    }
 }

@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from "react";
 import css from './ProfileSection.module.css';
 import { useDispatch, useSelector } from "react-redux";
-import { UilPlusCircle } from '@iconscout/react-unicons'
+import { UilPlusCircle, UilPen } from '@iconscout/react-unicons'
 import { logOut } from "../../actions/authAction";
 import { Threads } from "../Threads/Threads.jsx";
 import { AdminModal } from '../AdminModal/AdminModal.jsx';
 import { getThreadsByAuthorId } from "../../actions/threadAction";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserById } from "../../actions/userAction";
+import { UpdateModal } from "../UpdateModal/UpdateModal.jsx";
 
 export const ProfileSection = () => {
 
     const { user: loggedInUser, token } = useSelector((state) => state.authReducer.authData);
-    const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
     const img = require('../../public/defaultCover.jpg');
-
+    const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
+    
     const { threads, loading } = useSelector((state) => state.forumReducer);
     const { visitedUser } = useSelector((state) => state.forumReducer);
-
+    
     const [ user, setUser ] = useState(null);
     const [ modal, setModal ] = useState(false);
+    const [ updateModal, setUpdateModal ] = useState(false);
+    const [ profilePicture, setProfilePicture ] = useState("");
+
+
+    useEffect(() => {
+        if (user) {
+            user.profilePicture ? setProfilePicture(serverPublic + "users/" + user.username + "/" + user.profilePicture) : setProfilePicture(require('../../public/defaultProfile.png'));
+        }
+    }, [user])
 
     const adminId = process.env.REACT_APP_FORUM_ADMIN_ID;
 
@@ -72,10 +82,16 @@ export const ProfileSection = () => {
                         Zarzadzaj moderatorami
                     </div> : <></>  }
                     { loggedInUser && params.userId === loggedInUser._id ? 
+                    <>
+                    <div className="btn" onClick={() => setUpdateModal(true)}>
+                        <div className={css.circle}><UilPen/></div>
+                        Edytuj profil
+                    </div>
                     <div className={`btn ${css.btn}`} onClick={() => handleLogout()}>
                         <div className={css.circle}><UilPlusCircle/></div>
                         Wyloguj sie
-                    </div> : <></> }
+                    </div>
+                    </> : <></> }
                 </div>
                     <div className={css.cover}>
                         <div className={css.bottomBar}>
@@ -86,7 +102,7 @@ export const ProfileSection = () => {
                                 <span>Adres e-mail: <a href={`mailto:${user.email}`} className={`numberBadge ${css.email}`}>{user.email}</a></span>
                             </div>
                         </div>
-                        <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
+                        <img className={css.profilePic} src={profilePicture} alt="" />
                         <img className={css.profileCover} src={ user.profileCover ? serverPublic + user.profileCover : ''} alt="" />
                         <div className={css.username}>
                             <span>{user.username}</span>
@@ -101,6 +117,7 @@ export const ProfileSection = () => {
             </> : <span className="loader"></span> }
             
             <AdminModal token={token} adminId={adminId} modal={modal} setModal={setModal} type="moderator" />
+            <UpdateModal token={token} user={loggedInUser} type="profile" modal={updateModal} setModal={setUpdateModal} files={["image1", "image2", "image1", "image2"]}/>
         </div>
     )
 }

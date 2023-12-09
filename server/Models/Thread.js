@@ -8,6 +8,7 @@ const threadSchema = mongoose.Schema({
     views: { type: Number, default: 0 },
     posts: [ { type: mongoose.Schema.Types.ObjectId, ref: "Post", required: false } ],
     followers: [ { type: mongoose.Schema.Types.ObjectId, ref: "User" } ],
+    images: [ { type: String, required: false } ],
     isClosed: { type: Boolean, default: false }
 }, { timestamps: true });
 

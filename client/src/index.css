@@ -43,6 +43,10 @@ body {
   scroll-behavior: smooth;
 }
 
+textarea, input {
+  font-family: "eudoxus sans", sans-serif !important;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -58,6 +62,20 @@ button, input[type="submit"], input[type="reset"] {
 	outline: inherit;
 }
 
+form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+form > textarea, form > input {
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+  font-size: 1.2rem;
+  outline-color: var(--secondary);
+}
 
 .btn, .btnRed {
   display: flex;

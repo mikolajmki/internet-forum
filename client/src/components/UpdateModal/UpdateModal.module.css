@@ -1,0 +1,94 @@
+.modal {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    background: #00000045;
+    top: 3rem;
+    width: 100%;
+    height: 100%;
+}
+
+.exit {
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    background: red;
+    padding: 1.5rem;
+    font-size: 2rem;
+    border-radius: 200px;
+    cursor: pointer;
+ }
+
+ .container, .scrollContainer {
+    position: relative;
+    width: 50%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+    background: var(--section);
+    border-radius: 0.4rem;
+    margin: 2rem;
+    max-height: 80vh;
+}
+
+.scrollContainer {
+    padding-top: 0;
+    padding-left: 2rem;
+    padding-bottom: 1rem;
+ }
+ 
+ .scrollContainer > div {
+    overflow-y: scroll;
+ }
+ 
+ .scrollContainer ::-webkit-scrollbar {
+    scrollbar-color: var(--bg1) var(--bg2);
+    width: 1rem;
+    height: 1rem;
+ }
+
+ .btnWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: 1rem;
+ }
+
+ .fileWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 1rem;
+    color: black;
+ }
+
+ .fileWrapper > div {
+    display: flex;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.5rem;
+    line-height: 1.5rem;
+    border-radius: 0.2rem;
+ }
+
+ .fileWrapper > div > :nth-child(1) {
+    text-align: center;
+}
+
+ .fileWrapper > div > :nth-child(2) {
+    background: var(--buttonRed);
+ }
+
+ .fileWrapper > div > :nth-child(2) :hover {
+    cursor: pointer;
+    background: var(--buttonRedBorder);
+    border-radius: 99px;
+ }
+
+ .form > textarea, .form > input {
+    background: var(--textLight);
+    color: white;
+ }

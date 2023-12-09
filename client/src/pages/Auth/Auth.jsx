@@ -4,16 +4,18 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logIn, signUp } from "../../actions/authAction";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { Error } from "../../components/Error/Error";
 
 export const Auth = () => {
 
     const [ formData, setFormData ] = useState({ username: "", password: "" });
     const [ login, setLogin ] = useState(true);
     const [ pass, setPass ] = useState(false);
-    const [ error, setError ] = useState(null)
+    const [ error, setError ] = useState(null);
+    const [ message, setMessage ] = useState(null);
 
     const { user } = useSelector((state) => state.authReducer.authData);
-    const { error: err, loading } = useSelector((state) => state.authReducer);
+    const { error: err, message: msg, loading } = useSelector((state) => state.authReducer);
 
     const navigate = useNavigate();
     
@@ -50,6 +52,7 @@ export const Auth = () => {
 
     return (
         <div className={css.container}>
+            <Error/>
             <div className={css.credentials}>
                 <div className={css.name} style={ !login ? { flex: 1 } : {}}>
                     <div style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
@@ -68,8 +71,6 @@ export const Auth = () => {
                         <input id="lastname" onChange={(e) => setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value })} type="text"  required />
                         <span>E-mail:</span>
                         <input id="email" onChange={(e) => setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value })} type="email" required />
-                        {/* <span>Sygnatura:</span>
-                        <textarea id="signature" rows={4} onChange={(e) => setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value })} type="textarea" /> */}
                     </>
                      : <></>}
 

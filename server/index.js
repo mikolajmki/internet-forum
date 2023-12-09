@@ -11,9 +11,13 @@ import ForumRoutes from "./Routes/Forum.js";
 import ThreadRoutes from "./Routes/Thread.js";
 import PostRoutes from "./Routes/Post.js";
 import NotificationRoutes from "./Routes/Notification.js";
+import UploadRoutes from "./Routes/Upload.js";
 
 
 const app = express();
+
+app.use("/public", express.static("public"));
+app.use(express.static("/images"), express.static("images"));
 
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(express.json({ limit: "30mb", extended: true }))
@@ -35,3 +39,4 @@ app.use("/forum", ForumRoutes);
 app.use("/thread", ThreadRoutes);
 app.use("/post", PostRoutes);
 app.use("/notification", NotificationRoutes);
+app.use("/upload", UploadRoutes);

@@ -17,7 +17,17 @@ export const ThreadSection = ({ thread }) => {
     const [ followers, setFollowers ] = useState(thread.followers);
     const [ closed, setClosed ] = useState(thread.isClosed);
     const [ error, setError ] = useState(null);
+    const [ profilePicture, setProfilePicture ] = useState("");
 
+    const { user, token } = useSelector((state) => state.authReducer.authData);
+    const threadId = useSelector((state) => state.forumReducer.thread._id);
+    const loading = useSelector((state) => state.authReducer.authData.loading);
+    
+    
+    const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
+    const author = thread.author;
+
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     // const handleLike = (postId, like) => {
@@ -50,12 +60,11 @@ export const ThreadSection = ({ thread }) => {
         }
     }
 
-    const navigate = useNavigate();
     // <img className={css.profilePic} src={ user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
 
-    const { user, token } = useSelector((state) => state.authReducer.authData);
-    const threadId = useSelector((state) => state.forumReducer.thread._id);
-    const loading = useSelector((state) => state.authReducer.authData.loading);
+    useEffect(() => {
+        author.profilePicture ? setProfilePicture(serverPublic + "users/" + author.username + "/" + author.profilePicture) : setProfilePicture(require('../../public/defaultProfile.png'));
+    }, [author]);
 
     return (
         <div className={css.container}>
@@ -95,9 +104,7 @@ export const ThreadSection = ({ thread }) => {
             <div className={css.post}>
                 <div className={css.profileInfo}>
                     <span className="textlink" onClick={() => navigate(`/profile/${thread.author._id}`)}>{thread.author.username}</span>
-                    <div className={css.sampleImg}>
-                        <span></span>
-                    </div>
+                    <img src={profilePicture} className={css.sampleImg} alt="" />
                     <span style={ thread.author.rank === "Moderator" ? { color: "yellow" } : thread.author.rank === "Administrator" ? { color: "orange" } : {} }>{thread.author.rank}</span>
                     <div className={css.stats}>
                         <span>Reputacja: <div className={`numberBadge ${css.numberBadge}`}><div>{thread.author.reputation}</div></div></span>

@@ -5,21 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { convertUrlString } from "../../helpers/convertUrlString";
 import { getThreadWithPostsById } from "../../actions/threadAction";
+import { deleteNotificationsOfAuthUser } from "../../actions/notificationAction";
 
 export const NotificationIcon = ({ modalOpened, setModalOpened, type }) => {
 
     const { notifications, loading } = useSelector((state) => state.authReducer);
+    const { token } = useSelector((state) => state.authReducer.authData);
 
     const modalType = type == 0 ? "notifications" : "messages";
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handlegetThreadWithPostsById = (thread, forum) => {
+        setModalOpened(({ ...!modalOpened, [modalType]: !modalOpened[modalType]}))
         console.log(thread._id)
         dispatch(getThreadWithPostsById(thread._id));
         if (!loading) {
             navigate(`/thread/${convertUrlString(thread.title)}`)
         }
+    }
+
+    const handleClearNotifications = () => {
+        dispatch(deleteNotificationsOfAuthUser(token))
     }
 
     const notiBarContent = (notification) => {
@@ -51,19 +58,23 @@ export const NotificationIcon = ({ modalOpened, setModalOpened, type }) => {
             <div className={css.arrowUp}></div>
             <div className={`${css.notificationModal} ${ type === 1 ? css.messageModal : ''}`}>
                 <div>
-                    {/* <div className={css.notification}>
-                        <div className={css.modalImg}><UilCommentAltMessage/></div>
-                        <div className={css.content}><div><span>racer86</span> odpowiedzial na twoje pytanie w watku: "Najlepsze BMW do wyscigow" </div></div>
+                    <div>
+                        <span className={css.clear} onClick={() => handleClearNotifications()}>Wyczysc powiadomienia</span>
+                        {/* <div className={css.notification}>
+                            <div className={css.modalImg}><UilCommentAltMessage/></div>
+                            <div className={css.content}><div><span>racer86</span> odpowiedzial na twoje pytanie w watku: "Najlepsze BMW do wyscigow" </div></div>
+                        </div>
+                        <div className={css.notification}>
+                            <div className={css.modalImg}><UilCommentAltMessage/></div>
+                            <div className={css.content}><div><span>racer86</span> odpowiedzial na twoje pytanie w watku: "Najlepsze BMW do wyscigow" </div></div>
+                        </div>
+                        <div className={css.notification}>
+                            <div className={css.modalImg}><UilCommentAltMessage/></div>
+                            <div className={css.content}><div><span>racer86</span> odpowiedzial na twoje pytanie w watku: "Najlepsze BMW do wyscigow" </div></div>
+                        </div> */}
+                        { !loading ? notifications.map(notification => notiBarContent(notification)) : <></> }
+                        { notifications.length === 0 ? <div>Brak powiadomien do wyswietlenia.</div> : <></> }
                     </div>
-                    <div className={css.notification}>
-                        <div className={css.modalImg}><UilCommentAltMessage/></div>
-                        <div className={css.content}><div><span>racer86</span> odpowiedzial na twoje pytanie w watku: "Najlepsze BMW do wyscigow" </div></div>
-                    </div>
-                    <div className={css.notification}>
-                        <div className={css.modalImg}><UilCommentAltMessage/></div>
-                        <div className={css.content}><div><span>racer86</span> odpowiedzial na twoje pytanie w watku: "Najlepsze BMW do wyscigow" </div></div>
-                    </div> */}
-                    { !loading ? notifications.map(notification => notiBarContent(notification)) : <></> }
                 </div>
             </div>
             </> : '' }
