@@ -1,3 +1,18 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
+    padding: 4rem 2% 2rem 5%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+}
+
 .title {
     width: 100%;
     display: flex;
@@ -10,7 +25,6 @@
     background: var(--section);
     border-radius: 0.2rem;
     padding: 1rem;
-    margin-top: 1.5rem;
     margin-bottom: 3rem;
     background: var(--bg2);
     scroll-margin-top: 7rem;
@@ -18,21 +32,6 @@
 
 .title > :nth-child(2) {
     font-size: 1rem;
-}
-
-.wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    flex-direction: column;
-    padding: 2rem;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    gap: 1rem;
 }
 
 .section {
@@ -59,11 +58,12 @@
 @media screen and (max-width: 768px) {
 
     .wrapper {
+        padding: 2rem;
         width: 100%;
     }
 
     .container {
-        width: 100%;
+        width: 90%;
     }
 
     .btn {

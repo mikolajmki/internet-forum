@@ -46,8 +46,8 @@
  
  .scrollContainer ::-webkit-scrollbar {
     scrollbar-color: var(--bg1) var(--bg2);
-    width: 1rem;
-    height: 1rem;
+    width: 0;
+    height: 0;
  }
 
  .btnWrapper {
@@ -57,38 +57,9 @@
     margin-bottom: 1rem;
  }
 
- .fileWrapper {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    gap: 1rem;
-    color: black;
- }
-
- .fileWrapper > div {
-    display: flex;
-    gap: 0.5rem;
-    background: white;
-    padding: 0.5rem;
-    line-height: 1.5rem;
-    border-radius: 0.2rem;
- }
-
- .fileWrapper > div > :nth-child(1) {
-    text-align: center;
-}
-
- .fileWrapper > div > :nth-child(2) {
-    background: var(--buttonRed);
- }
-
- .fileWrapper > div > :nth-child(2) :hover {
-    cursor: pointer;
-    background: var(--buttonRedBorder);
-    border-radius: 99px;
- }
-
  .form > textarea, .form > input {
     background: var(--textLight);
+    box-sizing: border-box;
     color: white;
+    max-width: 100%;
  }

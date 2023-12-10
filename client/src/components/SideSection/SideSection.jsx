@@ -12,8 +12,10 @@ export const SideSection = ({ location, content }) => {
     return (
         <div className={css.wrapper}>
             <div className={css.container}>
-                <h1 className={css.title} >{ location === "home" ? "Najnowsze wątki" : "Najnowsze odpowiedzi" }</h1>
-                { location === "home" ? <Threads threads={content} location={"home"} /> : <Posts posts={content} location={"forums"}/>}
+                <div className={css.title} >{ location === "home" ? "Najnowsze wątki" : "Najnowsze odpowiedzi" }</div>
+                <div>
+                    { location === "home" ? <Threads threads={content} location={"home"} /> : <Posts posts={content} location={"forums"}/>}
+                </div>
             </div>
         </div>
     )

@@ -51,6 +51,21 @@ export const createThread = (reqData) => async (dispatch) => {
     }
 };
 
+export const updateThread = (data) => async (dispatch) => {
+    dispatch({ type: "THREAD_START" });
+    try {
+        const { data: thread } = await ThreadApi.updateThread(data);
+        console.log(thread)
+        dispatch({ type: "THREAD_UPDATE_SUCCESS", data: thread });
+    } catch (err) {
+        console.log(err);
+        dispatch({ type: "THREAD_FAIL", data: err.response.data.message });
+        if (err.response.status === 401) {
+            dispatch({ type: "JWT_FAIL", data: err.response.data.message })
+        }
+    }
+};
+
 export const deleteThread = (reqData) => async (dispatch) => {
     dispatch({ type: "THREAD_START" });
     try {

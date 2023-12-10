@@ -66,6 +66,7 @@
 
 .details {
     display: flex;
+    flex: 1;
 }
 
 .details > :first-child {
@@ -77,7 +78,7 @@
 
 .info:hover {
     transition: ease-in-out 200ms;
-    transform: translateX(1%)
+    transform: translateX(2%)
 }
 
 .name {

@@ -3,10 +3,11 @@ import css from "./UpdateModal.module.css";
 import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../actions/userAction";
-import useDebounce from "../../helpers/useDebounce";
-import { uploadProfilePicture, uploadThreadImage } from "../../api/uploadRequest";
+import { deleteThreadImages, uploadProfilePicture, uploadThreadImage } from "../../api/uploadRequest";
+import { updateThread } from "../../actions/threadAction";
+import { updatePost } from "../../actions/postAction";
 
-export const UpdateModal = ({ modal, setModal, type, user, token, threadId, files, postId }) => {
+export const UpdateModal = ({ modal, setModal, type, content, user, token }) => {
 
     const [ editPassword, setEditPassword ] = useState(false);
     const [ formData, setFormData ] = useState({});
@@ -14,20 +15,29 @@ export const UpdateModal = ({ modal, setModal, type, user, token, threadId, file
     
     const [ images, setImages ] = useState([]);
     const [ uploadImage, setUploadImage ] = useState(null);
+    const [ uploadImages, setUploadImages ] = useState([]);
     const [ fileName, setFileName ] = useState("");
 
     const { error: err, loading } = useSelector((state) => state.authReducer);
+    const threadId = useSelector((state) => state.forumReducer.thread._id);
 
     const dispatch = useDispatch();
 
     const onImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
-          let img = e.target.files[0];
-          setUploadImage(img);
+            let img = e.target.files[0];
+            setUploadImage(img);
+    
+            const name = "IMG_" + Date.now() + "." + e.target.files[0].type.replace(/(.*)\//g, '')
+            console.log(e.target.files[0].type, e.target.files[0].type.replace(/(.*)\//g, ''))
+            setFileName(name);
+            if (type !== "profile") {
+                setImages([ ...content.images, name ]);
+            }
         }
       }
 
-    const handleUploadImage = async (uploadFunction, body, token) => {
+    const handleImageRequest = async (uploadFunction, body, token) => {
         try {
             await uploadFunction({ body, token })
         } catch (err) {
@@ -50,24 +60,26 @@ export const UpdateModal = ({ modal, setModal, type, user, token, threadId, file
                 body.append("file", uploadImage);
                 console.log(body.get("filename"))
                 console.log(body.get("username"))
-                await handleUploadImage(uploadProfilePicture, body, token);
+                await handleImageRequest(uploadProfilePicture, body, token);
             } else {
                 body.append("threadId", threadId);
                 body.append("file", uploadImage);
                 console.log(images)
-                setImages(images.push(fileName));
-                console.log(images)
-                await handleUploadImage(uploadThreadImage, body, token);
+                await handleImageRequest(uploadThreadImage, body, token);
             }
 
           }
           
         let data = { body: formData, token };
 
-        if (type === "thread") {
-
-        } else if (type === "post") {
-
+        if (type === "thread" || type === "post") {
+            console.log(images.length, content.images.length)
+            if ((uploadImage && images.length <= content.images.length) || (!uploadImage && images.length < content.images.length)) {
+                console.log("delete")
+                await handleImageRequest(deleteThreadImages, { threadId, images }, token);
+            }
+            data.body.images = images;
+            type === "thread" ? dispatch(updateThread(data)) : dispatch(updatePost(data))
         } else if (type === "profile") {
             if (editPassword && formData.newPassword !== formData.confirmPassword) {
                 handleError("Passwords doesn't match");
@@ -84,8 +96,27 @@ export const UpdateModal = ({ modal, setModal, type, user, token, threadId, file
     }
 
     const handleResetForm = () => {
-        editPassword ? setFormData({ _id: user._id, password: "", newPassword: "", confirmPassword: "" }) : setFormData(user);
+        if (editPassword) {
+            setFormData({ _id: user._id, password: "", newPassword: "", confirmPassword: "" })
+        }
+        if (type === "profile") {
+            setFormData(user);
+        } else if (type === "thread" || type === "post") {
+            setFormData(content)
+            setImages(content.images)
+        }
+        
         setUploadImage(null);
+    }
+
+    const handleRemoveImage = (image) => {
+        if (image === fileName) {
+            setUploadImage(null);
+            setFileName("");
+        }
+        if (type !== "profile") {
+            setImages(images.filter((img) => img !== image));
+        }
     }
     
     const handleError = (err) => {
@@ -96,13 +127,19 @@ export const UpdateModal = ({ modal, setModal, type, user, token, threadId, file
     }
 
     useEffect(() => {
+        console.log(uploadImage);
+    }, [uploadImage])
+
+    useEffect(() => {
         setUploadImage(null);
         setFileName("");
     }, [modal])
 
     useEffect(() => {
-        setImages(files);
-    }, [files])
+        if (content) {
+            setImages(content.images);
+        }
+    }, [content])
 
     useEffect(() => {
         handleResetForm()
@@ -113,18 +150,20 @@ export const UpdateModal = ({ modal, setModal, type, user, token, threadId, file
     }, [formData])
 
     useEffect(() => {
-        console.log(user);
-        setFormData(user);
+        handleResetForm();
+        type === "profile" ? console.log(user) : console.log(content);
     }, [modal]);
 
-    useEffect(() => {
-        if (uploadImage) {
-            console.log(uploadImage.type, uploadImage.type.replace(/(.*)\//g, ''))
-            setFileName("IMG_" + Date.now() + "." + uploadImage.type.replace(/(.*)\//g, ''));
-        }
-        console.log(fileName)
-    }, [uploadImage])
+    // useEffect(() => {
+    //     if (uploadImage) {
 
+    //     }
+    //     console.log(fileName)
+    // }, [uploadImage])
+
+    useEffect(() => {
+        console.log(images)
+    }, [images])
 
 
 
@@ -148,7 +187,9 @@ export const UpdateModal = ({ modal, setModal, type, user, token, threadId, file
                         { type !== "profile" ? 
                         <>
                         <div>Tresc:</div>
-                        <textarea id={type === "post" ? "comment" : "description"} onChange={(e) => { handleSetFormData(e) }} rows={5} className={css.content} required/>
+                        <textarea id={type === "post" ? "comment" : "description"} 
+                        value={type === "post" ? formData.comment : formData.description} 
+                        onChange={(e) => { handleSetFormData(e) }} rows={5} className={css.content} required/>
                         </> 
                         :
                         editPassword ? 
@@ -174,29 +215,37 @@ export const UpdateModal = ({ modal, setModal, type, user, token, threadId, file
                         <textarea id="signature" value={formData.signature} rows={4} onChange={(e) => handleSetFormData(e)} type="textarea" required />
                         <span>Opis:</span>
                         <textarea id="about" value={formData.about} rows={4} onChange={(e) => handleSetFormData(e)} type="textarea" />
+                        </> }
                         { !editPassword ? 
                         <>
                         <div className={css.btnWrapper} style={{ justifyContent: "space-between" }}>
-                            { type !== "profile" ? <span>Dodaj obraz</span> : <span>Dodaj zdjecie profilowe</span> }
-                            { uploadImage ?  <span>{uploadImage.name}</span> : <></> }
+                            <div className={css.btnWrapper} style={{ flexDirection: "column" }}>
+                                { type !== "profile" ? <span>Dodaj obraz</span> : <span>Dodaj zdjecie profilowe</span> }
+                                { fileName ? <span>Nowa nazwa</span> : <></> }
+                            </div>
+                            { uploadImage ?  
+                            <div className={css.btnWrapper} style={{ flexDirection: "column" }}>
+                                <span>{uploadImage.name}</span>
+                                <span>{fileName}</span>
+                            </div> : <></> }
                             <label htmlFor="file"><div className="btn">Wybierz plik</div></label>
                             <input id="file" accept="image/*" onChange={(e) => onImageChange(e)} type="file" style={{ display: "none" }} />
                         </div>
                         </> : <></>}
                         <div>
                             <span>Zawarte obrazy:</span>
-                            <div className={css.fileWrapper} style={{ marginTop: "1rem" }}>
-                                { images.map((image, i) => 
+                            <div className="fileWrapper" style={{ marginTop: "1rem" }}>
+                                { images.length > 0 ?
+                                images.map((image, i) => 
                                 <div>
                                     <span>{image}</span>
-                                    <div className="numberBadge"><div>x</div></div>
-                                </div>) }
+                                    <div className="numberBadge"><div onClick={() => handleRemoveImage(image)}>x</div></div>
+                                </div>) : <div>Brak obrazow do wyswietlenia.</div> }
                             </div>
                         </div>
-                        </> }
                         <div className={css.btnWrapper}>
-                            <div className="btn" onClick={() => { setEditPassword(prev => !prev) }}>{ !editPassword ? "Zmiana hasla" : "Edycja danych"}</div>
-                            <button className="btn" style={{ flex: "1" }} type="submit">Aktualizuj</button>
+                            { type === "profile" ? <div className="btn" onClick={() => { setEditPassword(prev => !prev) }}>{ !editPassword ? "Zmiana hasla" : "Edycja danych"}</div> : <></> }
+                            <button className="btn" style={{ flex: "1" }} type="submit">Zatwierdz zmiany</button>
                         </div>
                     </form>
                     <div className={css.exit} onClick={() => setModal((prev) => !prev)}></div>

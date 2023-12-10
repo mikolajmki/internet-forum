@@ -14,5 +14,7 @@ export const getThreadsByAuthorId = (userId) => API.get(`/thread/authorId/${user
 export const getThreadsByLimit = (limit) => API.get(`/thread/limit/${limit}`);
 
 export const toggleThreadIsClosed = (data) => API.put("/thread/toggle/closed", { threadId: data.threadId }, apiHeaders(data.token));
+
 export const createThread = (data) => API.post(`/thread`, data.body, apiHeaders(data.token));
+export const updateThread = (data) => API.put(`/thread/${data.body._id}`, data.body, apiHeaders(data.token));
 export const deleteThread = (data) => API.delete(`/thread/${data.threadId}`, apiHeaders(data.token));

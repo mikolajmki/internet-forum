@@ -9,6 +9,7 @@ import { getThreadsByAuthorId } from "../../actions/threadAction";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserById } from "../../actions/userAction";
 import { UpdateModal } from "../UpdateModal/UpdateModal.jsx";
+import { optimizeUser } from "../../helpers/optimize.js";
 
 export const ProfileSection = () => {
 
@@ -116,8 +117,8 @@ export const ProfileSection = () => {
                 </div>
             </> : <span className="loader"></span> }
             
+            { loggedInUser ? <UpdateModal token={token} user={optimizeUser(loggedInUser)} type="profile" modal={updateModal} setModal={setUpdateModal} files={["image1", "image2", "image1", "image2"]}/> : <></> }
             <AdminModal token={token} adminId={adminId} modal={modal} setModal={setModal} type="moderator" />
-            <UpdateModal token={token} user={loggedInUser} type="profile" modal={updateModal} setModal={setUpdateModal} files={["image1", "image2", "image1", "image2"]}/>
         </div>
     )
 }

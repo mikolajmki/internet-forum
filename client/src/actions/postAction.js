@@ -30,6 +30,21 @@ export const createPost = (reqData) => async (dispatch) => {
     }
 };
 
+export const updatePost = (reqData) => async (dispatch) => {
+    dispatch({ type: "POST_CREATE_START"});
+    try {
+        const { data } = await PostApi.updatePost(reqData);
+        console.log(data)
+        dispatch({ type: "POST_UPDATE_SUCCESS", data: data });
+    } catch (err) {
+        console.log(err);
+        dispatch({ type: "THREAD_FAIL", data: err.response.data.message });
+        if (err.response.status === 401) {
+            dispatch({ type: "JWT_FAIL", data: err.response.data.message })
+        }
+    }
+};
+
 export const deletePost = (reqData) => async (dispatch) => {
     dispatch({ type: "POST_CREATE_START"});
     try {

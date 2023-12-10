@@ -236,10 +236,13 @@ export const updateThread = async (req, res) => {
     try {
         // console.log(thread.title.toString(), title);
         const thread = await Thread.findById(threadId);
-        if (userId === thread.authorId.toString()) {
-            const resultThread = await thread.updateOne({ $set: req.body });
-            console.log(thread);
-            return res.status(200).json(resultThread);
+        if (userId === thread.author.toString()) {
+            const resultThread = await Thread.findByIdAndUpdate(threadId, { 
+                description: req.body.description,
+                images: req.body.images
+            }, { new: true });
+            console.log(resultThread);
+            return res.status(200).json({ description: resultThread.description, images: resultThread.images });
         }
         return res.status(403).json({ message: "Action forbidden. "});
     } catch (err) {

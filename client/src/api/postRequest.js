@@ -8,4 +8,5 @@ export const votePost = (data) => API.put(`/post/${data.postId}/vote/${data.type
 export const getPostsByLimit = (limit) => API.get(`/post/limit/${limit}`);
 
 export const createPost = (data) => API.post(`/post`, data.body, apiHeaders(data.token));
+export const updatePost = (data) => API.put(`/post/${data.body._id}`, data.body, apiHeaders(data.token));
 export const deletePost = (data) => API.delete(`/post/${data.postId}/threadId/${data.threadId}`, apiHeaders(data.token) );

@@ -162,9 +162,9 @@ export const updatePost = async (req, res) => {
 
     try {
         // console.log(post.title.toString(), title);
-        const post = await Post.findByIdAndUpdate({ _id: postId }, { $set: req.body });
-        
-        return res.status(200).json({ post });
+        const post = await Post.findByIdAndUpdate({ _id: postId }, { $set: req.body }, { new: true });
+
+        return res.status(200).json({ postId: post._id, comment: post.comment, images: post.images });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: err.message });

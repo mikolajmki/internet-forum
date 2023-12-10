@@ -50,7 +50,7 @@ export const HomeSection = ({ content, setContent }) => {
 
     return (
         <div className={css.container}>
-            <h1 className={css.title} style={{ width: "90%", marginBottom: "3rem", background: "var(--bg2)" }}>Fora dyskusyjne</h1>
+            <h1 className={css.title} style={{ marginBottom: "3rem", marginTop: "0", background: "var(--bg2)" }}>Fora dyskusyjne</h1>
             { content.map((category, i) => {
                 return (
                     <div key={i} className={css.category}>
@@ -67,6 +67,7 @@ export const HomeSection = ({ content, setContent }) => {
                             <span>{ error[i] }</span>
                         </div> : <></>}
                         <Forums categoryError={error} setCategoryError={setError} category={category} opened={opened} setContent={setContent}/>
+                        <a href={"/#" + category.title}></a>
                     </div>
                 )
             }) }

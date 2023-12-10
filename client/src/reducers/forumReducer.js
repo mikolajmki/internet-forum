@@ -15,6 +15,8 @@ const forumReducer = (state = { categories: [], threads: [], thread: null, visit
             return { ...state, loading: true, error: null };
         case "THREAD_SUCCESS":
             return { ...state, thread: action.data, loading: false, error: null };
+        case "THREAD_UPDATE_SUCCESS":
+            return { ...state, thread: { ...state.thread, description: action.data.description, images: action.data.images }, loading: false, error: null };
         case "THREAD_CREATE_SUCCESS":
             return { ...state, threads: [ ...state.threads, action.data ], loading: false, error: null }
         case "THREAD_DELETE_SUCCESS":
@@ -30,9 +32,18 @@ const forumReducer = (state = { categories: [], threads: [], thread: null, visit
         case "POST_DELETE_SUCCESS":
             return { ...state, thread: { ...state.thread, posts: state.thread.posts.filter(post => post._id !== action.data.postId) } }
         case "POST_VOTE_SUCCESS":
-            const updatedPosts = state.thread.posts.map((post) => {
+            const votedPosts = state.thread.posts.map((post) => {
                 if (action.data.postId === post._id) {
                     return { ...post, upvotes: action.data.upvotes, downvotes: action.data.downvotes };
+                } else {
+                    return { ...post }
+                }
+            })
+            return { ...state, thread: { ...state.thread, posts: votedPosts }, loading: false}
+        case "POST_UPDATE_SUCCESS":
+            const updatedPosts = state.thread.posts.map((post) => {
+                if (action.data.postId === post._id) {
+                    return { ...post, comment: action.data.comment, images: action.data.images };
                 } else {
                     return { ...post }
                 }

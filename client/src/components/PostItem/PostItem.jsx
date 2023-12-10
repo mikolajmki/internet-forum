@@ -1,5 +1,7 @@
 import React, { createRef, useEffect, useRef, useState } from "react";
-import css from './PostItem.module.css';
+import { UilMultiply } from "@iconscout/react-unicons"
+// import css from './PostItem.module.css';
+import css from "../ThreadSection/ThreadSection.module.css";
 import { deletePost, votePost } from "../../actions/postAction.js";
 import { getThreadWithPostsById } from "../../actions/threadAction";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,17 +9,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import { convertUrlString } from "../../helpers/convertUrlString";
 import { toDate, toDateAndTime } from "../../helpers/toDate";
 import { MoreOptions } from "../MoreOptions/MoreOptions.jsx";
+import { optimizePost } from "../../helpers/optimize.js";
 
-export const PostItem = ({ post, location }) => {
+export const PostItem = ({ post, location, setImage }) => {
 
     const { user, token } = useSelector((state) => state.authReducer.authData);
-    const { thread, loading } = useSelector((state) => state.forumReducer) ;
+    const { loading } = useSelector((state) => state.forumReducer) ;
+    const threadId = useSelector((state) => state.forumReducer.thread._id);
 
     const [ votes, setVotes ] = useState({});
-    const [ profilePicture, setProfilePicture ] = useState("");
 
-    const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
     const author = post.author;
+    const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
 
     const authorProfilePicture = author.profilePicture ? serverPublic + "users/" + author.username + "/" + author.profilePicture : require('../../public/defaultProfile.png');
 
@@ -25,6 +28,10 @@ export const PostItem = ({ post, location }) => {
     const navigate = useNavigate();
     const params = useParams();
     const ref = useRef(null);
+
+    const showImage = (image) => {
+        setImage(image)
+    }
 
     const handleVote = async (postId, type) => {
         try {
@@ -64,7 +71,7 @@ export const PostItem = ({ post, location }) => {
 
     if (location && location === "forums") {
         return (
-            <div className={css.post} style={{ minHeight: "5rem", padding: "1rem" }}>
+            <div className={css.post} style={{ minHeight: "5rem", padding: "1rem", width: "100%" }}>
                 <div className={css.profileInfo} style={{ alignItems: "center", flex: "2", flexDirection: "row", padding: "0" }}>
                     <img style={{ width: "3rem", height: "3rem" }} className={css.profilePic} src={authorProfilePicture} alt="" />
                     <div className={css.brief}>
@@ -82,6 +89,7 @@ export const PostItem = ({ post, location }) => {
 
     return (
         <div key={post.id} className={css.post}>
+
                 <div className={css.profileInfo}>
                     <span className="textlink" onClick={() => navigate(`/profile/${post.author._id}`)}>{post.author.username}</span>
                     <img src={authorProfilePicture} alt="" className={css.sampleImg} />
@@ -96,10 +104,13 @@ export const PostItem = ({ post, location }) => {
                 </div>
             <div className={css.contentWrapper}>
                 <div className={css.top}>
-                        <span>{toDateAndTime(post.createdAt)}</span>
+                        <div className={css.timestamps} >
+                                <span>{ toDateAndTime(post.createdAt)}</span>
+                                {post.createdAt !== post.updatedAt ? <span className={css.edited} >Edytowano: {toDateAndTime(post.updatedAt)}</span> : <></> }
+                        </div>
                         { user && user._id === post.author._id ?
 
-                        <MoreOptions data={{ threadId: thread._id, postId: post._id, token }} location={"post"}/> : <></> }
+                        <MoreOptions data={{ userId: user._id, threadId, content: optimizePost(post), token }} location={"post"}/> : <></> }
                 </div>
                 <div className={css.content}>
                     <div className={css.comment}>
@@ -131,6 +142,15 @@ export const PostItem = ({ post, location }) => {
                         </button> : <></> }
                     </div>
                 </div>
+                { post.images.length > 0 ?
+                <div className={css.fileWrapper}>
+                    <span>Zdjęcia: </span>
+                    { post.images.map((image, i) => 
+                    <div onClick={() => {showImage(image)}}>
+                        <span>{image}</span>
+                    </div>) }
+                </div>
+                : <></> }
             </div>
         </div>)
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import css from './ThreadSection.module.css';
-import { UilPlusCircle, UilTrashAlt } from '@iconscout/react-unicons';
+import { UilPlusCircle, UilTrashAlt, UilMultiply } from '@iconscout/react-unicons';
 import { useDispatch, useSelector } from "react-redux";
 
 import { ThreadModal } from "../ThreadModal/ThreadModal";
@@ -10,6 +10,7 @@ import { toDate, toDateAndTime } from "../../helpers/toDate";
 import { MoreOptions } from "../MoreOptions/MoreOptions";
 import { deleteThread } from "../../actions/threadAction";
 import { followThread } from "../../api/threadRequest";
+import { optimizeThread } from "../../helpers/optimize";
 
 export const ThreadSection = ({ thread }) => {
 
@@ -18,6 +19,7 @@ export const ThreadSection = ({ thread }) => {
     const [ closed, setClosed ] = useState(thread.isClosed);
     const [ error, setError ] = useState(null);
     const [ profilePicture, setProfilePicture ] = useState("");
+    const [ image, setImage ] = useState("");
 
     const { user, token } = useSelector((state) => state.authReducer.authData);
     const threadId = useSelector((state) => state.forumReducer.thread._id);
@@ -47,6 +49,10 @@ export const ThreadSection = ({ thread }) => {
         } , 3000)
     }
 
+    const showImage = (image) => {
+        setImage(image)
+    }
+
     const handleFollow = async (type) => {
         try {
             const { data } = await followThread({ threadId: thread._id, type, token });
@@ -68,6 +74,15 @@ export const ThreadSection = ({ thread }) => {
 
     return (
         <div className={css.container}>
+            { image ? 
+            <div className={css.imageModal}>
+                <div>
+                    <div>
+                        <div onClick={() => setImage(null)} className="numberBadge"><div><UilMultiply/></div></div>
+                        <img src={ serverPublic + threadId + "/" + image} alt="" />
+                    </div>
+                </div>
+            </div> : <></> }
             { user ? <ThreadModal modal={modal} setModal={setModal} token={token} threadId={threadId} type={"post"}/> : <></> }
 
             <div className={css.btnWrapper}>
@@ -114,12 +129,24 @@ export const ThreadSection = ({ thread }) => {
                 </div>
                 <div className={css.contentWrapper}>
                     <div className={css.top}>
-                            <span>{toDateAndTime(thread.createdAt)}</span>
+                            <div className={css.timestamps}>
+                                <span>{ toDateAndTime(thread.createdAt)}</span>
+                                {thread.createdAt !== thread.updatedAt ? <span className={css.edited}>Edytowano: {toDateAndTime(thread.updatedAt)}</span> : <></> }
+                            </div>
                             { user && (user._id === thread.author._id || user.isModerator) ? 
-                            <MoreOptions value={closed} setValue={setClosed} isModerator={user.isModerator} location="thread" data={{ threadId: thread._id, token }}/> : <></> }
+                            <MoreOptions value={closed} setValue={setClosed} isModerator={user.isModerator} location="thread" data={{ userId: user._id, content: optimizeThread(thread), token }}/> : <></> }
                     </div>
                     <div className={css.content}>
                         <span>{thread.description}</span>
+                        { thread.images.length > 0 ?
+                        <div className={css.fileWrapper}>
+                            <span>Obrazy: </span>
+                                { thread.images.map((image, i) => 
+                                <div onClick={() => {showImage(image)}}>
+                                    <span>{image}</span>
+                                </div>)}
+                        </div>
+                        : <></> }
                     </div>
                 </div>
                 {/* <div className={css.reaction}>
@@ -129,7 +156,7 @@ export const ThreadSection = ({ thread }) => {
                 </div> */}
             </div>
             
-            { loading ? <></> : <Posts posts={thread.posts} location={""}/> }
+            <Posts setImage={setImage} posts={thread.posts} location={""}/>
         </div>
     )
 }

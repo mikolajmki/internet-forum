@@ -5,6 +5,7 @@ const postSchema = mongoose.Schema({
     comment: { type: String, required: true },
     upvotes: [ { type: mongoose.Schema.Types.ObjectId, ref: "User" } ],
     downvotes: [ { type: mongoose.Schema.Types.ObjectId, ref: "User" } ],
+    images: [ { type: String, required: false } ]
 }, { timestamps: true });
 
 export default mongoose.model("Post", postSchema);

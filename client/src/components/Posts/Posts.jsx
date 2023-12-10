@@ -1,9 +1,12 @@
 import React, { createRef, useEffect, useState } from "react";
-import css from './Posts.module.css';
-import { useDispatch } from "react-redux";
+import css from '../ThreadSection/ThreadSection.module.css';
 import { PostItem } from "../PostItem/PostItem";
+import { UilMultiply } from "@iconscout/react-unicons";
+import { useSelector } from "react-redux";
 
-export const Posts = ({ posts, location }) => {
+export const Posts = ({ posts, location, setImage }) => {
+    
+    const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
 
     // const [likes, setLikes] = useState({});
 
@@ -13,9 +16,9 @@ export const Posts = ({ posts, location }) => {
     // }
 
     return (
-            <div className={css.container} style={ location === "forums" ? { gap: "0.5rem", paddingTop: "1rem"} : null  }>
+            <div className={css.container} style={ location === "forums" ? { gap: "0.5rem", paddingTop: "1rem"} : { padding: "0" } }>
                 { posts.map((post, i) => 
-                    <PostItem key={i} post={post} location={location}/>
+                    <PostItem key={i} post={post} setImage={setImage} location={location}/>
             ) }
             </div>
     )

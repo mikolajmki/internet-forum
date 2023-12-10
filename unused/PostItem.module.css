@@ -180,8 +180,33 @@
     position: relative;
     flex: 6;
     display: flex;
+
     width: 100%;
     flex-direction: column;
+}
+
+.fileWrapper {
+    gap: 1rem;
+}
+
+.fileWrapper > div, .fileWrapper {
+    display: flex;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.fileWrapper > div {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.fileWrapper > div > span {
+    font-style: italic;
+}
+
+.fileWrapper > div > span:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .content {
@@ -192,6 +217,13 @@
     flex-direction: row;
 }
 
+.edited {
+    border-radius: 0.2rem;
+    height: 1rem;
+    background: var(--textLight);
+    padding: 0.2rem 0.5rem;
+}
+
 .comment {
     width: 100%;
 }
@@ -199,7 +231,7 @@
 .top {
     display: flex;
     align-items: start;
-    justify-content: space-between;
+    justify-content: center;
     height: fit-content;
     font-size: 0.8rem;
     padding: 1rem 1rem 1rem 0;

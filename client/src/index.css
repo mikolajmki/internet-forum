@@ -158,6 +158,39 @@ form > textarea, form > input {
   animation: rotation 1s linear infinite;
   }
 
+  .fileWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 1rem;
+    color: black;
+ }
+
+ .fileWrapper > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.5rem;
+    line-height: 1.5rem;
+    border-radius: 0.2rem;
+ }
+
+ .fileWrapper > div > :nth-child(1) {
+    text-align: center;
+}
+
+ .fileWrapper > div > :nth-child(2) {
+    background: var(--buttonRed);
+ }
+
+ .fileWrapper > div > :nth-child(2) :hover {
+    cursor: pointer;
+    background: var(--buttonRedBorder);
+    border-radius: 99px;
+ }
+
+
   @keyframes rotation {
   0% {
       transform: rotate(0deg);
