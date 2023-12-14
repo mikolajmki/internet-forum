@@ -12,6 +12,7 @@ export const getThreadsByForumIdSortedByParam = (forumId, sort) => API.get(`/thr
 export const getThreadWithPostsById = (threadId) => API.get(`/thread/${threadId}`);
 export const getThreadsByAuthorId = (userId) => API.get(`/thread/authorId/${userId}`);
 export const getThreadsByLimit = (limit) => API.get(`/thread/limit/${limit}`);
+export const getThreadsByTitleLike = (title) => API.get(`/thread/title/like/${title}`);
 
 export const toggleThreadIsClosed = (data) => API.put("/thread/toggle/closed", { threadId: data.threadId }, apiHeaders(data.token));
 

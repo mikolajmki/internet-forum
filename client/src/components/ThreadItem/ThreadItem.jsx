@@ -11,14 +11,18 @@ export const ThreadItem = ({ thread, location }) => {
     const user = thread.author;
     const navigate = useNavigate();
 
+    const handleNavigate = (e) => {
+
+    }
+
     const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
 
     const authorProfilePicture = user.profilePicture ? serverPublic + "users/" + user.username + "/" + user.profilePicture : require('../../public/defaultProfile.png');
     
     return (
-        <div className={css.thread} onClick={() => navigate(`/thread/${thread._id}`)}>
+        <div className={css.thread} id="thread">
             <div className={css.dot}></div>
-                <div className={css.info}>
+                <div className={css.info}  onClick={() => navigate(`/thread/${thread._id}`)}>
                     <span>{limitString(thread.title) === thread.title ? thread.title : limitString(thread.title) + "..."}</span>
                     <span>dodany przez {thread.author.username} dnia {toDate(thread.createdAt)}</span>
                 </div>
@@ -33,7 +37,7 @@ export const ThreadItem = ({ thread, location }) => {
                 <img className={css.profilePic} src={authorProfilePicture} style={{ width: "3rem", height: "3rem" }} alt="" />
                 <div>
                     <div style={{ alignItems: "start" }} className={css.stats}>
-                        <span className="textlink" onClick={() => { navigate(`/profile/${thread.author._id}`) }}>{thread.author.username}</span>
+                        <span className="textlink" id="profile" onClick={() => navigate(`/profile/${thread.author._id}`) }>{thread.author.username}</span>
                         <span style={{ color: "var(--textLight)" }}>{toDate(thread.author.createdAt)}</span>
                     </div>
                 </div>

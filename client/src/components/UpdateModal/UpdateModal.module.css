@@ -9,17 +9,6 @@
     height: 100%;
 }
 
-.exit {
-    position: absolute;
-    top: -1rem;
-    right: -1rem;
-    background: red;
-    padding: 1.5rem;
-    font-size: 2rem;
-    border-radius: 200px;
-    cursor: pointer;
- }
-
  .container, .scrollContainer {
     position: relative;
     width: 50%;

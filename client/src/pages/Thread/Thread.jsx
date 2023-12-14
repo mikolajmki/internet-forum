@@ -17,7 +17,7 @@ export const Thread = () => {
     useEffect(() => {
         console.log("get")
         dispatch(getThreadWithPostsById(params.threadId))
-    }, [])
+    }, [params])
 
     return (
         <>

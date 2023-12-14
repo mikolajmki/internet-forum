@@ -6,6 +6,7 @@ import { updateUser } from "../../actions/userAction";
 import { deleteThreadImages, uploadProfilePicture, uploadThreadImage } from "../../api/uploadRequest";
 import { updateThread } from "../../actions/threadAction";
 import { updatePost } from "../../actions/postAction";
+import { UilMultiply, UilRedo, UilKeySkeletonAlt, UilPlusCircle } from "@iconscout/react-unicons";
 
 export const UpdateModal = ({ modal, setModal, type, content, user, token }) => {
 
@@ -35,7 +36,7 @@ export const UpdateModal = ({ modal, setModal, type, content, user, token }) => 
                 setImages([ ...content.images, name ]);
             }
         }
-      }
+    }
 
     const handleImageRequest = async (uploadFunction, body, token) => {
         try {
@@ -177,7 +178,7 @@ export const UpdateModal = ({ modal, setModal, type, content, user, token }) => 
                 <div>
                     <div className={css.btnWrapper} style={{ alignItems: "center" }}>
                         { type === "thread" ? <h1>Edytuj watek</h1> : type === "post" ? <h1>Edytuj post</h1> : <h1>Edytuj dane uzytkownika</h1> }
-                        <button className="btn" type="reset" onClick={() => handleResetForm()}>{ editPassword ? "Wyczysc" : "Przywroc"}</button>
+                        <button className="btn" type="reset" onClick={() => handleResetForm()}><UilRedo/>{ editPassword ? "Wyczysc" : "Przywroc"}</button>
                     </div>
                     { error ? 
                     <div className="errorWrapper">
@@ -228,7 +229,7 @@ export const UpdateModal = ({ modal, setModal, type, content, user, token }) => 
                                 <span>{uploadImage.name}</span>
                                 <span>{fileName}</span>
                             </div> : <></> }
-                            <label htmlFor="file"><div className="btn">Wybierz plik</div></label>
+                            <label htmlFor="file"><div className="btn"><UilPlusCircle/> Wybierz plik</div></label>
                             <input id="file" accept="image/*" onChange={(e) => onImageChange(e)} type="file" style={{ display: "none" }} />
                         </div>
                         </> : <></>}
@@ -244,11 +245,11 @@ export const UpdateModal = ({ modal, setModal, type, content, user, token }) => 
                             </div>
                         </div>
                         <div className={css.btnWrapper}>
-                            { type === "profile" ? <div className="btn" onClick={() => { setEditPassword(prev => !prev) }}>{ !editPassword ? "Zmiana hasla" : "Edycja danych"}</div> : <></> }
+                            { type === "profile" ? <div className="btn" onClick={() => { setEditPassword(prev => !prev) }}><UilKeySkeletonAlt/>{ !editPassword ? "Zmiana hasla" : "Edycja danych"}</div> : <></> }
                             <button className="btn" style={{ flex: "1" }} type="submit">Zatwierdz zmiany</button>
                         </div>
                     </form>
-                    <div className={css.exit} onClick={() => setModal((prev) => !prev)}></div>
+                    <div className="exit" onClick={() => setModal((prev) => !prev)}><UilMultiply/></div>
                 </div>
             </div>
         </Modal>

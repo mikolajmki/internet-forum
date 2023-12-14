@@ -41,6 +41,7 @@ body {
   font-family: "eudoxus sans", sans-serif;
   overflow-x: clip;
   scroll-behavior: smooth;
+  cursor: default;
 }
 
 textarea, input {
@@ -92,6 +93,17 @@ form > textarea, form > input {
   line-height: 1.5rem;
   width: fit-content;
   box-shadow: 0px 3px 0 0px var(--buttonBorder);
+}
+
+.exit {
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+  background: var(--buttonRed);
+  padding: 0.5rem;
+  border-radius: 99px;
+  cursor: pointer;
+  line-height: 0.5rem;
 }
 
 .btnRed {

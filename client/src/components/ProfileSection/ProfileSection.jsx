@@ -70,7 +70,7 @@ export const ProfileSection = () => {
         } else if (loggedInUser._id !== params.userId) {
             setUser(visitedUser);
         }
-    }, [visitedUser, loggedInUser]);
+    }, [visitedUser, loggedInUser, params]);
 
     return (
         <div className={css.container}>

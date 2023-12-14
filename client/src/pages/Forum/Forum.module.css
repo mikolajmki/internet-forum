@@ -9,7 +9,7 @@
 }
 
 .container > :nth-child(2) {
-    flex: 2;
+    flex: 1;
 }
 
 @media screen and (max-width: 768px) {

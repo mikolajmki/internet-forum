@@ -14,10 +14,16 @@ import { optimizePost } from "../../helpers/optimize.js";
 export const PostItem = ({ post, location, setImage }) => {
 
     const { user, token } = useSelector((state) => state.authReducer.authData);
-    const { loading } = useSelector((state) => state.forumReducer) ;
-    const threadId = useSelector((state) => state.forumReducer.thread._id);
+    const { loading } = useSelector((state) => state.forumReducer);
 
     const [ votes, setVotes ] = useState({});
+    const [ threadId, setThreadId ] = useState("")
+
+    useEffect(() => {
+        if (location === "forum") {
+            setThreadId(post.threadId);
+        }
+    }, [])
 
     const author = post.author;
     const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;

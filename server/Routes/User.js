@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/all", getAllUsers);
 router.get("/:id", getUser);
 router.get("/all/moderators", getUsersModerators)
-router.get("/all/like/:username", authMiddleWare, getUsersByUsernameLike);
+router.get("/username/:username", getUsersByUsernameLike);
 
 router.put("/:id", authMiddleWare, updateUser);
 router.put("/toggle/moderator", authMiddleWare, adminMiddleWare, toggleUserIsModerator);

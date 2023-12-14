@@ -67,11 +67,14 @@ export const getThreadsByAuthorId = async (req, res) => {
 };
 
 export const getThreadsByTitleLike = async (req, res) => {
-    const title = req.params.title;
+    const title = req.params.title.replaceAll("%20", " ");
+    console.log(title)
+
 
     try {
-        const threads = await Thread.find({ username: { $regex: title, $options: "i" } })
-        .populate("author", ["username", "createdAt", "profilePicture"])
+        const threads = await Thread.find({ title: { $regex: title, $options: "i" } })
+        .select("title views posts")    
+        .populate("author", ["username"])
 
         return res.status(200).json(threads);
 

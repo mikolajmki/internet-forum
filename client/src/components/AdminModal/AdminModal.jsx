@@ -8,6 +8,7 @@ import { toDate } from "../../helpers/toDate";
 import useDebounce from "../../helpers/useDebounce";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { UilMultiply } from "@iconscout/react-unicons";
 
 export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }) => {
 
@@ -97,7 +98,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
     useDebounce(async () => {
         if (type === "moderator" && formData.username ) {
             try {
-                const { data } = await getUsersByUsernameLike({ username: formData.username, token });
+                const { data } = await getUsersByUsernameLike(formData.username);
                 setUsers(data);
             } catch (err) {
                 if (err.response.status === 401) {
@@ -164,7 +165,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
                         {/* <button style={{ width: "8rem" }} type="submit" className="btn">Dodaj</button> */}
                     </form>
                     { mapUsers(users, 1) }
-                    <div className={css.exit} onClick={() => setModal((prev) => !prev)}></div>
+                    <div className="exit" onClick={() => setModal((prev) => !prev)}><UilMultiply/></div>
                     </div>
                 </div>
             </Modal>
@@ -178,6 +179,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
         className={css.modal}
         style={{ overlay: { background: "#00000095" } }}>
             <div className={css.container}>
+                <div>
                 { type === "forum" ? <h1>Dodaj forum</h1> : <h1>Dodaj nowa kategorie</h1> }
                 <form className={css.form} onSubmit={(e) => handleCreate(e)}>
                     <div>Tytul: <span>{charCount.first}/32</span></div>
@@ -188,7 +190,8 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
                     </> : <></> }
                     <button style={{ width: "8rem" }} type="submit" className="btn">Dodaj</button>
                 </form>
-                <div className={css.exit} onClick={() => setModal((prev) => !prev)}></div>
+                <div className="exit" onClick={() => setModal((prev) => !prev)}><UilMultiply/></div>
+                </div>
             </div>
         </Modal>
     )

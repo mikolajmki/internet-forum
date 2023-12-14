@@ -11,7 +11,7 @@ export const ForumItem = ({ forum, category, error, setError }) => {
 
     
     const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
-    const user = forum.latestThreadId.author;
+    const user = forum.latestThreadId ? forum.latestThreadId.author : {};
     const latestThreadProfilePicture = user.profilePicture ? serverPublic + "users/" + user.username + "/" + user.profilePicture : require('../../public/defaultProfile.png');
     
     const { user: loggedInUser, token } = useSelector((state) => state.authReducer.authData);
@@ -60,7 +60,7 @@ export const ForumItem = ({ forum, category, error, setError }) => {
                 { forum.latestThreadId ? <div className={css.brief}>
                     <img className={css.profilePic} src={latestThreadProfilePicture} alt="" />
                     <div>
-                        <span className="textlink" onClick={() => {navigate(`/profile/${forum.latestThreadId.author._id}`)}}>
+                        <span className="textlink" onClick={() => navigate(`/profile/${forum.latestThreadId.author._id}`)}>
                             {forum.latestThreadId.author.username}
                         </span>
                         <span className="textlink" onClick={() => handleGetThreadWithPostsById(forum.latestThreadId._id)}>

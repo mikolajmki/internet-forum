@@ -71,7 +71,7 @@ export const HomeSection = ({ content, setContent }) => {
                     </div>
                 )
             }) }
-            { user && user.isModerator ? <div style={{ width: "90%" }}><div className="btn" onClick={() => { setType("category"); setAdminOpened(true); }}>
+            { user && user.isModerator ? <div style={{ width: "100%" }}><div className="btn" onClick={() => { setType("category"); setAdminOpened(true); }}>
                 <UilPlusCircle/>
                 Dodaj kategorie
             </div></div> : <></> }
