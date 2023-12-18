@@ -71,7 +71,7 @@ form {
   margin-bottom: 2rem;
 }
 
-form > textarea, form > input {
+textarea, input {
   padding: 0.5rem;
   border-radius: 0.4rem;
   font-size: 1.2rem;

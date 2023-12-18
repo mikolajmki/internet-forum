@@ -42,6 +42,7 @@ export const createThread = (reqData) => async (dispatch) => {
         const { data } = await ThreadApi.createThread(reqData);
         console.log(data)
         dispatch({ type: "THREAD_CREATE_SUCCESS", data: data });
+        return data._id;
     } catch (err) {
         console.log(err);
         dispatch({ type: "THREAD_FAIL", data: err.response.data.message });

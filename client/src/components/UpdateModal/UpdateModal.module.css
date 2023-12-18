@@ -20,6 +20,7 @@
     background: var(--section);
     border-radius: 0.4rem;
     margin: 2rem;
+    width: 50vw;
     max-height: 80vh;
 }
 
@@ -46,9 +47,28 @@
     margin-bottom: 1rem;
  }
 
- .form > textarea, .form > input {
+ .columns {
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   gap: 2rem;
+   width: 100%;
+ }
+
+ .columns > div {
+   display: flex;
+   flex-direction: column;
+   gap: 0.5rem;
+   flex: 1;
+ }
+
+ .columns > :nth-child(2) {
+   flex: 3;
+ }
+
+ .columns > div > textarea, .columns > div > input,  .form > textarea, .form > input {
     background: var(--textLight);
     box-sizing: border-box;
     color: white;
-    max-width: 100%;
+    margin-bottom: 0.5rem;
  }

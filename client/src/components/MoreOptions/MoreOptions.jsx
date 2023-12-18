@@ -5,6 +5,7 @@ import { deletePost } from "../../actions/postAction";
 import { getThreadsByForumIdSortedByParam } from "../../actions/threadAction";
 import { toggleThreadIsClosed } from "../../api/threadRequest";
 import { UpdateModal } from "../UpdateModal/UpdateModal";
+import { deleteThreadImages } from "../../api/uploadRequest";
 
 export const MoreOptions = ({ data, location, forumId, isModerator, value, setValue }) => {
 
@@ -17,14 +18,9 @@ export const MoreOptions = ({ data, location, forumId, isModerator, value, setVa
         await toggleThreadIsClosed(data);
     }
 
-    useEffect(() => {
-        console.log(value)
-        // handleToggleThreadIsClosed(data);
-    }, [value])
-
-
-    const handleDelete = () => {
-        dispatch(deletePost({ threadId: data.threadId, postId: data.content._id, token: data.token }));
+    const handleDelete = async () => {
+        await deleteThreadImages({ body: { images: data.content.images, threadId: data.content.threadId }, token: data.token });
+        dispatch(deletePost({ threadId: data.content.threadId, postId: data.content._id, token: data.token }));
         setMenu(false);
     }
 
@@ -56,7 +52,7 @@ export const MoreOptions = ({ data, location, forumId, isModerator, value, setVa
                 { location === "thread" && isModerator ? <span onClick={() => { setValue(prev => !prev) }}>{ value ? "Otworz watek" : "Zamknij watek" }</span> : <></> }
                 { location === "post" ? <span onClick={() => handleDelete()}>Usun</span> : <></> } 
             </div> : <></> }
-            { location === "thread" || location === "post" ? <UpdateModal modal={modal} setModal={setModal} type={location} content={data.content} token={data.token}/> : <></> }
+            { modal && (location === "thread" || location === "post") ? <UpdateModal modal={modal} setModal={setModal} type={location} content={data.content} token={data.token}/> : <></> }
         </div>
     )
 }

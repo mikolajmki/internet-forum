@@ -22,7 +22,7 @@ export const Thread = () => {
     return (
         <>
             <Header/>
-            { !thread || loading ? <span className="loader"></span> : <ThreadSection thread={thread}/> }
+            { !thread._id || loading ? <span className="loader"></span> : <ThreadSection thread={thread}/> }
         </>
     )
 }

@@ -3,9 +3,9 @@ export const optimizeThread = (thread) => {
 }
 
 export const optimizeUser = (user) => {
-    return { _id: user._id, username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, signature: user.signature, about: user.about };
+    return { _id: user._id, username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, signature: user.signature, about: user.about, profilePicture: user.profilePicture };
 }
 
-export const optimizePost = (post) => {
-    return { _id: post._id, author: post.author._id, comment: post.comment, images: post.images }
+export const optimizePost = (post, threadId) => {
+    return { threadId, _id: post._id, author: post.author._id, comment: post.comment, images: post.images }
 }

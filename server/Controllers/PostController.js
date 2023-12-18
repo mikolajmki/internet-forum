@@ -129,6 +129,7 @@ export const createPost = async (req, res) => {
     const post = new Post({
         title: req.body.title,
         comment: req.body.comment,
+        images: req.body.images,
         author: authorId,
     });
 

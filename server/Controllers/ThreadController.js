@@ -211,6 +211,7 @@ export const createThread = async (req, res) => {
         forumId: req.body.forumId,
         title: req.body.title,
         description: req.body.description,
+        images: req.body.images,
         author: authorId,
     });
     try {
@@ -219,7 +220,7 @@ export const createThread = async (req, res) => {
         await thread.save();
         
         const resultThread = await thread
-        .populate("author forumId", ["username", "profilePicture", "createdAt", "name"])
+        .populate("author forumId", ["username", "profilePicture", "createdAt", "name"]);
 
         // thread notifications
 
@@ -227,8 +228,12 @@ export const createThread = async (req, res) => {
         
         return res.status(200).json(resultThread);
     } catch (err) {
-        console.log(err);
-        return res.status(500).json({ message: err.message });
+        switch (err.code) {
+            case 11000:
+                return res.status(500).json({ message: "Thread of title " + req.body.title + " already exists." });
+            default:
+                return res.status(500).json({ message: err.message });
+        }
     }
 };
 

@@ -74,7 +74,12 @@ export const createForum = async (req, res) => {
         
         return res.status(200).json(forum);
     } catch (err) {
-        return res.status(500).json({ message: err });
+        switch (err.code) {
+            case 11000:
+                return res.status(500).json({ message: "Forum of name " + req.body.name + " already exists." });
+            default:
+                return res.status(500).json({ message: err.message });
+        }
     }
 };
 

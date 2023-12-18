@@ -15,6 +15,7 @@ export const PostItem = ({ post, location, setImage }) => {
 
     const { user, token } = useSelector((state) => state.authReducer.authData);
     const { loading } = useSelector((state) => state.forumReducer);
+    const { thread } = useSelector((state) => state.forumReducer);
 
     const [ votes, setVotes ] = useState({});
     const [ threadId, setThreadId ] = useState("")
@@ -22,6 +23,8 @@ export const PostItem = ({ post, location, setImage }) => {
     useEffect(() => {
         if (location === "forum") {
             setThreadId(post.threadId);
+        } else if (location === "thread") {
+            setThreadId(thread._id);
         }
     }, [])
 
@@ -116,7 +119,7 @@ export const PostItem = ({ post, location, setImage }) => {
                         </div>
                         { user && user._id === post.author._id ?
 
-                        <MoreOptions data={{ userId: user._id, threadId, content: optimizePost(post), token }} location={"post"}/> : <></> }
+                        <MoreOptions data={{ userId: user._id, threadId, content: optimizePost(post, threadId), token }} location={"post"}/> : <></> }
                 </div>
                 <div className={css.content}>
                     <div className={css.comment}>

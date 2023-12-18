@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const threadSchema = mongoose.Schema({
     forumId: { type: mongoose.Schema.Types.ObjectId, ref: "Forum" },
-    title: { type: String, required: true },
+    title: { type: String, required: true, unique: true },
     description: { type: String, required: true },
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User"},
     views: { type: Number, default: 0 },

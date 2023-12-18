@@ -1,5 +1,11 @@
-const forumReducer = (state = { categories: [], threads: [], thread: null, visitedUser: null, loading: false, error: null,}, action) => {
+const forumReducer = (state = { categories: [], threads: [], thread: {}, visitedUser: null, loading: false, error: null,}, action) => {
     switch (action.type) {
+        case "ERROR_SET":
+            return { ...state, error: action.data };
+        case "MESSAGE_SET":
+            return { ...state, message: action.data };
+        case "ERROR_RESET":
+            return { ...state, error: null, message: null };
         case "SET_CATEGORIES_SUCCESS":
             return { ...state, categories: action.data }
         case "THREADS_START":
@@ -20,7 +26,7 @@ const forumReducer = (state = { categories: [], threads: [], thread: null, visit
         case "THREAD_CREATE_SUCCESS":
             return { ...state, threads: [ ...state.threads, action.data ], loading: false, error: null }
         case "THREAD_DELETE_SUCCESS":
-            return { ...state, thread: null, loading: false, error: null }
+            return { ...state, thread: {}, loading: false, error: null }
         case "THREAD_FAIL":
             // localStorage.setItem("profile", JSON.stringify({ ...a1ction?.data }));
             return { ...state, loading: false, error: action.data };

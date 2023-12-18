@@ -48,7 +48,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
             if (err.response.status === 401) {
                 logOut(err);
             } else {
-
+                dispatch({ type: "ERROR_SET", data: err.response.data.message })
             }
         }
     }

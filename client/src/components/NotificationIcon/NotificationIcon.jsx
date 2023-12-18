@@ -64,13 +64,13 @@ export const NotificationIcon = ({ modalOpened, setModalOpened, type }) => {
         }
     }, [search], 1000)
 
-    useEffect(() => {
-        console.log(searchFilter, search)
-    }, [search])
+    // useEffect(() => {
+    //     console.log(searchFilter, search)
+    // }, [search])
 
-    useEffect(() => {
-        console.log(content)
-    }, [content])
+    // useEffect(() => {
+    //     console.log(content)
+    // }, [content])
 
 
     const notiBarContent = (item) => {

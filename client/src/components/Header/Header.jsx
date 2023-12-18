@@ -19,7 +19,7 @@ export const Header = ({ location }) => {
     // const categories = ["Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze", "Mechanika", "Wnetrze"]
     
     const { user, token } = useSelector((state) => state.authReducer.authData);
-    const { error: err, notifications, message: msg } = useSelector((state) => state.authReducer);
+    // const { error: err, notifications, message: msg } = useSelector((state) => state.authReducer);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();

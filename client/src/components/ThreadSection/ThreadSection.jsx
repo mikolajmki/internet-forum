@@ -11,6 +11,7 @@ import { MoreOptions } from "../MoreOptions/MoreOptions";
 import { deleteThread } from "../../actions/threadAction";
 import { followThread } from "../../api/threadRequest";
 import { optimizeThread } from "../../helpers/optimize";
+import { deleteThreadImages } from "../../api/uploadRequest";
 
 export const ThreadSection = ({ thread }) => {
 
@@ -36,8 +37,9 @@ export const ThreadSection = ({ thread }) => {
     //     setLikes({ ...likes, [postId]: like })
     // }
 
-    const handleDelete = (data) => {
-        dispatch(deleteThread(data));
+    const handleDelete = async () => {
+        dispatch(deleteThread({ threadId: thread._id, token }));
+        await deleteThreadImages({ body: { threadId: thread._id, images: thread.images }, token})
         navigate(`/forum/${thread.forumId._id}`)
     }
 
@@ -87,7 +89,7 @@ export const ThreadSection = ({ thread }) => {
 
             <div className={css.btnWrapper}>
                 { thread.posts.length === 0 && user && user._id === thread.author._id ?
-                <div className={`btnRed ${css.btn}`} onClick={() => handleDelete({ threadId: thread._id, token})}>
+                <div className={`btnRed ${css.btn}`} onClick={() => handleDelete()}>
                     <div className={css.circle}><UilTrashAlt/></div>
                     Usun
                 </div> : <></> }
@@ -142,7 +144,7 @@ export const ThreadSection = ({ thread }) => {
                         <div className={css.fileWrapper}>
                             <span>Obrazy: </span>
                                 { thread.images.map((image, i) => 
-                                <div onClick={() => {showImage(image)}}>
+                                <div key={i} onClick={() => {showImage(image)}}>
                                     <span>{image}</span>
                                 </div>)}
                         </div>
@@ -156,7 +158,7 @@ export const ThreadSection = ({ thread }) => {
                 </div> */}
             </div>
             
-            <Posts setImage={setImage} posts={thread.posts} location={""}/>
+            <Posts setImage={setImage} posts={thread.posts} location={"thread"}/>
         </div>
     )
 }
