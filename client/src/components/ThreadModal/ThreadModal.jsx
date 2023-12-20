@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../../actions/postAction";
 import { createThread } from "../../api/threadRequest";
 import { useNavigate } from "react-router-dom";
-import { UilMultiply, UilPlusCircle } from "@iconscout/react-unicons";
+import { UilMultiply, UilPlusCircle, UilRedo } from "@iconscout/react-unicons";
 import { uploadThreadImage, uploadThreadImages } from "../../api/uploadRequest";
 
 export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId }) => {
@@ -17,6 +17,7 @@ export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId })
     const threads = useSelector((state) => state.forumReducer.threads);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // console.log(formData, forumId);
 
@@ -32,12 +33,10 @@ export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId })
             // setUploadImage(img);
             setUploadImages(files);
 
-            const images = Array.from(files);
-
             const names = [];
 
             for (let i = 0 ; i < files.length ; i ++) {
-                names.push("IMG_" + Date.now() + i + "." + files[0].type.replace(/(.*)\//g, ''));
+                names.push("IMG_" + Date.now() + i + "." + files[i].type.replace(/(.*)\//g, ''));
             }
 
             setFilenames(names);
@@ -47,6 +46,11 @@ export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId })
 
             // console.log(e.target.files[0].type, e.target.files[0].type.replace(/(.*)\//g, ''))
         }
+    }
+
+    const resetImages = () => {
+        setUploadImages([]);
+        setFilenames([]);
     }
 
     const handleRemoveImage = (image) => {
@@ -101,7 +105,8 @@ export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId })
             console.log("upload images", body.getAll("files"))
             await uploadThreadImages({ body, token });
 
-          }
+        }
+        navigate(`/thread/${data.threadId}`);
         setModal(false);
     }
 
@@ -121,38 +126,47 @@ export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId })
         style={{ overlay: { background: "#00000095" } }}>
             <div className={css.container}>
                 <h1>{title}</h1>
-                <form className={css.form}>
-                    { type === "thread" ? 
-                    <>
-                    <div>Tytul: <span>{formData.title.length}/45</span></div>
-                    <input id="title" onChange={(e) => setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value }) } maxLength={45} autoFocus />
-                    </> : ''}
-                    <div>Tresc: <span>{ type === "post" ? formData.comment.length : formData.description.length}/500</span></div>
-                    <textarea id={type === "post" ? "comment" : "description"} onChange={(e) => { setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value }) }} maxLength={500} rows={5} className={css.content}/>
-                    <div className={css.btnWrapper} style={{ justifyContent: "space-between" }}>
-                        <div className={css.btnWrapper} style={{ flexDirection: "column" }}>
-                            <span>Dodaj obrazy: {uploadImages.length}/5</span>
+                <form spellCheck="false" className={css.form}>
+                    <div>
+                        { type === "thread" ? 
+                        <div>
+                            <div>Tytul: <span>{formData.title.length}/45</span></div>
+                            <input id="title" onChange={(e) => setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value }) } maxLength={45} autoFocus />
+                        </div> : ''}
+                        <div className={css.textarea}>
+                            <div>Tresc: <span>{ type === "post" ? formData.comment.length : formData.description.length}/500</span></div>
+                            <textarea id={type === "post" ? "comment" : "description"} onChange={(e) => { setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value }) }} maxLength={500} rows={5} className={css.content}/>
                         </div>
-                        
-                        {/* { fileNames.length > 0 ?
-                        fileNames.map((image, i) => (
-                        <div className={css.btnWrapper} style={{ flexDirection: "column" }}>
-                            <span>{uploadImages[0].name}</span>
-                            <span>{fileNames[i]}</span>
-                        </div>
-                        )) : <></> } */}
- 
-                        <label htmlFor="file"><div className="btn"><UilPlusCircle/> Wybierz pliki</div></label>
-                        <input id="file" accept="image/*" onChange={(e) => onImageChange(e)} type="file" style={{ display: "none" }} multiple="multiple" />
                     </div>
                     <div>
-                        <span>Zawarte obrazy:</span>
-                        <div className="fileWrapper" style={{ marginTop: "1rem" }}>
-                            { fileNames.length > 0 ?
-                            fileNames.map((image, i) => 
-                            <div key={i}>
-                                <span>{image}</span>
-                            </div>) : <div>Brak obrazow do wyswietlenia.</div> }
+                        <div className={css.btnWrapper} style={{ justifyContent: "space-between" }}>
+                            <div className={css.btnWrapper} style={{ flexDirection: "column" }}>
+                                <span>Dodaj obrazy: {uploadImages.length}/5</span>
+                            </div>
+                            
+                            {/* { fileNames.length > 0 ?
+                            fileNames.map((image, i) => (
+                            <div className={css.btnWrapper} style={{ flexDirection: "column" }}>
+                                <span>{uploadImages[0].name}</span>
+                                <span>{fileNames[i]}</span>
+                            </div>
+                            )) : <></> } */}
+    
+                            <div className={css.btnWrapper}>
+                                <div style={{flex: "1" }} className="btn" onClick={() => resetImages()}><UilRedo/>Wyczysc pliki</div>
+                                <label htmlFor="file"><div className="btn"><UilPlusCircle/> Wybierz pliki</div></label>
+                                <input id="file" accept="image/*" onChange={(e) => onImageChange(e)} type="file" style={{ display: "none" }} multiple="multiple" />
+                            </div>
+                        </div>
+                        <div>
+                            <span>Zawarte obrazy:</span>
+                            <div className="fileWrapper" style={{ marginTop: "1rem" }}>
+                                { fileNames.length > 0 ?
+                                fileNames.map((image, i) => 
+                                <div key={i}>
+                                    <span>{image}</span>
+                                </div>) : <div>Brak obrazow do wyswietlenia.</div> }
+                            </div>
                         </div>
                     </div>
                 </form>

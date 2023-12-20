@@ -6,7 +6,7 @@ import { updateUser } from "../../actions/userAction";
 import { deleteThreadImages, uploadProfilePicture, uploadThreadImage } from "../../api/uploadRequest";
 import { updateThread } from "../../actions/threadAction";
 import { updatePost } from "../../actions/postAction";
-import { UilMultiply, UilRedo, UilKeySkeletonAlt, UilPlusCircle } from "@iconscout/react-unicons";
+import { UilMultiply, UilRedo, UilKeySkeletonAlt, UilPlusCircle, UilEdit } from "@iconscout/react-unicons";
 
 export const UpdateModal = ({ modal, setModal, type, content, user, token }) => {
 
@@ -20,7 +20,7 @@ export const UpdateModal = ({ modal, setModal, type, content, user, token }) => 
     const [ fileName, setFileName ] = useState("");
 
     const { error: err, loading } = useSelector((state) => state.authReducer);
-    const threadId = useSelector((state) => state.forumReducer.thread._id);
+    const thread = useSelector((state) => state.forumReducer.thread);
 
     const dispatch = useDispatch();
 
@@ -63,7 +63,7 @@ export const UpdateModal = ({ modal, setModal, type, content, user, token }) => 
                 console.log(body.get("username"))
                 await handleImageRequest(uploadProfilePicture, body, token);
             } else {
-                body.append("threadId", threadId);
+                body.append("threadId", thread._id);
                 body.append("file", uploadImage);
                 console.log(images)
                 await handleImageRequest(uploadThreadImage, body, token);
@@ -78,7 +78,7 @@ export const UpdateModal = ({ modal, setModal, type, content, user, token }) => 
             if ((uploadImage && images.length <= content.images.length) || (!uploadImage && images.length < content.images.length)) {
                 const deleteImages = content.images.filter(image => !images.includes(image));
                 console.log("delete", deleteImages)
-                await handleImageRequest(deleteThreadImages, { threadId, images: deleteImages }, token);
+                await handleImageRequest(deleteThreadImages, { threadId: thread._id, images: deleteImages }, token);
             }
             data.body.images = images;
             type === "thread" ? dispatch(updateThread(data)) : dispatch(updatePost(data))
@@ -170,10 +170,10 @@ export const UpdateModal = ({ modal, setModal, type, content, user, token }) => 
         contentLabel="Example Modal"
         className={css.modal}
         style={{ overlay: { background: "#00000095" } }}>
-            <div className={css.scrollContainer}>
+            <div className={css.scrollContainer} style={editPassword ? { width: "30rem" } : {}}>
                 <div>
                     <div className={css.btnWrapper} style={{ alignItems: "center" }}>
-                        { type === "thread" ? <h1>Edytuj watek</h1> : type === "post" ? <h1>Edytuj post</h1> : <h1>Edytuj dane uzytkownika</h1> }
+                        { type === "thread" ? <h1>Edytuj watek</h1> : type === "post" ? <h1>Edytuj odpowiedz</h1> : <h1>Edytuj dane uzytkownika</h1> }
                         <button className="btn" type="reset" onClick={() => handleResetForm()}><UilRedo/>{ editPassword ? "Wyczysc" : "Przywroc"}</button>
                     </div>
                     { error ? 
@@ -213,8 +213,10 @@ export const UpdateModal = ({ modal, setModal, type, content, user, token }) => 
                             <div>
                                 <span>Sygnatura: {formData.signature.length}/64</span>
                                 <textarea id="signature" maxLength={64} value={formData.signature} rows={4} onChange={(e) => handleSetFormData(e)} type="textarea" required />
-                                <span>Opis: {formData.about.length}/128</span>
-                                <textarea id="about" maxLength={128} value={formData.about} rows={4} onChange={(e) => handleSetFormData(e)} type="textarea" />
+                                <div>
+                                    <span>Opis: {formData.about.length}/128</span>
+                                    <textarea id="about" maxLength={128} value={formData.about} rows={4} onChange={(e) => handleSetFormData(e)} type="textarea" />
+                                </div>
                             </div>
                         </div> }
                         { !editPassword ? 
@@ -233,7 +235,7 @@ export const UpdateModal = ({ modal, setModal, type, content, user, token }) => 
                             <input id="file" accept="image/*" onChange={(e) => onImageChange(e)} type="file" style={{ display: "none" }} />
                         </div>
                         </> : <></>}
-                        { !editPassword ? 
+                        { type !== "profile" ? 
                         <div>
                             <span>Zawarte obrazy:</span>
                             <div className="fileWrapper" style={{ marginTop: "1rem" }}>
@@ -246,7 +248,7 @@ export const UpdateModal = ({ modal, setModal, type, content, user, token }) => 
                             </div>
                         </div> : <></> }
                         <div className={css.btnWrapper}>
-                            { type === "profile" ? <div className="btn" onClick={() => handleToggleModal()}><UilKeySkeletonAlt/>{ !editPassword ? "Zmiana hasla" : "Edycja danych"}</div> : <></> }
+                            { type === "profile" ? <div className="btn" onClick={() => handleToggleModal()}>{editPassword ? <UilEdit/> : <UilKeySkeletonAlt/>}{ !editPassword ? "Zmiana hasla" : "Edycja danych"}</div> : <></> }
                             <button className="btn" style={{ flex: "1" }} type="submit">Zatwierdz zmiany</button>
                         </div>
                     </form>

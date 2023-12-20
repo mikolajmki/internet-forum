@@ -135,16 +135,18 @@ export const createPost = async (req, res) => {
 
     try {
         const thread = await Thread
-        .findByIdAndUpdate({ _id: threadId }, { $push: { posts: post._id } });
+        .findById({ _id: threadId });
 
         if (thread.isClosed) {
             return res.status(403).json({ message: "Thread closed." });
         }
 
+        await thread.updateOne({ $push: { posts: post._id } });
+
         const resultPost = await post.populate("author");
         await post.save();
 
-        const forum = await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $inc: { answers: 1 } });
+        await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $inc: { answers: 1 } });
 
         await User.findByIdAndUpdate({ _id: authorId }, { $inc: { answers: 1 } })
         

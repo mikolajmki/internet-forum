@@ -55,18 +55,23 @@
    width: 100%;
  }
 
- .columns > div {
+ .columns > div, .columns > div > div {
    display: flex;
    flex-direction: column;
    gap: 0.5rem;
    flex: 1;
  }
 
+ .columns > div > div > textarea {
+   flex: 1;
+   height: 100%;
+ }
+
  .columns > :nth-child(2) {
    flex: 3;
  }
 
- .columns > div > textarea, .columns > div > input,  .form > textarea, .form > input {
+ .columns > div > textarea,  .columns > div > div > textarea, .columns > div > input,  .form > textarea, .form > input {
     background: var(--textLight);
     box-sizing: border-box;
     color: white;

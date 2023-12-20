@@ -180,7 +180,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
         style={{ overlay: { background: "#00000095" } }}>
             <div className={css.container}>
                 <div>
-                { type === "forum" ? <h1>Dodaj forum</h1> : <h1>Dodaj nowa kategorie</h1> }
+                { type === "forum" ? <h1>Dodaj forum</h1> : <h1>Dodaj kategorie</h1> }
                 <form className={css.form} onSubmit={(e) => handleCreate(e)}>
                     <div>Tytul: <span>{charCount.first}/32</span></div>
                     <input type="text" maxLength={32} id={type === "forum" ? "name" : "title"} onChange={(e) => { setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value }); setCharCount({ ...charCount, first: e.currentTarget.value.length }) } } autoFocus />

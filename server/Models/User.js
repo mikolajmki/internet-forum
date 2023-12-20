@@ -9,17 +9,11 @@ const userSchema = mongoose.Schema({
     rank: { type: String, default: "Uzytkownik" },
     reputation: { type: Number, default: 0 },
     answers: { type: Number, default: 0 },
-    signature: { type: String, maxLength: 64 },
+    signature: { type: String, maxLength: 64, default: "" },
     city: { type: String, default: "Polska" },
     isModerator: { type: Boolean, default: false },
-    about: { type: String, required: false, maxLength: 200 },
+    about: { type: String, required: false, maxLength: 200, default: "" },
     profilePicture: { type: String, required: false },
-    coverPicture: { type: String, required: false },
-    
-    followers: [],
-    following: [],
-
-
 }, { timestamps: true });
 
 export default mongoose.model('User', userSchema);

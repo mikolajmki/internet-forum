@@ -13,7 +13,7 @@ export const followForum = async (req, res) => {
 
     try {
         const forum = await Forum.findById(forumId);
-        console.log(forum.followers, userId)
+
         if (type === 0 && forum.followers.includes(userId)) {
             // unfollow
             await forum.updateOne({ $pull: { followers: userId } });

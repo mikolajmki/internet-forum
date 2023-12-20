@@ -47,7 +47,7 @@ export const createThread = (reqData) => async (dispatch) => {
         console.log(err);
         dispatch({ type: "THREAD_FAIL", data: err.response.data.message });
         if (err.response.status === 401) {
-            dispatch({ type: "JWT_FAIL", data: err.response.data.message })
+            dispatch({ type: "JWT_FAIL", data: err.response.data.message });
         }
     }
 };

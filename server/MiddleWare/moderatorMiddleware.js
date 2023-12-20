@@ -11,7 +11,7 @@ export const moderatorMiddleWare = async (req, res, next) => {
         if (user.isModerator) {
             next();
         } else {
-            return res.status(403).json({ message: "Not a moderator." })
+            return res.status(403).json({ message: "Not a moderator." });
         }
     } catch (err) {
         console.log(err);

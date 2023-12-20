@@ -140,9 +140,14 @@ export const getThreadWithPostsById = async (req, res) => {
     try {
         let thread = await Thread
         .findById(threadId)
-        .populate({ path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"]})
-        .populate({ path: "forumId", select: ["name"] })
-        .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
+        .populate({ 
+            path: "author", 
+            select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"]
+        })
+        .populate({ path: "posts", populate: { 
+            path: "author", 
+            select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] 
+        } });
 
         await Thread.updateOne({ _id: threadId }, { $inc: { views: 1 } });
 

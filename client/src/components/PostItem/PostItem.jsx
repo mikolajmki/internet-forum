@@ -10,6 +10,7 @@ import { convertUrlString } from "../../helpers/convertUrlString";
 import { toDate, toDateAndTime } from "../../helpers/toDate";
 import { MoreOptions } from "../MoreOptions/MoreOptions.jsx";
 import { optimizePost } from "../../helpers/optimize.js";
+import isUpdated from "../../helpers/isUpdated.js";
 
 export const PostItem = ({ post, location, setImage }) => {
 
@@ -115,7 +116,7 @@ export const PostItem = ({ post, location, setImage }) => {
                 <div className={css.top}>
                         <div className={css.timestamps} >
                                 <span>{ toDateAndTime(post.createdAt)}</span>
-                                {post.createdAt !== post.updatedAt ? <span className={css.edited} >Edytowano: {toDateAndTime(post.updatedAt)}</span> : <></> }
+                                {isUpdated(post.createdAt, post.updatedAt) ? <span className={css.edited} >Edytowano: {toDateAndTime(post.updatedAt)}</span> : <></> }
                         </div>
                         { user && user._id === post.author._id ?
 

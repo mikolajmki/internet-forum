@@ -9,5 +9,5 @@ export const toDate = (createdAt) => {
 export const toDateAndTime = (createdAt) => {
     const date = new Date(createdAt);
     
-    return date.getDate() + " " + monthDictionary[date.getMonth()] + " " + date.getFullYear() + " o godz. " + date.getHours() + ":" + date.getMinutes();
+    return date.getDate() + " " + monthDictionary[date.getMonth()] + " " + date.getFullYear() + " o godz. " + (date.getHours() < 10 ? "0" : "") + date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
 }

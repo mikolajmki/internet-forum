@@ -5,7 +5,7 @@ import fs from "fs/promises";
 
 const threadStorage = multer.diskStorage({
     destination: async (req, file, cb) => {
-        const path = `public/images/${req.body.threadId}`;
+        const path = `public/images/threads/${req.body.threadId}`;
         await fs.mkdir(path, { recursive: true })
         cb(null, path);
     },
@@ -16,7 +16,7 @@ const threadStorage = multer.diskStorage({
 
 const threadStorageMultiple = multer.diskStorage({
     destination: async (req, file, cb) => {
-        const path = `public/images/${req.body.threadId}`;
+        const path = `public/images/threads/${req.body.threadId}`;
         await fs.mkdir(path, { recursive: true })
         cb(null, path);
     },
@@ -94,16 +94,16 @@ router.post('/profile', uploadUser.single("file"), (req, res) => {
 
 router.put('/thread/delete', async (req, res) => {
     try {
-        const path = `public/images/${req.body.threadId}`;
+        const path = `public/images/threads/${req.body.threadId}`;
         const images = req.body.images;
 
         console.log("images", images)
 
-        const deletePromises = images.map((file) => { 
-            fs.unlink(path + "/" + file);
-        });
+        // const deletePromises = images.map((file) => { 
+        //     fs.unlink(path + "/" + file);
+        // });
         
-        await Promise.all(deletePromises);
+        // await Promise.all(deletePromises);
         return res.status(200).json({ message: "Images deleted." });
     } catch (err) {
         console.log(err);

@@ -184,6 +184,7 @@ textarea, input {
     gap: 0.5rem;
     background: white;
     padding: 0.5rem;
+    box-sizing: border-box;
     line-height: 1.5rem;
     border-radius: 0.2rem;
  }

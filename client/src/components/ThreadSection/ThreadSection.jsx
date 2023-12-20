@@ -12,6 +12,7 @@ import { deleteThread } from "../../actions/threadAction";
 import { followThread } from "../../api/threadRequest";
 import { optimizeThread } from "../../helpers/optimize";
 import { deleteThreadImages } from "../../api/uploadRequest";
+import isUpdated from "../../helpers/isUpdated";
 
 export const ThreadSection = ({ thread }) => {
 
@@ -40,7 +41,7 @@ export const ThreadSection = ({ thread }) => {
     const handleDelete = async () => {
         dispatch(deleteThread({ threadId: thread._id, token }));
         await deleteThreadImages({ body: { threadId: thread._id, images: thread.images }, token})
-        navigate(`/forum/${thread.forumId._id}`)
+        navigate(`/forum/${thread.forumId}`)
     }
 
     const flashError = (message) => {
@@ -81,7 +82,7 @@ export const ThreadSection = ({ thread }) => {
                 <div>
                     <div>
                         <div onClick={() => setImage(null)} className="numberBadge"><div><UilMultiply/></div></div>
-                        <img src={ serverPublic + threadId + "/" + image} alt="" />
+                        <img src={ serverPublic + "threads/" + threadId + "/" + image} alt="" />
                     </div>
                 </div>
             </div> : <></> }
@@ -133,7 +134,7 @@ export const ThreadSection = ({ thread }) => {
                     <div className={css.top}>
                             <div className={css.timestamps}>
                                 <span>{ toDateAndTime(thread.createdAt)}</span>
-                                {thread.createdAt !== thread.updatedAt ? <span className={css.edited}>Edytowano: {toDateAndTime(thread.updatedAt)}</span> : <></> }
+                                {/* {isUpdated(thread.createdAt, thread.updatedAt) ? <span className={css.edited}>Edytowano: {toDateAndTime(thread.updatedAt)}</span> : <></> } */}
                             </div>
                             { user && (user._id === thread.author._id || user.isModerator) ? 
                             <MoreOptions value={closed} setValue={setClosed} isModerator={user.isModerator} location="thread" data={{ userId: user._id, content: optimizeThread(thread), token }}/> : <></> }

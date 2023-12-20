@@ -16,7 +16,7 @@ h1 {
 
 .container, .scrollContainer {
     position: absolute;
-    width: 50%;
+    width: 20%;
     top: 5rem;
     min-width: 40rem;
     color: white;
