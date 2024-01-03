@@ -74,6 +74,7 @@ export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId })
             // dispatch(createThread({ body: { ...formData, forumId: forumId }, token}));
             dispatch({ type: "THREAD_START" });
             try {
+                console.log(formData);
                 const { data: res } = await createThread({ body: { ...formData, forumId: forumId }, token});
                 console.log(res)
                 dispatch({ type: "THREAD_CREATE_SUCCESS", data: res });
@@ -94,6 +95,7 @@ export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId })
 
             body.append("index", 0);
             body.append("threadId", data.threadId);
+            // const filename = fileNames[0]
             
             for (let i = 0 ; i < uploadImages.length ; i ++) {
                 body.append("filenames", fileNames[i]);
@@ -101,13 +103,13 @@ export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId })
             }
             console.log(body.get("index"))
             console.log(body.get("threadId"))
-            console.log(body.getAll("filenames"))
+            console.log(body.getAll("filename"))
             console.log("upload images", body.getAll("files"))
             await uploadThreadImages({ body, token });
 
         }
-        navigate(`/thread/${data.threadId}`);
         setModal(false);
+        navigate(`/thread/${data.threadId}`);
     }
 
     useEffect(() => {

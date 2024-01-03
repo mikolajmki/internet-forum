@@ -33,7 +33,7 @@ const forumReducer = (state = { categories: [], threads: [], thread: null, visit
         case "THREAD_FAIL":
             return { ...state, loading: false, error: action.data };
         case "THREAD_DELETE_SUCCESS":
-            return { ...state, thread: null, loading: false, error: null }
+            return { ...state, thread: null, loading: false, error: null, threads: state.threads.filter(thread => thread._id !== state.thread._id) }
         case "POST_CREATE_START":
             return { ...state, error: null };
         case "POST_CREATE_SUCCESS":

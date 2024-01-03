@@ -17,11 +17,14 @@ const threadStorage = multer.diskStorage({
 const threadStorageMultiple = multer.diskStorage({
     destination: async (req, file, cb) => {
         const path = `public/images/threads/${req.body.threadId}`;
-        await fs.mkdir(path, { recursive: true })
+        await fs.mkdir(path, { recursive: true });
         cb(null, path);
     },
-    filename: (req, file, cb) => {
-        cb(null, req.body.filenames[req.body.index ++]);
+    filename: async (req, file, cb) => {
+        // const filenameAndExt = req.body.filename.split(".");
+        // const filename = filenameAndExt[0].slice(0, -1) + (req.body.index ++)+ "." + filenameAndExt[1];
+        const filename = req.body.filenames[req.body.index ++];
+        cb(null, filename);
     }
 });
 
@@ -74,8 +77,15 @@ router.post('/thread', uploadThread.single("file"), (req, res) => {
     }
 });
 
-router.post('/thread/multiple', uploadThreadMultiple.any("files"), (req, res) => {
+router.post('/thread/multiple', uploadThreadMultiple.any("files"), async (req, res) => {
     try {
+        console.log("body ", req.body);
+        const path = `public/images/threads/${req.body.threadId}/`;
+
+        console.log("0 ", req.body.filenames[0])
+
+        await fs.rename(path + "I", path + req.body.filenames[0]);
+
         return res.status(200).json({ message: "Images uploaded." });
     } catch (err) {
         console.log(err);
@@ -99,11 +109,11 @@ router.put('/thread/delete', async (req, res) => {
 
         console.log("images", images)
 
-        // const deletePromises = images.map((file) => { 
-        //     fs.unlink(path + "/" + file);
-        // });
+        const deletePromises = images.map((file) => { 
+            fs.unlink(path + "/" + file);
+        });
         
-        // await Promise.all(deletePromises);
+        await Promise.all(deletePromises);
         return res.status(200).json({ message: "Images deleted." });
     } catch (err) {
         console.log(err);

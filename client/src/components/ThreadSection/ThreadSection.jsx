@@ -39,8 +39,11 @@ export const ThreadSection = ({ thread }) => {
     // }
 
     const handleDelete = async () => {
-        dispatch(deleteThread({ threadId: thread._id, token }));
-        await deleteThreadImages({ body: { threadId: thread._id, images: thread.images }, token})
+        dispatch(deleteThread({ thread, token }));
+
+        // dispatch(deleteThread({ threadId: thread._id, token }));
+        // await deleteThreadImages({ body: { threadId: thread._id, images: thread.images }, token})
+
         navigate(`/forum/${thread.forumId}`)
     }
 

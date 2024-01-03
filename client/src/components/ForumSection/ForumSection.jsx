@@ -39,7 +39,7 @@ export const ForumSection = ({ forum }) => {
 
     return (
         <div className={css.wrapper}>                
-            { !threads && loading ? <span className="loader"></span> :
+            { loading ? <span className="loader"></span> :
             <div className={css.container}>
                 <div className={css.title}>
                     <span>{forum.name}</span>
