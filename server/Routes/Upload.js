@@ -31,6 +31,10 @@ const threadStorageMultiple = multer.diskStorage({
 const userStorage = multer.diskStorage({
     destination: async (req, file, cb) => {
         const path = `public/images/users/${req.body.username}`;
+        const image = await fs.readdir(path);
+        
+        await fs.unlink(path + "/" + image);
+        
         await fs.mkdir(path, { recursive: true })
         console.log("username", req.body.username);
         cb(null, path);

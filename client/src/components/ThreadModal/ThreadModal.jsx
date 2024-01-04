@@ -36,7 +36,7 @@ export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId })
             const names = [];
 
             for (let i = 0 ; i < files.length ; i ++) {
-                names.push("IMG_" + Date.now() + i + "." + files[i].type.replace(/(.*)\//g, ''));
+                names.push("IMG_" + Date.now().toString().split(0, -1) + i + "." + files[i].type.replace(/(.*)\//g, ''));
             }
 
             setFilenames(names);
