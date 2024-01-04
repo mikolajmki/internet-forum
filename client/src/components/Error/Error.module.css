@@ -1,0 +1,16 @@
+.error {
+    position: absolute;
+    bottom: -4rem;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error > div {
+    padding: 0.5rem 4rem;
+    background: var(--section);
+    font-size: 1.2rem;
+    border: 0.1rem solid var(--border);
+}

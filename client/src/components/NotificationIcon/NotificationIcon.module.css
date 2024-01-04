@@ -7,13 +7,33 @@
     cursor: default;
     display: flex;
     justify-content: center;
+    max-height: 30rem;
+    padding-bottom: 1rem;
+}
+
+.searchModal {
+  right: -10rem;
+  min-width: 30rem;
 }
 
 .notificationModal > div {
-    position: relative;
+  position: relative;
+  width: 100%;
+  max-height: 30rem;
+  overflow-y: scroll;
+}
+
+.notificationModal > ::-webkit-scrollbar {
+  scrollbar-color: var(--bg1) var(--bg2);
+  width: 0;
+  height: 0;
+}
+
+.notificationModal > div > div {
     display: flex;
+    height: 100%;
     align-items: center;
-    justify-content: center;
+    justify-content: start !important;
     padding: 1rem;
     flex-direction: column;
     gap: 1rem;
@@ -27,11 +47,50 @@
     border-radius: 0.2rem;
 }
 
+.options {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  flex-direction: row !important;
+  gap: 0.5rem !important;
+  justify-content: start;
+}
+
+.options > :first-child {
+  margin-right: 0.5rem;
+}
+.clear {
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.clear:hover {
+  text-decoration: underline;
+}
+
 .content {
     display: flex;
     align-items: center;
     padding: 0.5rem;
     padding-left: 0;
+}
+
+.item {
+  padding-left: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 0.5rem 1rem;
+  flex-direction: row;
+  gap: 2rem;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  width: 100%;
+  text-wrap: wrap;
+}
+
+.item > :first-child {
+  color: var(--secondary);
 }
 
 .content :hover {
@@ -54,6 +113,18 @@
     border-left: 1rem solid transparent;
     border-right: 1rem solid transparent;
     border-bottom: 1rem solid var(--section);
+}
+
+.searchBar {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.searchBar > input {
+  border-radius: 0.2rem;
+  padding: 0 0.5rem;
+  border: 0;
+  height: 2rem;
 }
 
   .numberBadge {
@@ -105,13 +176,38 @@
     padding: 1rem;
 }
 
+.sampleImg, .profilePic {
+  background: var(--border);
+  width: 3rem;
+  height: 3rem;
+  border-radius: 100px;
+}
+
+.info {
+  display: flex;
+  align-items: end;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  line-height: 1.5rem;
+}
+
+.info > div {
+  display: flex;
+  flex-direction: row;
+  text-wrap: nowrap;
+  gap: 1rem;
+}
+
   @media screen and (max-width: 820px) {
-    .notificationModal, .messageModal {
+    .notificationModal, .searchModal {
         top: 5rem!important;
     }
 
-    .messageModal {
+    .searchModal {
       right: -3rem;
+      width: 25rem !important;
+      min-width: 0 !important;
     }
 
     .arrowUp {

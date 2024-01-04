@@ -1,4 +1,5 @@
 import * as ThreadApi from '../api/threadRequest.js';
+import { deleteThreadImages } from '../api/uploadRequest.js';
 
 export const getThreadsByForumId = (forumId) => async (dispatch) => {
     dispatch({ type: "THREADS_START" });
@@ -42,6 +43,22 @@ export const createThread = (reqData) => async (dispatch) => {
         const { data } = await ThreadApi.createThread(reqData);
         console.log(data)
         dispatch({ type: "THREAD_CREATE_SUCCESS", data: data });
+        return data._id;
+    } catch (err) {
+        console.log(err);
+        dispatch({ type: "THREAD_FAIL", data: err.response.data.message });
+        if (err.response.status === 401) {
+            dispatch({ type: "JWT_FAIL", data: err.response.data.message });
+        }
+    }
+};
+
+export const updateThread = (data) => async (dispatch) => {
+    dispatch({ type: "THREAD_START" });
+    try {
+        const { data: thread } = await ThreadApi.updateThread(data);
+        console.log(thread)
+        dispatch({ type: "THREAD_UPDATE_SUCCESS", data: thread });
     } catch (err) {
         console.log(err);
         dispatch({ type: "THREAD_FAIL", data: err.response.data.message });
@@ -54,7 +71,12 @@ export const createThread = (reqData) => async (dispatch) => {
 export const deleteThread = (reqData) => async (dispatch) => {
     dispatch({ type: "THREAD_START" });
     try {
-        const { data } = await ThreadApi.deleteThread(reqData);
+        const { data } = await ThreadApi.deleteThread({ threadId: reqData.thread._id, token: reqData.token});
+
+        if (reqData.thread.images.length > 0) {
+            await deleteThreadImages({ body: { threadId: reqData.thread._id, images: reqData.thread.images }, token: reqData.token })
+        }
+
         console.log(data)
         dispatch({ type: "THREAD_DELETE_SUCCESS", data: data });
     } catch (err) {

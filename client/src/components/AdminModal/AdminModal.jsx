@@ -8,6 +8,7 @@ import { toDate } from "../../helpers/toDate";
 import useDebounce from "../../helpers/useDebounce";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { UilMultiply } from "@iconscout/react-unicons";
 
 export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }) => {
 
@@ -25,7 +26,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
         console.log(toggleUserId)
     }, [toggleUserId])
 
-    const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
+    const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -47,7 +48,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
             if (err.response.status === 401) {
                 logOut(err);
             } else {
-
+                dispatch({ type: "ERROR_SET", data: err.response.data.message })
             }
         }
     }
@@ -97,7 +98,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
     useDebounce(async () => {
         if (type === "moderator" && formData.username ) {
             try {
-                const { data } = await getUsersByUsernameLike({ username: formData.username, token });
+                const { data } = await getUsersByUsernameLike(formData.username);
                 setUsers(data);
             } catch (err) {
                 if (err.response.status === 401) {
@@ -124,9 +125,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
             <div className={css.moderators}>
                 { users.map((user, i) => (
                 <label key={i} htmlFor={user._id} className={css.moderator}>
-                    <div className={css.profilePic}>
-                        <img width={50} height={50} src={user.profilePicture ? serverPublic + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
-                    </div>
+                    <img className={css.profilePic} width={50} height={50} src={user.profilePicture ? serverPublic + "users/" + user.username + "/" + user.profilePicture : require('../../public/defaultProfile.png')} alt="" />
                     <div className={css.info}>
                         <span>{user.username}</span>
                         <span>{ toDate(user.createdAt) }</span>
@@ -166,7 +165,7 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
                         {/* <button style={{ width: "8rem" }} type="submit" className="btn">Dodaj</button> */}
                     </form>
                     { mapUsers(users, 1) }
-                    <div className={css.exit} onClick={() => setModal((prev) => !prev)}></div>
+                    <div className="exit" onClick={() => setModal((prev) => !prev)}><UilMultiply/></div>
                     </div>
                 </div>
             </Modal>
@@ -180,7 +179,8 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
         className={css.modal}
         style={{ overlay: { background: "#00000095" } }}>
             <div className={css.container}>
-                { type === "forum" ? <h1>Dodaj forum</h1> : <h1>Dodaj nowa kategorie</h1> }
+                <div>
+                { type === "forum" ? <h1>Dodaj forum</h1> : <h1>Dodaj kategorie</h1> }
                 <form className={css.form} onSubmit={(e) => handleCreate(e)}>
                     <div>Tytul: <span>{charCount.first}/32</span></div>
                     <input type="text" maxLength={32} id={type === "forum" ? "name" : "title"} onChange={(e) => { setFormData({ ...formData, [e.currentTarget.id]: e.currentTarget.value }); setCharCount({ ...charCount, first: e.currentTarget.value.length }) } } autoFocus />
@@ -190,7 +190,8 @@ export const AdminModal = ({ adminId, token, type, categoryId, modal, setModal }
                     </> : <></> }
                     <button style={{ width: "8rem" }} type="submit" className="btn">Dodaj</button>
                 </form>
-                <div className={css.exit} onClick={() => setModal((prev) => !prev)}></div>
+                <div className="exit" onClick={() => setModal((prev) => !prev)}><UilMultiply/></div>
+                </div>
             </div>
         </Modal>
     )

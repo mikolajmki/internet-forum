@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const userSchema = mongoose.Schema({
-    username: { type: String, required: true },
+    username: { type: String, required: true, maxlength: 24, unique: true },
     password: { type: String, required: true },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
@@ -9,17 +9,11 @@ const userSchema = mongoose.Schema({
     rank: { type: String, default: "Uzytkownik" },
     reputation: { type: Number, default: 0 },
     answers: { type: Number, default: 0 },
-    signature: { type: String },
+    signature: { type: String, maxLength: 64, default: "" },
     city: { type: String, default: "Polska" },
     isModerator: { type: Boolean, default: false },
-    
-    followers: [],
-    following: [],
-
-    profilePicture: String,
-    coverPicture: String,
-    about: String,
-
+    about: { type: String, required: false, maxLength: 200, default: "" },
+    profilePicture: { type: String, required: false },
 }, { timestamps: true });
 
 export default mongoose.model('User', userSchema);

@@ -160,7 +160,7 @@ export const getThreadWithPostsById = async (req, res) => {
         let thread = await Thread
         .findById(threadId)
         .populate({ path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"]})
-        .populate({ path: "forumId", select: ["name"] })
+        // .populate({ path: "forumId", select: ["name"] })
         .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
 
         await Thread.updateOne({ _id: threadId }, { $inc: { views: 1 } });
@@ -229,6 +229,7 @@ export const createThread = async (req, res) => {
     const thread = new Thread({
         forumId: req.body.forumId,
         title: req.body.title,
+        images: req.body.images,
         description: req.body.description,
         author: authorId,
     });
@@ -253,17 +254,12 @@ export const createThread = async (req, res) => {
 
 export const updateThread = async (req, res) => {
     const threadId = req.params.id;
-    const userId = req.body.userId;
 
     try {
         // console.log(thread.title.toString(), title);
-        const thread = await Thread.findById(threadId);
-        if (userId === thread.authorId.toString()) {
-            const resultThread = await thread.updateOne({ $set: req.body });
-            console.log(thread);
-            return res.status(200).json(resultThread);
-        }
-        return res.status(403).json({ message: "Action forbidden. "});
+        const thread = await Thread.findOneAndUpdate({ _id: threadId }, { $set: req.body }, { new: true });
+        console.log(thread);
+        return res.status(200).json({ description: thread.description, images: thread.images });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: err.message });
@@ -271,6 +267,7 @@ export const updateThread = async (req, res) => {
 };
 
 export const deleteThread = async (req, res) => {
+
     const threadId = req.params.id;
 
     try {
@@ -286,9 +283,9 @@ export const deleteThread = async (req, res) => {
 
             const latestThread = await Thread.find({ forumId: thread.forumId }).sort("-createdAt").limit(1);
 
-            console.log(latestThread[0]._id)
+            // console.log(latestThread[0]._id);
     
-            await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $set: { latestThreadId: latestThread[0]._id } })
+            await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $set: { latestThreadId: latestThread.length === 1 ? latestThread[0]._id : null } });
 
             return res.status(200).json({ threadId: resultThread._id });
         }
@@ -297,4 +294,28 @@ export const deleteThread = async (req, res) => {
         console.log(err);
         return res.status(500).json({ message: err.message });
     }
+
+    // const thread = await Thread.findById(threadId);
+
+    // await Notification.deleteMany({ thread: thread._id });
+
+    // console.log(thread.posts.length);
+
+    // await Post.deleteMany({ _id: { $in: thread.posts } });
+
+    // console.log(thread.posts.length);
+    // console.log(thread._id);
+
+
+
+    // const resultThread = await thread.deleteOne();
+
+    // const latestThread = await Thread.find({ forumId: thread.forumId }).sort("-createdAt").limit(1);
+
+    // console.log(latestThread[0]._id)
+
+    // await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $set: { latestThreadId: latestThread[0]._id } })
+
+    // return res.status(200).json({ threadId: resultThread._id });
+
 };

@@ -1,18 +1,23 @@
 .wrapper {
     display: flex;
-    padding: 2rem;
+    justify-content: center;
+    padding: 4rem 5% 2rem 2%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .container {
-    width: 90%;
+    width: 100%;
 }
 
 .title {
     width: 100%;
+    overflow-x: hidden;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-weight: bold;
+    font-size: 2em;
     border: 0.1rem solid var(--border);
     box-sizing: border-box;
     background: var(--section);
@@ -21,4 +26,18 @@
     margin-bottom: 3rem;
     background: var(--bg2);
     scroll-margin-top: 7rem;
+}
+
+@media screen and (max-width: 768px) {
+
+    .wrapper {
+        padding: 2rem;
+        width: 100%;
+    }
+
+
+
+    .btn {
+        width: 100%;
+    }
 }

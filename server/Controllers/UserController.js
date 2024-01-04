@@ -69,24 +69,53 @@ export const toggleUserIsModerator = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     
-    const id = req.params.id;
-    
-    if (id === req.body._id) {
+    const userId = req.body.userId;
+
+    console.log(req.params.id, req.body.userId);
+
+    if (req.params.id === req.body.userId) {
         
         try {
-            
-            if (req.body.password) {
-                req.body.password = await bcrypt.hash(req.body.password, 10);
+            if (!req.body.password) {
+                try {
+                    const userWithPassword = await User.findByIdAndUpdate(userId, req.body, { new: true });
+                    const { password, ...user } = userWithPassword._doc;
+                    return res.status(200).json({ user });
+                } catch (err) {
+                    switch (err.code) {
+                        case 11000:
+                            return res.status(500).json({ message: "Username " + req.body.username + " is taken." });
+                        default:
+                            return res.status(500).json({ message: err.message });
+                    }
+                }
+
+            } else if (req.body.password) {
+
+                const userWithPassword = await User.findById(userId);
+
+                const isEqual = await bcrypt.compare(req.body.password, userWithPassword.password);
+                const newIsEqual = await bcrypt.compare(req.body.newPassword, userWithPassword.password);
+
+                if (!isEqual) {
+                    return res.status(401).json({ message: "Password doesn't match." })
+                } else if (req.body.newPassword.length < 8) {
+                    return res.status(500).json({ message: "Password must be at least 8 characters long." })
+                } else if (newIsEqual) {
+                    return res.status(500).json({ message: "New password cannot be the same." });
+                }
+                
+                const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+                await userWithPassword.updateOne({ password: hashedPassword }, { new: true })
+                
+                const { password, ...user } = userWithPassword._doc;
+
+                return res.status(200).json({ user });
             }
-            
-            const user = await User.findByIdAndUpdate(id, req.body, {new: true});
-            const token = jwt.sign({ userId: user._id, username: user.username }, process.env.SECRET_KEY, { expiresIn: '1h' });
-            
-            return res.status(200).json({ user, token });
         } catch (err) { 
             
             console.log(err);
-            return res.status(500).json({ message: "Couldn't update" });
+            return res.status(500).json({ message: err.message });
         }
     }
     

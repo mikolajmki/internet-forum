@@ -43,7 +43,7 @@ export const ForumSection = ({ forum }) => {
             <div className={css.container}>
                 <div className={css.title}>
                     <span>{forum.name}</span>
-                    <span> <MoreOptions forumId={forum._id} location="threads"/> </span>
+                    <span> <MoreOptions forumId={forum._id} location="forum"/> </span>
                 </div>
                 <div className={css.section}>
                     <Threads threads={threads}/>

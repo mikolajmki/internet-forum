@@ -22,7 +22,7 @@ export const Home = () => {
     }
 
     const handleGetThreads = async () => {
-        const { data } = await getThreadsByLimit(2);
+        const { data } = await getThreadsByLimit(5);
         setThreads(data)
     };
 

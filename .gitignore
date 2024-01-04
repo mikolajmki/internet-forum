@@ -2,10 +2,11 @@
 
 # dependencies
 /client/node_modules
-/client/.env
+# /client/.env
 
 /server/node_modules
-/server/.env
+# /server/public
+# /server/.env
 
 /.pnp
 .pnp.js

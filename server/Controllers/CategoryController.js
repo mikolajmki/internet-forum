@@ -10,7 +10,7 @@ export const getCategoriesWithForums = async (req, res) => {
         .populate(
             { path: "forums", populate: 
             { path: "latestThreadId", select: ["title", "author"], populate: 
-            { path: "author", select: ["username"] } }}
+            { path: "author", select: ["username", "profilePicture"] } }}
         )
         
         return res.status(200).json(categories);
@@ -30,7 +30,12 @@ export const createCategory = async (req, res) => {
         await category.save();
         return res.status(200).json(category);
     } catch (err) {
-        return res.status(500).json({ message: err });
+        switch (err.code) {
+            case 11000:
+                return res.status(500).json({ message: "Category of title " + req.body.title + " already exists." });
+            default:
+                return res.status(500).json({ message: err.message });
+        }
     }
 };
 

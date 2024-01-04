@@ -129,21 +129,24 @@ export const createPost = async (req, res) => {
     const post = new Post({
         title: req.body.title,
         comment: req.body.comment,
+        images: req.body.images,
         author: authorId,
     });
 
     try {
         const thread = await Thread
-        .findByIdAndUpdate({ _id: threadId }, { $push: { posts: post._id } });
+        .findById({ _id: threadId });
 
         if (thread.isClosed) {
-            return res.status(403).json({ message: "Thread closed." })
+            return res.status(403).json({ message: "Thread closed." });
         }
+
+        await thread.updateOne({ $push: { posts: post._id } });
 
         const resultPost = await post.populate("author");
         await post.save();
 
-        const forum = await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $inc: { answers: 1 } });
+        await Forum.findByIdAndUpdate({ _id: thread.forumId }, { $inc: { answers: 1 } });
 
         await User.findByIdAndUpdate({ _id: authorId }, { $inc: { answers: 1 } })
         
@@ -162,9 +165,9 @@ export const updatePost = async (req, res) => {
 
     try {
         // console.log(post.title.toString(), title);
-        const post = await Post.findByIdAndUpdate({ _id: postId }, { $set: req.body });
-        
-        return res.status(200).json({ post });
+        const post = await Post.findByIdAndUpdate({ _id: postId }, { $set: req.body }, { new: true });
+
+        return res.status(200).json({ postId: post._id, comment: post.comment, images: post.images });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: err.message });
