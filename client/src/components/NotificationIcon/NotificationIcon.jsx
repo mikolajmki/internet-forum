@@ -55,6 +55,7 @@ export const NotificationIcon = ({ modalOpened, setModalOpened, type }) => {
         if (search !== "") {
             try {
                 const { data } = searchFilter === "title" && search !== "" ? await getThreadsByTitleLike(search) : await getUsersByUsernameLike(search);
+                console.log(search, searchFilter, data)
                 setContent(data);
             } catch (err) {
                 console.log(err.response.data.message);
@@ -62,6 +63,7 @@ export const NotificationIcon = ({ modalOpened, setModalOpened, type }) => {
         } else {
             setContent([])
         }
+        console.log(search, searchFilter)
     }, [search], 1000)
 
     // useEffect(() => {
