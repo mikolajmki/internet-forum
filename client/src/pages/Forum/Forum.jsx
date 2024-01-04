@@ -4,7 +4,7 @@ import css from './Forum.module.css';
 import { ForumSection } from "../../components/ForumSection/ForumSection";
 import { SideSection } from "../../components/SideSection/SideSection";
 import { useDispatch, useSelector } from "react-redux";
-import { getThreadsByForumId } from "../../actions/threadAction";
+import { getThreadsByForumId, getThreadsByForumIdSortedByParam } from "../../actions/threadAction";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { getPostsByLimit } from "../../api/postRequest";
@@ -40,7 +40,7 @@ export const Forum = () => {
     }
 
     useEffect(() => {
-        dispatch(getThreadsByForumId(params.forumId));
+        dispatch(getThreadsByForumIdSortedByParam(params.forumId, "-createdAt"));
         handleGetForumById(params.forumId);
         handleGetPosts();
     }, [])

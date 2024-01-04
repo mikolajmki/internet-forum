@@ -119,7 +119,7 @@ export const getThreadsByForumId = async (req, res) => {
         .find({ forumId: forumId })
         .sort("-createdAt")
         .populate("author", ["username", "createdAt", "profilePicture"])
-        // .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
+        .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
   
         return res.status(200).json(threads);
     } catch (err) {

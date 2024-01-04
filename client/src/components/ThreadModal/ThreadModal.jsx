@@ -101,9 +101,10 @@ export const ThreadModal = ({ modal, setModal, type, token, threadId, forumId })
                 body.append("filenames", fileNames[i]);
                 body.append("files", uploadImages[i]);
             }
+
             console.log(body.get("index"))
             console.log(body.get("threadId"))
-            console.log(body.getAll("filename"))
+            console.log(body.getAll("filenames"))
             console.log("upload images", body.getAll("files"))
             await uploadThreadImages({ body, token });
 
