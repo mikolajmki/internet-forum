@@ -117,18 +117,20 @@ export const getThreadsByForumId = async (req, res) => {
     try {
         let threads = await Thread
         .find({ forumId: forumId })
+        .populate("forumId", ["name"])
         .sort("-createdAt")
         .populate("author", ["username", "createdAt", "profilePicture"])
         .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
   
         return res.status(200).json(threads);
     } catch (err) {
-        console.log(err.message);
+        console.log(err);
         return res.status(500).json({
-            message: err.message
+            error: err
         });
     }
 };
+
 
 export const getThreadWithPostsById = async (req, res) => {
 
@@ -138,7 +140,7 @@ export const getThreadWithPostsById = async (req, res) => {
         let thread = await Thread
         .findById(threadId)
         .populate({ path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"]})
-        // .populate({ path: "forumId", select: ["name"] })
+        .populate({ path: "forumId", select: ["name"] })
         .populate({ path: "posts", populate: { path: "author", select: ["username", "email", "rank", "reputation", "answers", "signature", "profilePicture", "createdAt"] } });
 
         await Thread.updateOne({ _id: threadId }, { $inc: { views: 1 } });
