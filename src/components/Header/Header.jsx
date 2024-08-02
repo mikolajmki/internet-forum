@@ -35,7 +35,7 @@ export const Header = ({ location }) => {
 
     useEffect(() => {
         if (user) {
-            user.profilePicture ? setProfilePicture(serverPublic + "users/" + user.username + "/" + user.profilePicture) : setProfilePicture(require('../../public/defaultProfile.png'));
+            setProfilePicture(require('../../public/defaultProfile.png'));
         }
     }, [user])
 

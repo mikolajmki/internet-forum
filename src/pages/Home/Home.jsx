@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
-import { Section } from "../../components/Forums/Forums.jsx";
 import css from './Home.module.css';
 import { HomeSection } from "../../components/HomeSection/HomeSection";
 import { SideSection } from "../../components/SideSection/SideSection";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategoriesWithForums } from "../../api/categoryRequest.js";
-import { getThreadsByLimit } from "../../api/threadRequest.js";
+import { getCategoriesWithForums } from "../../dummyservice/categoriesService.js";
+import { getThreadsByLimit } from "../../dummyservice/threadsService.js";
 import { setCategories } from "../../actions/categoryAction.js";
 
 export const Home = () => {
@@ -17,12 +16,12 @@ export const Home = () => {
     const [ threads, setThreads ] = useState(null);
 
     const handleGetCategoriesWithForums = async () => {
-        const { data } = await getCategoriesWithForums();
+        const { data } = getCategoriesWithForums();
         setCategoriesWithForums(data);
     }
 
     const handleGetThreads = async () => {
-        const { data } = await getThreadsByLimit(5);
+        const { data } = getThreadsByLimit(5);
         setThreads(data)
     };
 

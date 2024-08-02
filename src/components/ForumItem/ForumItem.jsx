@@ -12,7 +12,7 @@ export const ForumItem = ({ forum, category, error, setError }) => {
     
     const serverPublic = process.env.REACT_APP_SERVER_PUBLIC_FOLDER;
     const user = forum.latestThreadId ? forum.latestThreadId.author : {};
-    const latestThreadProfilePicture = user.profilePicture ? serverPublic + "users/" + user.username + "/" + user.profilePicture : require('../../public/defaultProfile.png');
+    const latestThreadProfilePicture = require('../../public/defaultProfile.png');
     
     const { user: loggedInUser, token } = useSelector((state) => state.authReducer.authData);
     const navigate = useNavigate();

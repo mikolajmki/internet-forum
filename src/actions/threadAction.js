@@ -91,7 +91,7 @@ export const deleteThread = (reqData) => async (dispatch) => {
 export const getThreadsByLimit = (limit) => async (dispatch) => {
     dispatch({ type: "THREADS_START" });
     try {
-        const { data } = await ThreadApi.getThreadsByLimit(limit);
+        const { data } = ThreadApi.getThreadsByLimit(limit);
         console.log(data)
         dispatch({ type: "THREADS_SUCCESS", data: data });
     } catch (err) {
