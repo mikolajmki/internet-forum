@@ -11,10 +11,10 @@ export const categoriesWithForums = [
         answers: 52,
         latestThreadId: {
           _id: { $oid: "659811f8658fbb81b729b407" },
-          title: "Pomocy, cos w silniku wybuchlo :(",
+          title: "The oil is leaking",
           author: {
-            _id: { $oid: "65411e48617201219c4a5793" },
-            username: "bartelomelon",
+            _id: { $oid: "6531b00064798c0e0fa67881" },
+            username: "mikolajmki",
             profilePicture: "profile_photo_1285.jpeg",
           },
           views: 66,
@@ -60,5 +60,61 @@ export const categoriesWithForums = [
       //   __v: { $numberInt: "0" },
       // },
     ],
+  },
+  {
+    _id: { $oid: "65785a9fbc9c40684b9e2437" },
+    title: "Modelarstwo",
+    forums: [
+      {
+        _id: { $oid: "65785ab1bc9c40684b9e2450" },
+        name: "Samoloty",
+        description: "Forum o samolotach RC",
+        answers: 4,
+        latestThreadId: {
+          _id: { $oid: "65a6e67952f4ca42b1fd3468" },
+          title: "Model do nauki",
+          author: {
+            _id: { $oid: "65411e48617201219c4a5793" },
+            username: "bartelomelon",
+            profilePicture: "profile_photo_1285.jpeg",
+          },
+          views: 21,
+          posts: [{ $oid: "65a6e6a252f4ca42b1fd3482" }],
+          createdAt: 1705436793673,
+        },
+        followers: [],
+        createdAt: 1702386353674,
+        __v: { $numberInt: "0" },
+      },
+    ],
+    __v: { $numberInt: "0" },
+  },
+  {
+    _id: { $oid: "658329999fd5ba69cb226fd1" },
+    title: "Komputery",
+    forums: [
+      {
+        _id: { $oid: "658329c89fd5ba69cb227046" },
+        name: "Zestawy PC",
+        description: "Sample text",
+        answers: 0,
+        latestThreadId: {
+          _id: { $oid: "65ad69bbaeaa8985868b783b" },
+          title: "nowy zestaw!",
+          author: {
+            _id: { $oid: "65411e48617201219c4a5793" },
+            username: "bartelomelon",
+            profilePicture: "profile_photo_1285.jpeg",
+          },
+          views: 12,
+          posts: [],
+          createdAt: 1705863611363,
+        },
+        followers: [],
+        createdAt: 1703094728159,
+        __v: { $numberInt: "0" },
+      },
+    ],
+    __v: { $numberInt: "0" },
   },
 ];

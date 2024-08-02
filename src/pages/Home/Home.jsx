@@ -4,8 +4,8 @@ import css from './Home.module.css';
 import { HomeSection } from "../../components/HomeSection/HomeSection";
 import { SideSection } from "../../components/SideSection/SideSection";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategoriesWithForums } from "../../dummyservice/categoriesService.js";
-import { getThreadsByLimit } from "../../dummyservice/threadsService.js";
+import { getCategoriesWithForums } from "../../dummyservice/categoryService.js";
+import { getThreadsByLimit } from "../../dummyservice/threadService.js";
 import { setCategories } from "../../actions/categoryAction.js";
 
 export const Home = () => {
